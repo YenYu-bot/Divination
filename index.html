@@ -170,6 +170,27 @@ details[open] summary{border-bottom:1px dashed var(--line)}
 .nmgl{font-size:12.5px;color:var(--ink2);line-height:1.6}
 /* 段落 */
 #res-bazitext p,#res-liunian p,#hh-out p{margin:7px 0;font-size:15.5px}
+/* 亮度・十二神 */
+sup.br{font-size:9px;font-weight:400;margin-left:1px;vertical-align:super}
+.br廟,.br旺{color:var(--wood)} .br得,.br利{color:var(--gold)}
+.br平,.br閒{color:var(--ink2)} .br陷{color:var(--cinnabar)}
+.csbs{font-size:10.5px;color:var(--gold);border-top:1px dotted rgba(201,188,156,.6);padding-top:3px;margin-top:4px;letter-spacing:.05em}
+/* 格局 */
+.patrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.patchip{
+  display:inline-block;border:1.5px solid var(--cinnabar);color:var(--cinnabar);
+  padding:3px 12px;font-weight:700;letter-spacing:.15em;font-size:15px;border-radius:2px;
+  background:rgba(169,59,42,.05);
+}
+.patname{color:var(--navy)}
+#res-patterns p{margin:7px 0;font-size:15.5px}
+/* 五格 */
+.gerow{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:6px 0}
+.ge{font-size:11px;padding:2px 5px;border-radius:1px;border:1px solid var(--line);color:var(--ink2)}
+.ge i{font-style:normal;font-weight:700;margin-left:2px}
+.ge吉 i{color:var(--wood)} .ge半 i{color:var(--gold)} .ge凶 i{color:var(--cinnabar)}
+.nmzo{font-size:11.5px;color:var(--navy);margin-top:4px;line-height:1.5}
+.nmgrid2{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
 /* 頁尾 */
 footer{text-align:center;margin-top:44px;color:var(--ink2);font-size:13px;letter-spacing:.1em}
 footer .stamp{
@@ -236,6 +257,7 @@ footer .stamp{
     <div class="card"><h2>八字總論</h2><div id="res-bazitext"></div></div>
     <div class="card"><h2>大運</h2><div id="res-dayun"></div></div>
     <div class="card"><h2>紫微斗數命盤</h2><div class="chartwrap"><div id="res-chart"></div></div></div>
+    <div class="card"><h2>格局與身宮</h2><div id="res-patterns"></div></div>
     <div class="card"><h2>十二宮詳解</h2><div id="res-palaces"></div></div>
     <div class="card"><h2>流年運勢</h2>
       <div class="lnctrl">
@@ -290,6 +312,9 @@ footer .stamp{
     <div class="frow">
       <label>姓氏</label>
       <input type="text" id="nm-surname" size="6" placeholder="例:陳">
+      <label style="min-width:auto">姓氏筆畫</label>
+      <input type="text" id="nm-strokes" size="4" inputmode="numeric" placeholder="自動">
+      <span class="note" style="margin:0">常見姓氏免填,罕見姓請填康熙筆畫</span>
     </div>
     <div class="frow">
       <label>出生日期</label>
@@ -817,6 +842,255 @@ TX.naming=function(SM,surname,gender,xiyong){
 })();
 if(typeof module!=='undefined') module.exports=TX;
 
+/* ext.js — 紫微擴充:廟旺利陷/長生十二神/博士十二神/增補雜曜/三方四正/格局 */
+"use strict";
+(function(){
+// 廟旺利陷(十四主星,索引=地支 子0..亥11;採《全書》通行版本)
+const MIAO={
+'紫微':'平廟廟旺得旺廟廟旺平得旺','天機':'廟陷得旺利平廟陷得旺利平',
+'太陽':'陷陷旺廟旺旺廟得得平陷陷','武曲':'旺廟得陷廟平旺廟得旺廟平',
+'天同':'旺陷利廟平廟陷陷旺平平廟','廉貞':'平利廟平利陷平廟廟平利陷',
+'天府':'廟廟廟得廟得旺廟得旺廟得','太陰':'廟廟旺陷閒陷陷平利旺旺廟',
+'貪狼':'旺廟平利廟陷旺廟平利廟陷','巨門':'旺旺廟廟平平旺陷廟廟旺旺',
+'天相':'廟廟廟陷得得旺得廟平得平','天梁':'廟旺廟廟廟陷廟旺陷得廟陷',
+'七殺':'旺廟廟陷旺平旺廟廟閒廟平','破軍':'廟旺得陷旺平廟旺得陷旺平'};
+SM.bright=function(star,zhi){ const t=MIAO[star]; return t?t[zhi]:''; };
+
+const CS12=['長生','沐浴','冠帶','臨官','帝旺','衰','病','死','墓','絕','胎','養'];
+const BS12=['博士','力士','青龍','小耗','將軍','奏書','飛廉','喜神','病符','大耗','伏兵','官府'];
+SM.CS12=CS12; SM.BS12=BS12;
+
+// 三方四正:本宮、對宮、兩個三合宮
+SM.sanfang=function(zhi){ return [zhi,(zhi+4)%12,(zhi+6)%12,(zhi+8)%12]; };
+
+// 擴充安星(就地修改 zw):o={yG,yZ,hZ,day,month}
+SM.ziweiExt=function(zw,o){
+  const P=zw.palaces, fw=zw.forward;
+  // ---- 長生十二神(依五行局起長生,陽男陰女順行) ----
+  const csStart={2:8,3:11,4:5,5:8,6:2}[zw.juNum];
+  for(let i=0;i<12;i++){
+    const z=((csStart+(fw?i:-i))%12+12)%12;
+    P[z].cs=CS12[i];
+  }
+  // ---- 博士十二神(起祿存,陽男陰女順行) ----
+  const lc=zw.aux['祿存'];
+  if(lc!==undefined) for(let i=0;i<12;i++){
+    const z=((lc+(fw?i:-i))%12+12)%12;
+    P[z].bs=BS12[i];
+  }
+  // ---- 增補雜曜 ----
+  const g=o.yG, y=o.yZ, h=o.hZ, d=o.day;
+  const put=(name,z)=>{ z=((z%12)+12)%12; P[z].aux.push(name); zw.aux[name]=z; };
+  put('天官',[7,4,5,2,3,9,11,9,10,6][g]);
+  put('天福',[9,8,0,11,3,2,6,5,6,5][g]);
+  put('天廚',[5,6,0,5,6,8,2,6,9,11][g]);
+  put('天哭',(6-y+12)%12); put('天虛',(6+y)%12);
+  put('龍池',(4+y)%12);   put('鳳閣',(10-y+12)%12);
+  const gu=[[2,10],[2,10],[5,1],[5,1],[5,1],[8,4],[8,4],[8,4],[11,7],[11,7],[11,7],[2,10]][y];
+  put('孤辰',gu[0]); put('寡宿',gu[1]);
+  put('蜚廉',[8,9,10,5,6,7,2,3,4,11,0,1][y]);
+  put('破碎',[5,1,9,5,1,9,5,1,9,5,1,9][y]);
+  put('台輔',(6+h)%12); put('封誥',(2+h)%12);
+  if(zw.aux['左輔']!==undefined) put('三台',zw.aux['左輔']+d-1);
+  if(zw.aux['右弼']!==undefined) put('八座',zw.aux['右弼']-(d-1));
+  if(zw.aux['文昌']!==undefined) put('恩光',zw.aux['文昌']+d-2);
+  if(zw.aux['文曲']!==undefined) put('天貴',zw.aux['文曲']+d-2);
+  put('天才',zw.mingZhi+y); put('天壽',zw.shenZhi+y);
+  // ---- 格局判定 ----
+  zw.patterns=detectPatterns(zw);
+  return zw;
+};
+
+function starsIn(zw,zhis){
+  const s=new Set();
+  zhis.forEach(z=>{ zw.palaces[z].stars.forEach(x=>s.add(x)); zw.palaces[z].aux.forEach(x=>s.add(x)); });
+  return s;
+}
+function detectPatterns(zw){
+  const m=zw.mingZhi, sf=SM.sanfang(m);
+  const ming=new Set(zw.palaces[m].stars), mingAux=new Set(zw.palaces[m].aux);
+  const tri=starsIn(zw,sf);
+  const has=(set,...xs)=>xs.every(x=>set.has(x));
+  const out=[];
+  if(has(ming,'紫微','天府')) out.push('紫府同宮');
+  if(has(ming,'紫微','貪狼')&&(m===3||m===9)) out.push('極居卯酉');
+  if(has(tri,'天機','太陰','天同','天梁')) out.push('機月同梁');
+  if((ming.has('七殺')||ming.has('破軍')||ming.has('貪狼'))&&has(tri,'七殺','破軍','貪狼')) out.push('殺破狼');
+  if(!ming.has('天府')&&!ming.has('天相')&&has(tri,'天府','天相')) out.push('府相朝垣');
+  if(has(tri,'太陽','天梁','文昌','祿存')) out.push('陽梁昌祿');
+  if(ming.has('太陽')&&m===3) out.push('日照雷門');
+  if(ming.has('太陰')&&m===11) out.push('月朗天門');
+  if(has(ming,'太陽','太陰')) out.push('日月同臨');
+  if(tri.has('太陽')&&tri.has('太陰')&&SM.bright('太陽',findStar(zw,'太陽'))==='陷'&&SM.bright('太陰',findStar(zw,'太陰'))==='陷') out.push('日月反背');
+  if(has(ming,'天機','巨門')&&(m===3||m===9)) out.push('巨機同臨');
+  if(ming.has('巨門')&&(m===0||m===6)) out.push('石中隱玉');
+  if(tri.has('貪狼')&&tri.has('火星')) out.push('火貪格');
+  if(tri.has('貪狼')&&tri.has('鈴星')) out.push('鈴貪格');
+  if(tri.has('天馬')&&(tri.has('祿存')||zw.sihua['化祿']!==undefined&&triHasHuaLu(zw,sf))) out.push('祿馬交馳');
+  if(tri.has('文昌')&&tri.has('文曲')) out.push('文星拱命');
+  if(has(mingAux,'左輔','右弼')) out.push('左右同宮');
+  if(tri.has('天魁')&&tri.has('天鉞')) out.push('魁鉞拱命');
+  return out;
+}
+function findStar(zw,s){
+  for(let z=0;z<12;z++) if(zw.palaces[z].stars.includes(s)) return z;
+  return 0;
+}
+function triHasHuaLu(zw,sf){
+  // 化祿之星是否在三方四正
+  let luStar=null; for(const s in zw.sihua){ if(zw.sihua[s]==='祿') luStar=s; }
+  if(!luStar) return false;
+  return sf.some(z=>zw.palaces[z].stars.includes(luStar)||zw.palaces[z].aux.includes(luStar));
+}
+})();
+
+/* nm.js — 姓名學擴充:康熙筆畫/三才五格/81數理/生肖姓名學 */
+"use strict";
+(function(){
+// 常見姓氏康熙筆畫
+TX.SURNAME={陳:16,林:8,黃:12,張:11,李:7,王:4,吳:7,劉:15,蔡:17,楊:13,許:11,鄭:19,謝:17,郭:15,洪:10,曾:12,廖:14,賴:16,徐:10,周:8,葉:15,蘇:22,莊:13,呂:7,江:7,何:7,蕭:18,羅:20,高:10,潘:16,簡:18,朱:6,鍾:17,彭:12,游:13,詹:13,胡:11,施:9,沈:8,余:7,趙:14,盧:16,梁:11,顏:18,柯:9,翁:10,魏:18,孫:10,戴:18,范:11,宋:7,方:4,鄧:19,杜:7,傅:12,侯:9,曹:11,薛:19,丁:2,卓:8,馬:10,董:15,唐:10,藍:20,石:5,蔣:17,古:5,紀:9,姚:9,連:14,馮:12,歐:15,程:12,湯:13,田:5,康:11,姜:9,白:5,汪:8,鄒:17,尤:4,巫:7,黎:15,金:8,阮:12,陸:16,倪:10,夏:10,童:12,邱:12,溫:14,牛:4,安:6,顧:21,嚴:20,韓:17,袁:10,温:14,鄔:18,塗:14,涂:11,凃:11,毛:4,邵:12,任:6,龔:22,文:4,池:7,易:8,孟:8,殷:10,秦:10,蘆:22,葛:15,武:8,韋:9};
+// 名字字庫:[字, 字義, 康熙筆畫, 字根標籤]
+TX.POOL2={
+'木':[['楷','楷模典範',13,'木'],['杰','才智出眾',8,'木火'],['彬','文質彬彬',11,'木'],['榕','庇蔭如蓋',14,'木宀口'],['梓','故土良材',11,'木'],['桐','鳳棲梧桐',10,'木口'],['樺','挺拔正直',16,'木艹'],['筠','虛心有節',13,'竹'],['薇','堅韌芬芳',19,'艹'],['芸','書香之氣',10,'艹'],['若','蕙質蘭心',11,'艹口'],['萱','忘憂之草',15,'艹宀'],['茂','枝繁葉茂',11,'艹'],['權','權衡有度',22,'木艹口'],['東','旭日之方',8,'木日'],['楨','棟梁之材',13,'木'],['芷','芷蘭之芳',10,'艹'],['荷','出泥不染',13,'艹人口'],['竹','高節虛心',6,'竹'],['樂','和樂安康',15,'木']],
+'火':[['炫','光彩奪目',9,'火'],['烜','聲名遠播',10,'火日'],['煦','和煦溫暖',13,'日火口'],['昕','黎明之光',8,'日'],['晴','晴空萬里',12,'日月'],['昭','昭明顯達',9,'日口'],['晉','晉升進取',10,'日'],['熙','光明興盛',13,'火'],['彤','赤誠之心',7,''],['丹','丹心一片',4,''],['南','向陽之位',9,'口'],['夏','繁盛之季',10,''],['朗','開朗磊落',11,'月'],['曜','日月星輝',18,'日'],['炎','光熱兼具',8,'火'],['暖','溫情暖意',13,'日'],['晨','一日之計',11,'日辰'],['煒','光明顯赫',13,'火'],['曦','晨光熹微',20,'日'],['烽','志在四方',11,'火']],
+'土':[['宇','氣宇軒昂',6,'宀'],['安','平安順遂',6,'宀女'],['坤','厚德載物',8,'土田'],['培','栽培有成',11,'土口'],['城','眾志成城',10,'土'],['基','根基穩固',11,'土口'],['垣','屏障護持',9,'土'],['圭','清白如玉',6,'土'],['辰','日月星辰',7,'辰'],['宛','溫婉可人',8,'宀'],['容','有容乃大',10,'宀口'],['宥','寬厚仁恕',9,'宀月'],['宸','帝王之居',10,'宀辰'],['嵐','山間靈氣',12,'山'],['岳','穩如泰山',8,'山'],['均','公正平和',7,'土口'],['宜','適得其所',8,'宀'],['坦','坦蕩光明',8,'土日'],['嶸','崢嶸頭角',17,'山火'],['垚','土之高厚',9,'土']],
+'金':[['鋒','銳意進取',15,'金'],['銘','銘記於心',14,'金口'],['鈞','千鈞之重',12,'金'],['錦','前程似錦',16,'金'],['鑫','財源廣聚',24,'金'],['銳','敏銳精進',15,'金口'],['欽','受人敬重',12,'金人'],['鍊','千錘百鍊',17,'金'],['瑞','祥瑞之兆',14,'王'],['珊','珍美如珊',10,'王'],['玲','玲瓏剔透',10,'王口'],['鈺','堅金美玉',13,'金王'],['新','日新又新',13,'木'],['誠','金石之誠',14,'口'],['世','處世有方',5,''],['仕','仕途順遂',5,'人'],['鎧','護身堅甲',18,'金山'],['錚','錚錚風骨',16,'金'],['珮','君子如珮',11,'王'],['銓','權衡量才',14,'金王人']],
+'水':[['澤','恩澤廣被',17,'氵'],['霖','久旱甘霖',16,'雨木'],['涵','涵養深厚',12,'氵口'],['沛','充沛豐盈',8,'氵'],['洵','誠實不欺',10,'氵口'],['湧','文思泉湧',13,'氵'],['潤','溫潤如玉',16,'氵王'],['泓','深廣清澈',9,'氵弓'],['汝','親切美稱',7,'氵女'],['沂','沂水春風',8,'氵'],['雨','潤物無聲',8,'雨'],['雲','行雲流水',12,'雨'],['海','海納百川',11,'氵'],['博','博學多聞',12,''],['泰','否極泰來',9,'水'],['敏','敏而好學',11,''],['清','清正廉明',12,'氵日'],['沐','如沐春風',8,'氵木'],['淇','淇水悠悠',12,'氵'],['瀚','學海浩瀚',20,'氵']]};
+// 81 數理吉凶
+const JI=[1,3,5,6,7,8,11,13,15,16,17,18,21,23,24,25,29,31,32,33,35,37,39,41,45,47,48,52,57,61,63,65,67,68,81];
+const BAN=[26,27,30,38,40,42,49,50,51,53,55,58,71,72,73,75,77,78];
+TX.n81=function(n){ n=((n-1)%81)+1; if(JI.indexOf(n)>=0) return '吉'; if(BAN.indexOf(n)>=0) return '半'; return '凶'; };
+// 數字→五行(尾數 12木 34火 56土 78金 90水)
+const NE=function(n){ return ['水','木','木','火','火','土','土','金','金','水'][n%10]; };
+const SHENG={'木':'火','火':'土','土':'金','金':'水','水':'木'};
+const KE={'木':'土','土':'水','水':'火','火':'金','金':'木'};
+function rel2(a,b){ if(a===b||SHENG[a]===b||SHENG[b]===a) return 1; return -1; }
+TX.sancai=function(t,r,d){
+  const s=rel2(t,r)+rel2(r,d);
+  return {str:t+r+d, level: s===2?'吉':(s===0?'中':'凶')};
+};
+// 生肖姓名學:喜/忌 字根
+TX.ZODIAC={
+0:{n:'鼠',like:'宀米豆艹金王口氵月',avoid:'日火山馬'},
+1:{n:'牛',like:'艹氵宀田豆米金',avoid:'心月王日馬山衣'},
+2:{n:'虎',like:'山木王金氵月心馬衣',avoid:'人日田口'},
+3:{n:'兔',like:'艹口宀米豆木月竹',avoid:'日王心金辰'},
+4:{n:'龍',like:'氵王日月金雨馬',avoid:'艹山田宀口土'},
+5:{n:'蛇',like:'口宀木田艹金衣糸月',avoid:'氵日人山火'},
+6:{n:'馬',like:'艹金木衣糸豆土竹',avoid:'氵田日米心山'},
+7:{n:'羊',like:'艹米豆木口宀竹',avoid:'心王氵金衣'},
+8:{n:'猴',like:'木宀王氵人金口',avoid:'日火豆米山'},
+9:{n:'雞',like:'米豆艹山宀金土竹',avoid:'氵心日木王'},
+10:{n:'狗',like:'人宀心月衣糸土馬',avoid:'口米豆日雨木'},
+11:{n:'豬',like:'米豆艹氵宀金木月口',avoid:'王日衣糸山馬火'}};
+function zodiacScore(zo,tags){
+  let s=0; const hit={like:[],avoid:[]};
+  for(const t of tags){ if(zo.like.indexOf(t)>=0){ s+=1; hit.like.push(t); } if(zo.avoid.indexOf(t)>=0){ s-=2; hit.avoid.push(t); } }
+  return {s:s,hit:hit};
+}
+// 五格計算(單字姓+雙字名)
+TX.wuge=function(sk,a,b){
+  const tian=sk+1, ren=sk+a, di=a+b, wai=b+1, zong=sk+a+b;
+  const sc=TX.sancai(NE(tian),NE(ren),NE(di));
+  return {tian:tian,ren:ren,di:di,wai:wai,zong:zong,
+    levels:{tian:TX.n81(tian),ren:TX.n81(ren),di:TX.n81(di),wai:TX.n81(wai),zong:TX.n81(zong)},
+    sancai:sc};
+};
+// 綜合取名 v2
+TX.naming2=function(SM,surname,skInput,gender,xiyong,yearZhi){
+  const sk=skInput||TX.SURNAME[surname]||0;
+  if(!sk) return {err:'noStroke'};
+  const zo=TX.ZODIAC[yearZhi];
+  const p1=TX.POOL2[xiyong[0]]||[], p2=TX.POOL2[xiyong[1]||xiyong[0]]||p1;
+  const cands=[];
+  for(let i=0;i<p1.length;i++) for(let j=0;j<p2.length;j++){
+    const a=p1[i], b=p2[j];
+    if(a[0]===b[0]) continue;
+    const wg=TX.wuge(sk,a[2],b[2]);
+    const L=wg.levels;
+    let score=0;
+    score+=(L.ren==='吉'?4:L.ren==='半'?1:-3);   // 人格最重
+    score+=(L.zong==='吉'?3:L.zong==='半'?1:-2); // 總格次之
+    score+=(L.di==='吉'?2:L.di==='半'?0:-1);
+    score+=(L.wai==='吉'?1:0);
+    score+=(wg.sancai.level==='吉'?4:wg.sancai.level==='中'?1:-4);
+    const z1=zodiacScore(zo,a[3]), z2=zodiacScore(zo,b[3]);
+    score+=z1.s+z2.s;
+    cands.push({a:a,b:b,wg:wg,z:[z1,z2],score:score});
+  }
+  cands.sort((x,y)=>y.score-x.score);
+  // 取分數最高且首字盡量不重複的 8 組
+  const picks=[], usedFirst={};
+  for(const c of cands){
+    if(picks.length>=8) break;
+    if((usedFirst[c.a[0]]||0)>=2) continue;
+    usedFirst[c.a[0]]=(usedFirst[c.a[0]]||0)+1;
+    picks.push(c);
+  }
+  return {sk:sk,zodiac:zo.n,picks:picks};
+};
+TX.GE_NAME={tian:'天格',ren:'人格',di:'地格',wai:'外格',zong:'總格'};
+})();
+
+/* tx2.js — 文本擴充:十二神/亮度/身宮/三方四正/格局釋義 */
+"use strict";
+(function(){
+TX.CS12T={
+'長生':'生機萌發,如旭日初升,主開創與活力',
+'沐浴':'洗心革面、桃花文采之地,主變化與情緣',
+'冠帶':'漸入佳境,束帶加冠,主成長與名分',
+'臨官':'學成出仕,精力充沛,主事業上揚',
+'帝旺':'氣勢頂峰,如日中天,主權威與成就',
+'衰':'盛極初退,宜守不宜攻,主收斂',
+'病':'氣運轉弱,多思多慮,主調養',
+'死':'沉潛靜止,絕處思變,主蟄伏',
+'墓':'收藏入庫,亦主積蓄財庫,主沉穩',
+'絕':'氣息將盡而後生,主轉折與重啟',
+'胎':'新機暗孕,蓄勢待發,主醞釀',
+'養':'休養生息,得人扶助,主滋養'};
+TX.BS12T={
+'博士':'聰明博學,主智慧文書','力士':'有權有力,主執行魄力',
+'青龍':'喜氣財帛,主進財喜事','小耗':'小破小失,主零星耗損',
+'將軍':'威猛果決,主衝勁威嚴','奏書':'文書福音,主文筆獎敘',
+'飛廉':'是非口舌,主流言孤剋','喜神':'吉慶臨門,主喜事姻緣',
+'病符':'災病晦氣,主健康警訊','大耗':'破耗大失,主財物流失',
+'伏兵':'暗箭埋伏,主小人暗算','官府':'官非訴訟,主文書糾紛'};
+TX.BRIGHT_T={'廟':'入廟——星力最強,吉星更吉,凶星之惡亦受制',
+'旺':'乘旺——星力強盛,能充分發揮特質',
+'得':'得地——星力得用,平順有為',
+'利':'利益——星力尚可,需借會照之星',
+'平':'平和——星力平平,吉凶視同宮星曜而定',
+'閒':'閒宮——星力偏弱,作為有限',
+'陷':'落陷——星力受困,缺點易顯,須化祿權科或吉星扶持'};
+TX.SHENGONG_T={
+'命宮':'命身同宮——先天個性與後天發展方向一致,一生目標明確,優缺點都被放大,成敗繫於本身意志。',
+'夫妻宮':'身宮在夫妻——後天運勢深受婚姻與配偶影響,重視感情生活,擇偶等於擇運,婚姻品質牽動人生格局。',
+'財帛宮':'身宮在財帛——後天以財為志,理財賺錢是人生重心,金錢觀左右行動,宜建立正確財富價值觀。',
+'遷移宮':'身宮在遷移——後天運在外不在內,離鄉發展、外出經營反得際遇,環境變動與貴人多在遠方。',
+'官祿宮':'身宮在官祿——後天以事業為念,工作成就感即人生滿足感,職場表現決定中晚年格局,易成工作狂。',
+'福德宮':'身宮在福德——後天重精神生活與享受,福分思想主導人生,心境修為與興趣嗜好影響運勢甚深。'};
+TX.SANFANG_T='「三方四正」即本宮、對宮(四正)與左右三合二宮,四宮星曜互相會照、合而論斷;單看一宮失之片面,三方四正才是完整格局。';
+TX.PATTERNS_T={
+'紫府同宮':'紫微天府兩大帝座同守命宮(必在寅申),氣度恢宏、領導格局,一生不乏資源與貴氣,然須防自視過高。',
+'極居卯酉':'紫微貪狼同守卯酉,帝星遇桃花,才藝風流、慾望強烈;古云宜帶宗教哲思修心,化慾為志則成大器。',
+'機月同梁':'天機太陰天同天梁會於三方四正,謀略細膩、心思縝密,宜公教、幕僚、企劃、文職機構,以智輔人而貴。',
+'殺破狼':'七殺破軍貪狼鼎足三方,人生起伏大、變動多,開創冒險之格;能承受波折者可成大業,忌守成不變。',
+'府相朝垣':'天府天相自三方朝拱命宮,庫星印星護持,主衣食豐足、職場有靠,一生平穩中見富貴。',
+'陽梁昌祿':'太陽天梁文昌祿存會命,古之科第之格;利考試、學術、公職、專業證照,以名取利、以學致貴。',
+'日照雷門':'太陽在卯守命,旭日東昇之象,光明磊落、名聲早發,愈動愈旺,利公眾事務。',
+'月朗天門':'太陰在亥守命,皓月當空之象,心思澄澈、富貴清雅,主得田宅之富與女性貴人。',
+'日月同臨':'太陽太陰同守命宮(丑未),日月並照,陰陽兼備,性格多面、際遇起伏中見光彩。',
+'日月反背':'太陽太陰俱落陷位,先天光源不足,早年較辛勞、六親助力薄;然反背之格最忌懶散、最利自立,白手興家者眾。',
+'巨機同臨':'天機巨門同守卯酉,口才機鋒、善辯善謀,卯宮為佳;宜以口、以筆、以專業立業,忌口舌招尤。',
+'石中隱玉':'巨門在子午守命,璞玉藏石,大器晚成;初年多磨,中年後光芒漸露,愈陳愈香之格。',
+'火貪格':'貪狼會火星,橫發之格,財來迅猛、機遇突至;惟暴起須防暴落,得財宜置產守成。',
+'鈴貪格':'貪狼會鈴星,亦主橫發,較火貪內斂沉潛,發於無聲;同須防大起大落。',
+'祿馬交馳':'祿存(或化祿)與天馬交會,財星遇動星,愈動愈發;利外地經商、貿易奔波,行商坐賈皆宜動中求財。',
+'文星拱命':'文昌文曲拱照命宮,聰明文雅、學藝出眾,利考試文職、藝文創作,主科名之美。',
+'左右同宮':'左輔右弼同守命宮,一生多貴人扶持,善統御、得人和,輔弼之力使逢凶化吉。',
+'魁鉞拱命':'天魁天鉞會照命宮,天乙貴人坐鎮,逢難有救、遇事有援,長輩提攜之力顯著。'};
+})();
+
 /* ui.js — 介面邏輯 */
 "use strict";
 (function(){
@@ -841,6 +1115,7 @@ function computeAll(inp){
   const lunar=SM.lunarFromDate(inp.y,inp.m,inp.d);
   const hZ=Math.floor((inp.h+1)/2)%12;
   const zw=SM.ziwei(lunar,hZ,bz.pillars.year[0],bz.pillars.year[1],inp.g);
+  SM.ziweiExt(zw,{yG:bz.pillars.year[0],yZ:bz.pillars.year[1],hZ:hZ,day:lunar.day});
   return {bz:bz, lunar:lunar, zw:zw, hZ:hZ, inp:inp};
 }
 function pillarHTML(bz){
@@ -879,8 +1154,8 @@ function chartHTML(zw){
   for(let z=0;z<12;z++){
     const p=zw.palaces[z], pos=GRID_POS[z];
     const stars=p.stars.map(s=>{
-      const hua=zw.sihua[s];
-      return '<span class="star">'+s+(hua?'<i class="seal seal'+hua+'">'+hua+'</i>':'')+'</span>';
+      const hua=zw.sihua[s], br=SM.bright(s,z);
+      return '<span class="star">'+s+(br?'<sup class="br br'+br+'">'+br+'</sup>':'')+(hua?'<i class="seal seal'+hua+'">'+hua+'</i>':'')+'</span>';
     }).join('');
     const aux=p.aux.map(a=>{
       const hua=zw.sihua[a];
@@ -888,6 +1163,7 @@ function chartHTML(zw){
     }).join('');
     h+='<div class="cell'+(p.name==='命宮'?' ming':'')+'" style="grid-row:'+pos[0]+';grid-column:'+pos[1]+'">'
       +'<div class="cstars">'+stars+aux+'</div>'
+      +'<div class="csbs">'+(p.cs||'')+(p.bs?'・'+p.bs:'')+'</div>'
       +'<div class="cfoot"><span class="dx">'+(p.daxian?p.daxian[0]+'–'+p.daxian[1]:'')+'</span>'
       +'<span class="pname">'+p.name+(p.isShen?'<em>身</em>':'')+'</span>'
       +'<span class="gz">'+SM.GAN[p.gan]+SM.ZHI[p.zhi]+'</span></div></div>';
@@ -912,13 +1188,33 @@ function renderResult(R){
   $('res-bazitext').innerHTML=rep.lines.map(l=>'<p>'+esc(l)+'</p>').join('');
   $('res-dayun').innerHTML=daYunHTML(SM.daYun(bz,inp.g));
   $('res-chart').innerHTML=chartHTML(zw);
+  // 格局與身宮說明
+  let pg='';
+  if(zw.patterns.length){
+    pg+='<div class="patrow">'+zw.patterns.map(p=>'<span class="patchip">'+p+'</span>').join('')+'</div>';
+    zw.patterns.forEach(p=>{ pg+='<p><b class="patname">'+p+'</b>:'+esc(TX.PATTERNS_T[p]||'')+'</p>'; });
+  }else{
+    pg+='<p>本盤命宮三方四正未構成傳統典籍中的特殊格局,屬常態組合;吉凶仍以星曜廟陷、四化與大限流年論斷,無格局不代表平庸。</p>';
+  }
+  const sgT=TX.SHENGONG_T[zw.palaces[zw.shenZhi].name];
+  if(sgT) pg+='<p><b class="patname">身宮</b>:'+esc(sgT)+'</p>';
+  pg+='<p class="mini">'+esc(TX.SANFANG_T)+' 主星右上小字為廟旺利陷(廟>旺>得>利>平>閒>陷),宮內第二列為長生十二神・博士十二神。</p>';
+  $('res-patterns').innerHTML=pg;
   // 十二宮詳解(由命宮起逆排順序呈現)
   let ph='';
   for(let off=0;off<12;off++){
     const z=((zw.mingZhi-off)%12+12)%12;
     const segs=TX.ziweiPalaceText(SM,zw,zw.palaces[z]);
+    const sf=SM.sanfang(z);
+    const sfStars=[];
+    sf.slice(1).forEach(sz=>{
+      const pp=zw.palaces[sz];
+      if(pp.stars.length) sfStars.push(pp.name+'('+pp.stars.map(s=>s+(SM.bright(s,sz)?'<small>'+SM.bright(s,sz)+'</small>':'')).join('、')+')');
+    });
+    const csbsLine='<p class="mini">本宮十二神:'+(zw.palaces[z].cs||'')+'('+esc(TX.CS12T[zw.palaces[z].cs]||'')+');'+(zw.palaces[z].bs||'')+'('+esc(TX.BS12T[zw.palaces[z].bs]||'')+')</p>';
+    const sfLine='<p class="mini">三方四正會照:'+(sfStars.join(';')||'對宮與三合俱無主星,以本宮與借星論')+'</p>';
     ph+='<details'+(off===0?' open':'')+'><summary>'+esc(segs[0].replace(/^【|】.*$/g,m=>m==='【'?'':''))+'</summary><div class="pbody">'
-      +segs.slice(1).map(s=>'<p>'+esc(s)+'</p>').join('')+'</div></details>';
+      +segs.slice(1).map(s=>'<p>'+esc(s)+'</p>').join('')+csbsLine+sfLine+'</div></details>';
   }
   $('res-palaces').innerHTML=ph;
   $('ln-year').value=new Date().getFullYear();
@@ -971,15 +1267,33 @@ window.addEventListener('DOMContentLoaded',function(){
     try{
       const surname=$('nm-surname').value.trim();
       if(!surname){ alert('請先輸入姓氏'); return; }
+      const skIn=parseInt($('nm-strokes').value)||0;
       const inp=getInput('n1');
       const bz=SM.bazi(inp.y,inp.m,inp.d,inp.h,inp.min);
       const st=SM.fiveElemStats(bz);
-      const picks=TX.naming(SM,surname,inp.g,st.xiyong);
+      const r=TX.naming2(SM,surname,skIn,inp.g,st.xiyong,bz.pillars.year[1]);
+      if(r.err==='noStroke'){ alert('「'+surname+'」不在內建姓氏字庫,請於「姓氏筆畫」欄填入該字的康熙筆畫數再試。'); return; }
       let h='<p>依生辰推得日主 <b>'+SM.GAN[bz.pillars.day[0]]+SM.GAN_ELEM[bz.pillars.day[0]]+'</b>,'
-        +(st.strong?'身強':'身弱')+',喜用五行為 <b class="e'+st.xiyong[0]+'">'+st.xiyong.join('、')+'</b>。'
-        +'取名以喜用五行之字補益命局:</p><div class="nmgrid">';
-      picks.forEach(p=>{ h+='<div class="nmcard"><div class="nmname">'+esc(p.name)+'</div><div class="nmel">'+esc(p.elems)+'</div><div class="nmgl">'+esc(p.gloss)+'</div></div>'; });
-      h+='</div><p class="mini">取名通則:①以八字喜用神五行為主軸補偏救弊;②字義吉祥、避先人名諱;③音韻平仄相間、閩南語國語皆順口;④筆畫結構勻稱、好寫好認。以上字例可自由與家族輩字搭配。</p>';
+        +(st.strong?'身強':'身弱')+',喜用五行 <b class="e'+st.xiyong[0]+'">'+st.xiyong.join('、')+'</b>;'
+        +'生肖屬<b>'+r.zodiac+'</b>;姓氏「'+esc(surname)+'」康熙筆畫 <b>'+r.sk+'</b> 畫。'
+        +'以下候選名兼顧:①八字喜用神五行 ②三才五格數理 ③生肖字根喜忌,依綜合評分排序:</p><div class="nmgrid nmgrid2">';
+      r.picks.forEach(p=>{
+        const wg=p.wg, L=wg.levels;
+        const geRow=['tian','ren','di','wai','zong'].map(k=>
+          '<span class="ge ge'+L[k]+'">'+TX.GE_NAME[k]+wg[k]+'<i>'+L[k]+'</i></span>').join('');
+        const zhits=[];
+        p.z.forEach((zz,i)=>{
+          const ch=i===0?p.a[0]:p.b[0];
+          if(zz.hit.like.length) zhits.push(ch+'含'+zz.hit.like.join('')+'根(喜)');
+          if(zz.hit.avoid.length) zhits.push(ch+'含'+zz.hit.avoid.join('')+'根(忌)');
+        });
+        h+='<div class="nmcard"><div class="nmname">'+esc(surname+p.a[0]+p.b[0])+'</div>'
+          +'<div class="nmel">'+r.sk+'-'+p.a[2]+'-'+p.b[2]+' 畫|三才 '+wg.sancai.str+'('+wg.sancai.level+')</div>'
+          +'<div class="gerow">'+geRow+'</div>'
+          +'<div class="nmgl">'+esc(p.a[0]+'('+p.a[1]+')+'+p.b[0]+'('+p.b[1]+')')+'</div>'
+          +'<div class="nmzo">'+(zhits.length?esc('生肖'+r.zodiac+':'+zhits.join('、')):'生肖字根無明顯喜忌')+'</div></div>';
+      });
+      h+='</div><p class="mini">說明:筆畫採康熙字典計法(氵=4、艹=6、阝左=8、王=5…)。五格=天格(姓+1)、人格(姓+名首)、地格(名二字)、外格(名末+1)、總格(全名),數理依 81 數吉凶;三才為天人地五格之五行生剋。生肖姓名學依出生年生肖論字根喜忌,各派略有出入,列為加減分參考。最終取名仍以八字喜用神為主軸,字義音韻為本。</p>';
       $('nm-out').innerHTML=h; $('nm-out').classList.remove('hide');
     }catch(e){ alert('取名計算失敗:'+e.message); }
   });
