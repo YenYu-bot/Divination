@@ -316,6 +316,52 @@ summary::-webkit-details-marker{display:none}
 .nm-zo-tag.like{background:rgba(124,196,154,.2);color:var(--wood);border:1px solid rgba(124,196,154,.4)}
 .nm-zo-tag.avoid{background:rgba(224,88,74,.18);color:#F0917F;border:1px solid rgba(224,88,74,.4)}
 
+/* 綜合評分 */
+.nm-eval{margin-top:8px;text-align:center}
+.nm-score-row{display:flex;justify-content:center;align-items:center;gap:18px;margin:8px 0 10px;flex-wrap:wrap}
+.nm-bigscore{position:relative;border:2px solid var(--gold);border-radius:6px;padding:10px 22px 12px;background:rgba(217,179,108,.08);min-width:120px}
+.nm-bigscore .bs-num{font-size:48px;font-weight:900;line-height:1;background:linear-gradient(160deg,#F4DFA8,#D9B36C 60%,#B08A44);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px rgba(217,179,108,.4))}
+.nm-bigscore .bs-max{font-size:11px;color:var(--ink2);letter-spacing:.2em;margin-top:1px}
+.nm-bigscore .bs-grade{position:absolute;top:6px;right:8px;font-size:14px;font-weight:900;color:var(--gold2);letter-spacing:0}
+.grade-A{border-color:var(--wood);background:rgba(124,196,154,.12)}
+.grade-A .bs-grade{color:var(--wood)}
+.grade-B{border-color:var(--gold)}
+.grade-C{border-color:var(--navy);background:rgba(127,168,217,.08)}
+.grade-C .bs-grade{color:var(--navy)}
+.grade-D{border-color:#D8995A;background:rgba(216,153,90,.1)}
+.grade-D .bs-grade{color:#D8995A}
+.grade-E{border-color:var(--cinnabar);background:rgba(224,88,74,.12)}
+.grade-E .bs-grade{color:var(--cinnabar)}
+.nm-verdict{font-size:18px;font-weight:700;color:var(--gold2);letter-spacing:.15em;text-shadow:0 0 12px rgba(217,179,108,.3)}
+.nm-bar-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px;margin:4px 0 6px}
+.nm-bar{display:flex;align-items:center;gap:8px;font-size:13px}
+.nm-bar-lbl{width:32px;color:var(--ink2);letter-spacing:.1em}
+.nm-bar-track{flex:1;height:10px;background:rgba(217,179,108,.10);border-radius:5px;overflow:hidden;border:1px solid rgba(217,179,108,.18)}
+.nm-bar-fill{height:100%;border-radius:5px;transition:width .5s cubic-bezier(.2,.8,.3,1)}
+.nm-bar-fill.good{background:linear-gradient(90deg,#4E8E68,#7CC49A);box-shadow:0 0 8px rgba(124,196,154,.5)}
+.nm-bar-fill.mid{background:linear-gradient(90deg,#A9854B,#D9B36C);box-shadow:0 0 8px rgba(217,179,108,.5)}
+.nm-bar-fill.bad{background:linear-gradient(90deg,#B43E32,#E0584A);box-shadow:0 0 8px rgba(224,88,74,.5)}
+.nm-bar-val{width:46px;text-align:right;font-size:12px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.nm-details{margin-top:10px;text-align:left;background:rgba(14,19,38,.55);border-color:rgba(217,179,108,.25)}
+.nm-details summary{font-size:14px;color:var(--gold);letter-spacing:.12em}
+.nm-details-body{padding:8px 14px 12px}
+.ge-table{width:100%;border-collapse:collapse;margin:4px 0 8px;font-size:14px}
+.ge-table th,.ge-table td{padding:4px 8px;border-bottom:1px dashed rgba(217,179,108,.18);text-align:left}
+.ge-table th{color:var(--gold);letter-spacing:.15em;width:48px}
+.ge-num{font-weight:900;color:#F2EADA;text-align:center;width:42px;font-variant-numeric:tabular-nums}
+.ge-lv{width:40px;text-align:center;font-weight:700}
+.ge-lv.ge吉{color:var(--wood)} .ge-lv.ge半{color:var(--gold)} .ge-lv.ge凶{color:var(--cinnabar)}
+.ge-txt{color:var(--ink)}
+.ge-mean td{border-bottom:1px solid rgba(217,179,108,.10);padding-top:0;padding-bottom:5px}
+.char-tbl{width:100%;border-collapse:collapse;margin:6px 0 4px;font-size:14px}
+.char-tbl th,.char-tbl td{padding:5px 9px;border:1px solid var(--line);text-align:center}
+.char-tbl th{background:rgba(217,179,108,.08);color:var(--gold);letter-spacing:.15em}
+.nm-c-cell{font-size:22px;font-weight:900;color:var(--gold2)}
+.nm-tab-n{font-size:11px;color:var(--ink2);margin-left:5px;font-weight:400;letter-spacing:0}
+.nm-tab.on .nm-tab-n{color:rgba(255,243,232,.7)}
+.nm-tab.xi.on .nm-tab-n{color:rgba(16,20,10,.6)}
+
+
 /* 神煞/空亡/警示/分節 */
 .ssrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
 .sschip{display:inline-block;border:1px solid rgba(217,179,108,.5);color:var(--gold2);padding:3px 11px;font-size:13.5px;border-radius:3px;background:rgba(217,179,108,.08);box-shadow:0 0 10px rgba(217,179,108,.12)}
@@ -505,6 +551,37 @@ footer .stamp{
   .nm-zo-tag{font-size:7pt;padding:0 2px;border-radius:1px;margin-top:1px}
   .nm-zo-tag.like{background:#E5F2EA;color:#3E6B4F;border:1px solid #A5C9B0}
   .nm-zo-tag.avoid{background:#FBE9E4;color:#A93B2A;border:1px solid #D8AFA4}
+
+  /* 評分卡(列印) */
+  .nm-score-row{gap:5mm;margin:1mm 0 2mm}
+  .nm-bigscore{border:1.5px solid #8C7242;padding:2mm 5mm;background:#FAF6EC;min-width:25mm}
+  .nm-bigscore .bs-num{background:none;-webkit-background-clip:initial;background-clip:initial;color:#A93B2A;-webkit-text-fill-color:#A93B2A;font-size:24pt}
+  .nm-bigscore .bs-max{color:#666;font-size:7pt}
+  .nm-bigscore .bs-grade{color:#8C7242;font-size:10pt}
+  .grade-A{border-color:#3E6B4F;background:#F0F8F3}.grade-A .bs-grade{color:#3E6B4F}
+  .grade-C{border-color:#2E4B63;background:#F1F5F9}.grade-C .bs-grade{color:#2E4B63}
+  .grade-E{border-color:#A93B2A;background:#FBF1EE}.grade-E .bs-grade{color:#A93B2A}
+  .nm-verdict{color:#8C7242;font-size:12pt;letter-spacing:.12em}
+  .nm-bar-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:1.5mm;margin:1mm 0}
+  .nm-bar-lbl{width:9mm;color:#555;font-size:8.5pt}
+  .nm-bar-track{height:5px;background:#EEE;border:1px solid #CCC;border-radius:2px}
+  .nm-bar-fill.good{background:#3E6B4F !important}
+  .nm-bar-fill.mid{background:#8C7242 !important}
+  .nm-bar-fill.bad{background:#A93B2A !important}
+  .nm-bar-val{font-size:7.5pt;width:12mm}
+  .nm-details{background:#fff;border:1px solid #BBB}
+  .nm-details summary{color:#A93B2A;font-size:9.5pt}
+  .ge-table{font-size:9pt}
+  .ge-table th,.ge-table td{padding:.6mm 2mm;border-bottom:1px dashed #CCC}
+  .ge-table th{color:#8C7242}
+  .ge-num{color:#1A1A1A}
+  .ge-mean td{font-size:8pt;color:#555}
+  .char-tbl{font-size:9pt}
+  .char-tbl th,.char-tbl td{padding:.8mm 2mm;border:1px solid #888}
+  .char-tbl th{background:#F0EEE8;color:#555}
+  .nm-c-cell{font-size:14pt;color:#A93B2A}
+  .nm-tab-n{font-size:7.5pt;color:#888}
+
   /* 流年 */
   .ln-mini h4{font-size:10pt;margin:2mm 0 1mm;color:#2E4B63}
   .mini{font-size:9pt;color:#555}
@@ -670,6 +747,21 @@ footer .stamp{
     <div class="btnrow"><button class="btn" id="btn-nm">分析喜用神並開啟字庫</button></div>
   </div>
   <div id="nm-out" class="card hide"></div>
+  <div class="card">
+    <h2>姓名評分(評現有姓名)</h2>
+    <p class="note" style="margin-top:0">輸入既有姓名,依五格、三才、八十一數理打分;可勾選「結合命局」加入喜用神與生肖加權。</p>
+    <div class="frow">
+      <label>姓氏</label><input type="text" id="nme-sur" size="6" placeholder="例:陳">
+      <label style="min-width:auto">姓筆畫</label><input type="text" id="nme-sk" size="4" inputmode="numeric" placeholder="自動">
+      <label style="min-width:auto">名字</label><input type="text" id="nme-given" size="6" placeholder="1–2 字">
+    </div>
+    <div class="frow">
+      <label>名筆畫</label><input type="text" id="nme-gst" size="12" placeholder="逗號分隔,如 11,8(可空)">
+      <label class="leapwrap"><input type="checkbox" id="nme-use-birth" checked>結合上方生辰命局</label>
+    </div>
+    <div class="btnrow"><button class="btn" id="btn-nm-eval">評　分</button></div>
+  </div>
+  <div id="nme-out" class="card hide"></div>
 </section>
 
 <!-- ===== 手動批命 ===== -->
@@ -1873,155 +1965,200 @@ SM.solarFromLunar=function(ly,lm,ld,isLeap){
 };
 })();
 
-/* tx5.js — 現代化用字字庫 + 互動式組名評分 */
+/* tx5.js — 現代化用字字庫(280+) + 互動式組名 + 81 數理 + 姓名評分 */
 "use strict";
 (function(){
-// 用字結構:{c:字,m:字義,s:康熙筆畫,r:字根tags,g:性別傾向 m/f/u(通用)}
 TX.POOL3={
 '木':[
-  {c:'楷',m:'楷模端方',s:13,r:'木',g:'u'},
-  {c:'杰',m:'才俊不凡',s:12,r:'木火',g:'m'},
-  {c:'樂',m:'喜樂自在',s:15,r:'木',g:'u'},
-  {c:'樺',m:'挺拔正直',s:16,r:'木艹',g:'m'},
-  {c:'楨',m:'棟梁之材',s:13,r:'木',g:'m'},
-  {c:'榕',m:'庇蔭厚實',s:14,r:'木宀口',g:'u'},
-  {c:'梓',m:'故土深情',s:11,r:'木',g:'u'},
-  {c:'桐',m:'梧桐高潔',s:10,r:'木口',g:'u'},
-  {c:'楓',m:'秋楓似錦',s:13,r:'木',g:'u'},
-  {c:'森',m:'森然蓬勃',s:12,r:'木',g:'m'},
-  {c:'樞',m:'樞紐關鍵',s:15,r:'木',g:'m'},
-  {c:'栩',m:'栩栩鮮活',s:10,r:'木',g:'u'},
-  {c:'棠',m:'海棠典雅',s:12,r:'木',g:'f'},
-  {c:'橙',m:'清亮朝氣',s:16,r:'木',g:'u'},
-  {c:'柏',m:'蒼柏長青',s:9,r:'木',g:'m'},
-  {c:'彥',m:'才彥俊雅',s:9,r:'',g:'m'},
-  {c:'彧',m:'文采有節',s:10,r:'',g:'m'},
-  {c:'若',m:'蕙質蘭心',s:11,r:'艹口',g:'f'},
-  {c:'萱',m:'忘憂之草',s:15,r:'艹宀',g:'f'},
-  {c:'芷',m:'芷蘭芬芳',s:10,r:'艹',g:'f'},
-  {c:'芸',m:'書香芸窗',s:10,r:'艹',g:'f'},
-  {c:'茉',m:'茉莉清香',s:11,r:'艹',g:'f'},
-  {c:'蓉',m:'芙蓉典雅',s:16,r:'艹宀口',g:'f'},
-  {c:'葳',m:'草木蓁蓁',s:15,r:'艹',g:'u'},
-  {c:'茹',m:'柔涵蘊藉',s:12,r:'艹口女',g:'f'},
-  {c:'葉',m:'枝繁葉茂',s:15,r:'艹',g:'u'},
-  {c:'蕓',m:'香芸馥郁',s:18,r:'艹',g:'f'},
-  {c:'蓁',m:'草盛繁榮',s:16,r:'艹',g:'f'},
-  {c:'柔',m:'柔韌有度',s:9,r:'木',g:'f'}
+  {c:'楷',m:'楷模端方',s:13,r:'木',g:'u'},{c:'杰',m:'才俊不凡',s:12,r:'木火',g:'m'},
+  {c:'楨',m:'棟梁之材',s:13,r:'木',g:'m'},{c:'樺',m:'挺拔正直',s:16,r:'木艹',g:'m'},
+  {c:'樂',m:'喜樂自在',s:15,r:'木',g:'u'},{c:'榕',m:'庇蔭厚實',s:14,r:'木宀口',g:'u'},
+  {c:'梓',m:'故土深情',s:11,r:'木',g:'u'},{c:'桐',m:'梧桐高潔',s:10,r:'木口',g:'u'},
+  {c:'楓',m:'秋楓似錦',s:13,r:'木',g:'u'},{c:'森',m:'森然蓬勃',s:12,r:'木',g:'m'},
+  {c:'樞',m:'樞紐關鍵',s:15,r:'木',g:'m'},{c:'栩',m:'栩栩鮮活',s:10,r:'木',g:'u'},
+  {c:'棠',m:'海棠典雅',s:12,r:'木',g:'f'},{c:'橙',m:'清亮朝氣',s:16,r:'木',g:'u'},
+  {c:'柏',m:'蒼柏長青',s:9,r:'木',g:'m'},{c:'樹',m:'樹立風範',s:16,r:'木',g:'u'},
+  {c:'林',m:'林木興盛',s:8,r:'木',g:'u'},{c:'桂',m:'桂冠折桂',s:10,r:'木',g:'u'},
+  {c:'椿',m:'椿萱長壽',s:13,r:'木',g:'m'},{c:'桓',m:'桓威遠播',s:10,r:'木',g:'m'},
+  {c:'柳',m:'柳絮輕揚',s:9,r:'木',g:'f'},{c:'桑',m:'桑梓懷遠',s:10,r:'木',g:'u'},
+  {c:'楊',m:'楊柳依依',s:13,r:'木',g:'u'},{c:'榛',m:'榛林茂盛',s:14,r:'木',g:'u'},
+  {c:'榆',m:'榆木堅韌',s:13,r:'木',g:'m'},{c:'樟',m:'樟木芬芳',s:15,r:'木',g:'m'},
+  {c:'桃',m:'桃李天下',s:10,r:'木',g:'u'},{c:'李',m:'桃李競芳',s:7,r:'木',g:'u'},
+  {c:'梅',m:'梅雪爭春',s:11,r:'木',g:'u'},{c:'棣',m:'棠棣情誼',s:12,r:'木',g:'m'},
+  {c:'彥',m:'才彥俊雅',s:9,r:'',g:'m'},{c:'彧',m:'文采有節',s:10,r:'',g:'m'},
+  {c:'仁',m:'仁愛寬厚',s:4,r:'人',g:'u'},{c:'賢',m:'賢德兼備',s:15,r:'',g:'u'},
+  {c:'文',m:'文采風流',s:4,r:'',g:'u'},{c:'義',m:'義氣昭然',s:13,r:'羊',g:'m'},
+  {c:'智',m:'睿智明達',s:12,r:'日口',g:'u'},{c:'慧',m:'慧心巧思',s:15,r:'心',g:'f'},
+  {c:'言',m:'信言不華',s:7,r:'口',g:'u'},
+  {c:'若',m:'蕙質蘭心',s:11,r:'艹口',g:'f'},{c:'萱',m:'忘憂之草',s:15,r:'艹宀',g:'f'},
+  {c:'芷',m:'芷蘭芬芳',s:10,r:'艹',g:'f'},{c:'芸',m:'書香芸窗',s:10,r:'艹',g:'f'},
+  {c:'茉',m:'茉莉清香',s:11,r:'艹',g:'f'},{c:'蓉',m:'芙蓉典雅',s:16,r:'艹宀口',g:'f'},
+  {c:'葳',m:'草木蓁蓁',s:15,r:'艹',g:'u'},{c:'茹',m:'柔涵蘊藉',s:12,r:'艹口女',g:'f'},
+  {c:'葉',m:'枝繁葉茂',s:15,r:'艹',g:'u'},{c:'蕓',m:'香芸馥郁',s:18,r:'艹',g:'f'},
+  {c:'蓁',m:'草盛繁榮',s:16,r:'艹',g:'f'},{c:'柔',m:'柔韌有度',s:9,r:'木',g:'f'},
+  {c:'薇',m:'紫薇之華',s:19,r:'艹',g:'f'},{c:'茵',m:'綠茵如蓋',s:12,r:'艹',g:'f'},
+  {c:'苓',m:'茯苓清雅',s:11,r:'艹',g:'f'},{c:'茂',m:'茂盛茁壯',s:11,r:'艹',g:'u'},
+  {c:'芙',m:'芙蓉出水',s:10,r:'艹',g:'f'},{c:'蓮',m:'蓮花清淨',s:17,r:'艹',g:'f'},
+  {c:'萍',m:'萍水相逢',s:14,r:'艹',g:'f'},{c:'菩',m:'菩提覺悟',s:14,r:'艹',g:'u'},
+  {c:'蕊',m:'花蕊新發',s:18,r:'艹',g:'f'},{c:'葦',m:'蘆葦堅韌',s:15,r:'艹',g:'u'}
 ],
 '火':[
-  {c:'旭',m:'朝陽初昇',s:6,r:'日',g:'m'},
-  {c:'昕',m:'黎明微曦',s:8,r:'日',g:'u'},
-  {c:'晗',m:'朝氣將明',s:11,r:'日口',g:'u'},
-  {c:'晨',m:'晨光熹微',s:11,r:'日辰',g:'u'},
-  {c:'晴',m:'晴空無雲',s:12,r:'日月',g:'f'},
-  {c:'昭',m:'昭明顯達',s:9,r:'日口',g:'u'},
-  {c:'暄',m:'溫煦和暄',s:13,r:'日宀',g:'u'},
-  {c:'暘',m:'朝陽芒芒',s:13,r:'日',g:'m'},
-  {c:'暢',m:'通達無阻',s:14,r:'日',g:'u'},
-  {c:'暖',m:'溫情如春',s:13,r:'日',g:'u'},
-  {c:'煦',m:'和煦溫存',s:13,r:'火日口',g:'u'},
-  {c:'煊',m:'光明顯赫',s:13,r:'火日',g:'m'},
-  {c:'煒',m:'光彩煒然',s:13,r:'火',g:'m'},
-  {c:'煜',m:'照耀光明',s:13,r:'火日',g:'m'},
-  {c:'熠',m:'熠熠生輝',s:15,r:'火',g:'u'},
-  {c:'熹',m:'晨曦微明',s:16,r:'火日',g:'u'},
-  {c:'燁',m:'火光熾盛',s:16,r:'火艹',g:'m'},
-  {c:'曜',m:'日月星輝',s:18,r:'日',g:'m'},
-  {c:'昀',m:'日光均布',s:8,r:'日',g:'u'},
-  {c:'丹',m:'丹心赤誠',s:4,r:'',g:'u'},
-  {c:'彤',m:'紅日朝氣',s:7,r:'',g:'f'},
-  {c:'夏',m:'盛夏蓬勃',s:10,r:'',g:'u'},
-  {c:'朗',m:'開朗磊落',s:11,r:'月',g:'m'},
-  {c:'炘',m:'火光明亮',s:8,r:'火',g:'u'},
-  {c:'晞',m:'晨光晞露',s:11,r:'日',g:'u'}
+  {c:'旭',m:'朝陽初昇',s:6,r:'日',g:'m'},{c:'昕',m:'黎明微曦',s:8,r:'日',g:'u'},
+  {c:'晗',m:'朝氣將明',s:11,r:'日口',g:'u'},{c:'晨',m:'晨光熹微',s:11,r:'日辰',g:'u'},
+  {c:'晴',m:'晴空無雲',s:12,r:'日月',g:'f'},{c:'昭',m:'昭明顯達',s:9,r:'日口',g:'u'},
+  {c:'暄',m:'溫煦和暄',s:13,r:'日宀',g:'u'},{c:'暘',m:'朝陽芒芒',s:13,r:'日',g:'m'},
+  {c:'暢',m:'通達無阻',s:14,r:'日',g:'u'},{c:'暖',m:'溫情如春',s:13,r:'日',g:'u'},
+  {c:'煦',m:'和煦溫存',s:13,r:'火日口',g:'u'},{c:'煊',m:'光明顯赫',s:13,r:'火日',g:'m'},
+  {c:'煒',m:'光彩煒然',s:13,r:'火',g:'m'},{c:'煜',m:'照耀光明',s:13,r:'火日',g:'m'},
+  {c:'熠',m:'熠熠生輝',s:15,r:'火',g:'u'},{c:'熹',m:'晨曦微明',s:16,r:'火日',g:'u'},
+  {c:'燁',m:'火光熾盛',s:16,r:'火艹',g:'m'},{c:'曜',m:'日月星輝',s:18,r:'日',g:'m'},
+  {c:'昀',m:'日光均布',s:8,r:'日',g:'u'},{c:'丹',m:'丹心赤誠',s:4,r:'',g:'u'},
+  {c:'彤',m:'紅日朝氣',s:7,r:'',g:'f'},{c:'夏',m:'盛夏蓬勃',s:10,r:'',g:'u'},
+  {c:'朗',m:'開朗磊落',s:11,r:'月',g:'m'},{c:'炘',m:'火光明亮',s:8,r:'火',g:'u'},
+  {c:'晞',m:'晨光晞露',s:11,r:'日',g:'u'},{c:'皓',m:'皓月當空',s:12,r:'白',g:'m'},
+  {c:'暉',m:'光暉燦爛',s:13,r:'日',g:'m'},{c:'烜',m:'盛大顯赫',s:10,r:'火',g:'m'},
+  {c:'煌',m:'輝煌耀眼',s:13,r:'火',g:'m'},{c:'烽',m:'烽火將軍',s:11,r:'火',g:'m'},
+  {c:'煙',m:'雲煙縹緲',s:13,r:'火',g:'u'},{c:'炯',m:'目光炯炯',s:9,r:'火口',g:'m'},
+  {c:'炳',m:'炳如日星',s:9,r:'火',g:'m'},{c:'晟',m:'光明熾盛',s:11,r:'日',g:'u'},
+  {c:'晁',m:'朝氣晁日',s:10,r:'日',g:'u'},{c:'晶',m:'晶瑩剔透',s:12,r:'日',g:'u'},
+  {c:'燊',m:'熾盛旺旺',s:16,r:'火木',g:'m'},{c:'灼',m:'真知灼見',s:8,r:'火',g:'m'},
+  {c:'燦',m:'燦爛奪目',s:17,r:'火',g:'u'},{c:'輝',m:'光輝燦爛',s:15,r:'',g:'m'},
+  {c:'煐',m:'美玉之光',s:13,r:'火',g:'u'},{c:'旻',m:'秋空高遠',s:8,r:'日',g:'u'},
+  {c:'易',m:'通達自如',s:8,r:'日',g:'u'},{c:'章',m:'文采華章',s:11,r:'',g:'u'},
+  {c:'曄',m:'光明熠熠',s:16,r:'日艹',g:'m'},{c:'昇',m:'步步高昇',s:8,r:'日',g:'m'},
+  {c:'昆',m:'昆仲齊心',s:8,r:'日',g:'m'},{c:'焜',m:'火明燭天',s:12,r:'火',g:'m'},
+  {c:'焯',m:'卓越明達',s:12,r:'火',g:'m'},{c:'然',m:'怡然自得',s:12,r:'火',g:'u'},
+  {c:'熔',m:'熔鑄成器',s:14,r:'火宀口',g:'m'},{c:'燮',m:'調燮陰陽',s:17,r:'火',g:'m'},
+  {c:'熾',m:'熾熱旺盛',s:16,r:'火',g:'m'}
 ],
 '土':[
-  {c:'宇',m:'氣宇軒昂',s:6,r:'宀',g:'m'},
-  {c:'安',m:'平安順遂',s:6,r:'宀女',g:'u'},
-  {c:'宛',m:'婉約溫柔',s:8,r:'宀',g:'f'},
-  {c:'宜',m:'適得其所',s:8,r:'宀',g:'u'},
-  {c:'宥',m:'寬厚仁恕',s:9,r:'宀月',g:'u'},
-  {c:'宸',m:'紫宸天闕',s:10,r:'宀辰',g:'m'},
-  {c:'容',m:'有容乃大',s:10,r:'宀口',g:'u'},
-  {c:'辰',m:'日月星辰',s:7,r:'辰',g:'u'},
-  {c:'軒',m:'氣宇軒昂',s:10,r:'',g:'m'},
-  {c:'奎',m:'文奎之星',s:9,r:'',g:'m'},
-  {c:'培',m:'栽培有成',s:11,r:'土口',g:'m'},
-  {c:'城',m:'眾志成城',s:10,r:'土',g:'m'},
-  {c:'垚',m:'山高土厚',s:9,r:'土',g:'m'},
-  {c:'堂',m:'堂堂正正',s:11,r:'土',g:'m'},
-  {c:'堯',m:'高遠德業',s:12,r:'土',g:'m'},
-  {c:'均',m:'公正均衡',s:7,r:'土',g:'u'},
-  {c:'坤',m:'厚德載物',s:8,r:'土田',g:'u'},
-  {c:'嵐',m:'山間靈氣',s:12,r:'山',g:'f'},
-  {c:'岳',m:'穩如山岳',s:8,r:'山',g:'m'},
-  {c:'岑',m:'山岑寂靜',s:7,r:'山',g:'u'},
-  {c:'嶸',m:'崢嶸頭角',s:17,r:'山火',g:'m'},
-  {c:'嶼',m:'海嶼開闊',s:17,r:'山',g:'u'},
-  {c:'佑',m:'護佑相助',s:7,r:'人',g:'u'},
-  {c:'依',m:'依山傍水',s:8,r:'人衣',g:'f'},
-  {c:'恩',m:'感恩在心',s:10,r:'心口',g:'u'}
+  {c:'宇',m:'氣宇軒昂',s:6,r:'宀',g:'m'},{c:'安',m:'平安順遂',s:6,r:'宀女',g:'u'},
+  {c:'宛',m:'婉約溫柔',s:8,r:'宀',g:'f'},{c:'宜',m:'適得其所',s:8,r:'宀',g:'u'},
+  {c:'宥',m:'寬厚仁恕',s:9,r:'宀月',g:'u'},{c:'宸',m:'紫宸天闕',s:10,r:'宀辰',g:'m'},
+  {c:'容',m:'有容乃大',s:10,r:'宀口',g:'u'},{c:'辰',m:'日月星辰',s:7,r:'辰',g:'u'},
+  {c:'軒',m:'氣宇軒昂',s:10,r:'',g:'m'},{c:'奎',m:'文奎之星',s:9,r:'',g:'m'},
+  {c:'培',m:'栽培有成',s:11,r:'土口',g:'m'},{c:'城',m:'眾志成城',s:10,r:'土',g:'m'},
+  {c:'垚',m:'山高土厚',s:9,r:'土',g:'m'},{c:'堂',m:'堂堂正正',s:11,r:'土',g:'m'},
+  {c:'堯',m:'高遠德業',s:12,r:'土',g:'m'},{c:'均',m:'公正均衡',s:7,r:'土',g:'u'},
+  {c:'坤',m:'厚德載物',s:8,r:'土田',g:'u'},{c:'嵐',m:'山間靈氣',s:12,r:'山',g:'f'},
+  {c:'岳',m:'穩如山岳',s:8,r:'山',g:'m'},{c:'岑',m:'山岑寂靜',s:7,r:'山',g:'u'},
+  {c:'嶸',m:'崢嶸頭角',s:17,r:'山火',g:'m'},{c:'嶼',m:'海嶼開闊',s:17,r:'山',g:'u'},
+  {c:'佑',m:'護佑相助',s:7,r:'人',g:'u'},{c:'依',m:'依山傍水',s:8,r:'人衣',g:'f'},
+  {c:'恩',m:'感恩在心',s:10,r:'心口',g:'u'},{c:'育',m:'孕育生機',s:10,r:'月',g:'u'},
+  {c:'圻',m:'土地疆界',s:7,r:'土',g:'m'},{c:'堉',m:'肥土沃壤',s:11,r:'土月',g:'m'},
+  {c:'圳',m:'圳渠通達',s:6,r:'土',g:'m'},{c:'坦',m:'坦蕩光明',s:8,r:'土日',g:'m'},
+  {c:'圭',m:'圭璧無瑕',s:6,r:'土',g:'u'},{c:'寬',m:'寬厚仁恕',s:15,r:'宀',g:'m'},
+  {c:'寧',m:'寧靜致遠',s:14,r:'宀心',g:'u'},{c:'實',m:'真實不虛',s:14,r:'宀',g:'m'},
+  {c:'寶',m:'珍寶無價',s:20,r:'宀王',g:'u'},{c:'寰',m:'寰宇遼闊',s:16,r:'宀',g:'m'},
+  {c:'君',m:'君子端方',s:7,r:'口',g:'u'},{c:'良',m:'良才美玉',s:7,r:'',g:'u'},
+  {c:'端',m:'端正莊重',s:14,r:'',g:'u'},{c:'維',m:'維護周全',s:14,r:'糸',g:'u'},
+  {c:'璿',m:'美玉珍貴',s:18,r:'王宀',g:'f'},{c:'巨',m:'巨石如山',s:5,r:'',g:'m'},
+  {c:'嶺',m:'山嶺巍峨',s:17,r:'山',g:'m'},{c:'由',m:'自由率真',s:5,r:'田',g:'u'},
+  {c:'田',m:'良田千頃',s:5,r:'田',g:'u'},{c:'永',m:'永續恆久',s:5,r:'',g:'u'},
+  {c:'韻',m:'氣韻悠長',s:19,r:'',g:'f'},{c:'嫻',m:'嫻靜典雅',s:15,r:'女',g:'f'},
+  {c:'媛',m:'美女嫋娜',s:12,r:'女',g:'f'},{c:'岷',m:'岷山高遠',s:8,r:'山',g:'u'},
+  {c:'岱',m:'泰岱厚重',s:8,r:'山',g:'m'},{c:'崇',m:'崇高卓越',s:11,r:'山',g:'m'},
+  {c:'峰',m:'峰巒疊嶂',s:10,r:'山',g:'m'},{c:'峯',m:'峰巒疊嶂',s:10,r:'山',g:'m'},
+  {c:'巍',m:'巍然不動',s:21,r:'山',g:'m'},{c:'佳',m:'佳人良緣',s:8,r:'人',g:'f'},
+  {c:'家',m:'家國天下',s:10,r:'宀',g:'u'}
 ],
 '金':[
-  {c:'鈞',m:'千鈞之器',s:12,r:'金',g:'m'},
-  {c:'鈺',m:'寶玉珍貴',s:13,r:'金王',g:'u'},
-  {c:'銘',m:'銘記於心',s:14,r:'金口',g:'u'},
-  {c:'銳',m:'銳意進取',s:15,r:'金口',g:'m'},
-  {c:'鎮',m:'安定鎮守',s:18,r:'金',g:'m'},
-  {c:'錦',m:'前程似錦',s:16,r:'金',g:'u'},
-  {c:'鋐',m:'宏大有為',s:13,r:'金',g:'m'},
-  {c:'鎧',m:'護身堅甲',s:18,r:'金山',g:'m'},
-  {c:'銓',m:'權衡量才',s:14,r:'金王人',g:'m'},
-  {c:'瑞',m:'吉祥瑞氣',s:14,r:'王',g:'u'},
-  {c:'瑋',m:'美玉光彩',s:14,r:'王',g:'u'},
-  {c:'瑄',m:'玉璧端雅',s:14,r:'王',g:'f'},
-  {c:'瑀',m:'美玉溫潤',s:14,r:'王',g:'f'},
-  {c:'珞',m:'玉珞華貴',s:11,r:'王',g:'f'},
-  {c:'珩',m:'玉珩之美',s:11,r:'王',g:'u'},
-  {c:'瑤',m:'瑤台美玉',s:15,r:'王',g:'f'},
-  {c:'瑩',m:'晶瑩剔透',s:15,r:'王',g:'f'},
-  {c:'璇',m:'美玉璿璣',s:16,r:'王',g:'f'},
-  {c:'琪',m:'琪花瑤草',s:13,r:'王',g:'f'},
-  {c:'琬',m:'圭玉溫雅',s:13,r:'王',g:'f'},
-  {c:'玹',m:'玉光內斂',s:10,r:'王',g:'u'},
-  {c:'珹',m:'美玉名珹',s:11,r:'王',g:'u'},
-  {c:'欽',m:'敬重欽佩',s:12,r:'金人',g:'m'},
-  {c:'新',m:'日新又新',s:13,r:'木',g:'u'},
-  {c:'昇',m:'步步高昇',s:8,r:'日',g:'m'}
+  {c:'鈞',m:'千鈞之器',s:12,r:'金',g:'m'},{c:'鈺',m:'寶玉珍貴',s:13,r:'金王',g:'u'},
+  {c:'銘',m:'銘記於心',s:14,r:'金口',g:'u'},{c:'銳',m:'銳意進取',s:15,r:'金口',g:'m'},
+  {c:'鎮',m:'安定鎮守',s:18,r:'金',g:'m'},{c:'錦',m:'前程似錦',s:16,r:'金',g:'u'},
+  {c:'鋐',m:'宏大有為',s:13,r:'金',g:'m'},{c:'鎧',m:'護身堅甲',s:18,r:'金山',g:'m'},
+  {c:'銓',m:'權衡量才',s:14,r:'金王人',g:'m'},{c:'瑞',m:'吉祥瑞氣',s:14,r:'王',g:'u'},
+  {c:'瑋',m:'美玉光彩',s:14,r:'王',g:'u'},{c:'瑄',m:'玉璧端雅',s:14,r:'王',g:'f'},
+  {c:'瑀',m:'美玉溫潤',s:14,r:'王',g:'f'},{c:'珞',m:'玉珞華貴',s:11,r:'王',g:'f'},
+  {c:'珩',m:'玉珩之美',s:11,r:'王',g:'u'},{c:'瑤',m:'瑤台美玉',s:15,r:'王',g:'f'},
+  {c:'瑩',m:'晶瑩剔透',s:15,r:'王',g:'f'},{c:'璇',m:'美玉璿璣',s:16,r:'王',g:'f'},
+  {c:'琪',m:'琪花瑤草',s:13,r:'王',g:'f'},{c:'琬',m:'圭玉溫雅',s:13,r:'王',g:'f'},
+  {c:'玹',m:'玉光內斂',s:10,r:'王',g:'u'},{c:'珹',m:'美玉名珹',s:11,r:'王',g:'u'},
+  {c:'欽',m:'敬重欽佩',s:12,r:'金人',g:'m'},{c:'新',m:'日新又新',s:13,r:'木',g:'u'},
+  {c:'鈿',m:'金花鈿飾',s:13,r:'金',g:'f'},{c:'鋼',m:'鋼鐵意志',s:16,r:'金',g:'m'},
+  {c:'鎰',m:'千鎰之金',s:18,r:'金',g:'m'},{c:'錡',m:'鏗鏘之器',s:16,r:'金',g:'m'},
+  {c:'錞',m:'古樂錞鐘',s:16,r:'金',g:'m'},{c:'鋮',m:'鋒利明斷',s:15,r:'金',g:'m'},
+  {c:'鈜',m:'大鐘宏聲',s:13,r:'金',g:'m'},{c:'鈾',m:'金性堅實',s:13,r:'金',g:'m'},
+  {c:'鋒',m:'鋒芒畢露',s:15,r:'金',g:'m'},{c:'銨',m:'金性溫潤',s:14,r:'金宀女',g:'u'},
+  {c:'釗',m:'勉勵奮進',s:11,r:'金',g:'m'},{c:'鏡',m:'明鏡高懸',s:19,r:'金',g:'u'},
+  {c:'璞',m:'璞玉天成',s:17,r:'王',g:'u'},{c:'瑨',m:'美玉之名',s:15,r:'王',g:'u'},
+  {c:'玿',m:'美玉昭光',s:10,r:'王',g:'u'},{c:'珂',m:'白玉如珂',s:10,r:'王',g:'f'},
+  {c:'玳',m:'玳瑁雅麗',s:11,r:'王',g:'f'},{c:'珀',m:'琥珀晶亮',s:10,r:'王',g:'u'},
+  {c:'珉',m:'美石如玉',s:10,r:'王',g:'u'},{c:'琰',m:'美玉光彩',s:13,r:'王',g:'u'},
+  {c:'琮',m:'圭琮之器',s:13,r:'王',g:'u'},{c:'琳',m:'琳琅滿目',s:14,r:'王',g:'f'},
+  {c:'玟',m:'美玉條紋',s:8,r:'王',g:'f'},{c:'璜',m:'半璧之玉',s:17,r:'王',g:'u'},
+  {c:'璐',m:'美玉璐玉',s:18,r:'王',g:'f'},{c:'璨',m:'璀璨光華',s:18,r:'王',g:'u'},
+  {c:'璟',m:'玉光晶亮',s:17,r:'王',g:'u'},{c:'珅',m:'美玉之名',s:10,r:'王',g:'u'},
+  {c:'鏵',m:'金鋒銳利',s:19,r:'金',g:'m'},{c:'信',m:'信實不欺',s:9,r:'人口',g:'u'},
+  {c:'誠',m:'誠信為本',s:14,r:'口',g:'u'},{c:'嘉',m:'嘉言善行',s:14,r:'口',g:'u'},
+  {c:'慶',m:'慶賀吉祥',s:15,r:'心',g:'u'}
 ],
 '水':[
-  {c:'澤',m:'恩澤廣被',s:17,r:'氵',g:'m'},
-  {c:'霖',m:'久旱甘霖',s:16,r:'雨木',g:'u'},
-  {c:'涵',m:'涵養深厚',s:12,r:'氵口',g:'u'},
-  {c:'沛',m:'充沛盎然',s:8,r:'氵',g:'u'},
-  {c:'洵',m:'誠信不欺',s:10,r:'氵口',g:'u'},
-  {c:'湧',m:'文思泉湧',s:13,r:'氵',g:'m'},
-  {c:'潤',m:'溫潤如玉',s:16,r:'氵王',g:'u'},
-  {c:'泓',m:'清泓深廣',s:9,r:'氵弓',g:'u'},
-  {c:'汝',m:'親切真誠',s:7,r:'氵女',g:'u'},
-  {c:'沂',m:'沂水春風',s:8,r:'氵',g:'u'},
-  {c:'雨',m:'潤物無聲',s:8,r:'雨',g:'u'},
-  {c:'雲',m:'行雲流水',s:12,r:'雨',g:'u'},
-  {c:'海',m:'海納百川',s:11,r:'氵',g:'m'},
-  {c:'清',m:'清正廉明',s:12,r:'氵日',g:'u'},
-  {c:'沐',m:'如沐春風',s:8,r:'氵木',g:'u'},
-  {c:'淇',m:'淇水悠悠',s:12,r:'氵',g:'u'},
-  {c:'瀚',m:'瀚海浩闊',s:20,r:'氵',g:'m'},
-  {c:'淳',m:'淳厚樸實',s:12,r:'氵',g:'u'},
-  {c:'湛',m:'清湛精純',s:13,r:'氵',g:'m'},
-  {c:'霈',m:'霈澤恩施',s:15,r:'雨',g:'u'},
-  {c:'霓',m:'霓裳華麗',s:16,r:'雨',g:'f'},
-  {c:'霏',m:'霏霏雨雪',s:16,r:'雨',g:'f'},
-  {c:'淞',m:'江水流淞',s:12,r:'氵',g:'u'},
-  {c:'渼',m:'水光瀲灩',s:13,r:'氵',g:'f'},
-  {c:'洺',m:'清流長遠',s:10,r:'氵',g:'u'}
+  {c:'澤',m:'恩澤廣被',s:17,r:'氵',g:'m'},{c:'霖',m:'久旱甘霖',s:16,r:'雨木',g:'u'},
+  {c:'涵',m:'涵養深厚',s:12,r:'氵口',g:'u'},{c:'沛',m:'充沛盎然',s:8,r:'氵',g:'u'},
+  {c:'洵',m:'誠信不欺',s:10,r:'氵口',g:'u'},{c:'湧',m:'文思泉湧',s:13,r:'氵',g:'m'},
+  {c:'潤',m:'溫潤如玉',s:16,r:'氵王',g:'u'},{c:'泓',m:'清泓深廣',s:9,r:'氵弓',g:'u'},
+  {c:'汝',m:'親切真誠',s:7,r:'氵女',g:'u'},{c:'沂',m:'沂水春風',s:8,r:'氵',g:'u'},
+  {c:'雨',m:'潤物無聲',s:8,r:'雨',g:'u'},{c:'雲',m:'行雲流水',s:12,r:'雨',g:'u'},
+  {c:'海',m:'海納百川',s:11,r:'氵',g:'m'},{c:'清',m:'清正廉明',s:12,r:'氵日',g:'u'},
+  {c:'沐',m:'如沐春風',s:8,r:'氵木',g:'u'},{c:'淇',m:'淇水悠悠',s:12,r:'氵',g:'u'},
+  {c:'瀚',m:'瀚海浩闊',s:20,r:'氵',g:'m'},{c:'淳',m:'淳厚樸實',s:12,r:'氵',g:'u'},
+  {c:'湛',m:'清湛精純',s:13,r:'氵',g:'m'},{c:'霈',m:'霈澤恩施',s:15,r:'雨',g:'u'},
+  {c:'霓',m:'霓裳華麗',s:16,r:'雨',g:'f'},{c:'霏',m:'霏霏雨雪',s:16,r:'雨',g:'f'},
+  {c:'淞',m:'江水流淞',s:12,r:'氵',g:'u'},{c:'渼',m:'水光瀲灩',s:13,r:'氵',g:'f'},
+  {c:'洺',m:'清流長遠',s:10,r:'氵',g:'u'},{c:'浩',m:'浩然正氣',s:11,r:'氵',g:'m'},
+  {c:'浚',m:'深濬通達',s:11,r:'氵',g:'m'},{c:'淵',m:'深淵清澈',s:13,r:'氵',g:'m'},
+  {c:'渝',m:'矢志不渝',s:13,r:'氵',g:'u'},{c:'湖',m:'湖光山色',s:13,r:'氵',g:'u'},
+  {c:'湘',m:'湘江無語',s:13,r:'氵',g:'f'},{c:'淙',m:'淙淙流水',s:12,r:'氵',g:'u'},
+  {c:'灝',m:'浩大無垠',s:25,r:'氵',g:'m'},{c:'澈',m:'澄澈見底',s:17,r:'氵',g:'u'},
+  {c:'澂',m:'清明澂靜',s:16,r:'氵',g:'u'},{c:'漪',m:'漣漪柔光',s:15,r:'氵',g:'f'},
+  {c:'淼',m:'水大無際',s:12,r:'氵',g:'u'},{c:'洛',m:'洛水靈秀',s:10,r:'氵',g:'u'},
+  {c:'沫',m:'浪花飛濺',s:9,r:'氵',g:'f'},{c:'沁',m:'沁人心脾',s:8,r:'氵',g:'f'},
+  {c:'江',m:'江海無邊',s:7,r:'氵',g:'m'},{c:'河',m:'江河滔滔',s:9,r:'氵',g:'m'},
+  {c:'泉',m:'泉源不竭',s:9,r:'氵',g:'u'},{c:'泱',m:'泱泱大度',s:9,r:'氵',g:'m'},
+  {c:'澳',m:'澳廣港深',s:17,r:'氵',g:'m'},{c:'漾',m:'漾漾水光',s:15,r:'氵',g:'f'},
+  {c:'渙',m:'渙然冰釋',s:13,r:'氵',g:'u'},{c:'涓',m:'涓滴成河',s:11,r:'氵',g:'f'},
+  {c:'渤',m:'渤海雄渾',s:13,r:'氵',g:'m'},{c:'滄',m:'滄海橫流',s:14,r:'氵',g:'m'},
+  {c:'漢',m:'漢家氣象',s:15,r:'氵',g:'m'},{c:'演',m:'演進無窮',s:15,r:'氵',g:'u'},
+  {c:'漣',m:'漣漪盪漾',s:15,r:'氵',g:'f'},{c:'滕',m:'滕水東流',s:15,r:'氵',g:'m'},
+  {c:'漩',m:'漩流不息',s:15,r:'氵',g:'u'},{c:'潼',m:'清水緩流',s:16,r:'氵',g:'u'}
 ]};
-// 用字索引(全表查詢)
 TX.POOL3_INDEX={};
 ['木','火','土','金','水'].forEach(el=>TX.POOL3[el].forEach(x=>{ TX.POOL3_INDEX[x.c]={...x,el:el}; }));
 
-// 評分單一字對命局/生肖的契合度
+// ===== 81 數理字典 =====
+TX.SHU81={
+1:'萬物開泰,生發吉昌',2:'分離破敗,進退失據',3:'進取如意,聲名遠揚',4:'萬事休止,辛苦多波',
+5:'福德五行俱會,溫和圓滿',6:'安穩富裕,德厚財豐',7:'剛健獨立,勇往直前',8:'勤勉志剛,意志堅強',
+9:'大成反空,興盡悲來',10:'空無一籌,萬事多艱',11:'旱苗逢雨,平靜立業',12:'意志薄弱,挫折多災',
+13:'智略超群,博學多才',14:'沉淪天涯,孤獨無依',15:'福壽圓滿,溫厚有德',16:'厚德載物,眾望所歸',
+17:'突破障礙,剛毅果決',18:'鐵石之志,有志竟成',19:'風雲蔽日,內外不和',20:'空虛無依,進退失據',
+21:'月明朗照,獨立權威',22:'秋草逢霜,意志薄弱',23:'旭日東昇,英邁有為',24:'多財豐家,白手成家',
+25:'資性聰穎,英敏俊邁',26:'波瀾起伏,變動波折',27:'自我中折,半途挫敗',28:'波瀾橫立,挫折流離',
+29:'智謀豐厚,財力俱備',30:'浮沉萍水,吉凶相伴',31:'智仁勇備,名利雙收',32:'僥倖多望,意外幸運',
+33:'旭日東昇,鸞鳳相會',34:'破家滅產,大凶橫死',35:'平和發展,溫和有德',36:'波瀾不息,英雄無命',
+37:'權威顯達,忠實有德',38:'藝術成名,意志薄弱',39:'富貴尊榮,長壽福澤',40:'進退失據,吉凶相半',
+41:'純陽獨秀,德高望重',42:'博而不精,寒苦才華',43:'雨夜散花,外美內憂',44:'暗藏破運,愁眉不展',
+45:'大智大覺,順風揚帆',46:'浪裏行舟,辛苦坎坷',47:'開花結果,得貴人助',48:'才德兼備,顧問之才',
+49:'變動之兆,吉凶相伴',50:'一成一敗,先吉後凶',51:'一盛一衰,先吉後凶',52:'雨後春筍,先見之明',
+53:'內憂外患,盛衰參半',54:'多難辛苦,憂愁不絕',55:'善惡並沓,外美內憂',56:'限步堪虞,缺乏勇氣',
+57:'寒雪青松,藝術成名',58:'浮沉變化,晚運興旺',59:'寒雪困苦,亂世挫敗',60:'黑暗無光,動搖不安',
+61:'名利雙收,惟須謹慎',62:'衰敗家亂,內外不和',63:'萬物化育,富貴繁榮',64:'骨肉分離,沉淪苦海',
+65:'富貴長壽,巨業千秋',66:'內外不和,進退維谷',67:'通達有得,事業成就',68:'智達名揚,興家立業',
+69:'動搖不安,逆境多災',70:'殘菊逢霜,慘澹經營',71:'萬物逢春,先吉後凶',72:'先苦後甘,晚景幸運',
+73:'自然好運,平安無事',74:'沉淪江湖,坐食山空',75:'退守為吉,進退兩難',76:'厭世孤獨,先吉後凶',
+77:'樂極生悲,先吉後凶',78:'先甘後苦,中年衰退',79:'不知進退,終於失敗',80:'漸近退安,守則安祥',
+81:'還元復始,大吉大利'};
+
+// 五格意涵
+TX.GE_MEAN={
+tian:'天格主祖運先天根基,影響人格但不主吉凶',
+ren:'人格主中年運勢、性格、事業核心,為五格樞紐',
+di:'地格主前運(1–35歲)、家庭、夫妻、子女關係',
+wai:'外格主外在環境、社交緣、貴人運',
+zong:'總格主後運(36歲後)、一生大局、晚景福祿'};
+
+// ===== 評分一個字 =====
 TX.charScore=function(char,xiyong,zo){
   const info=TX.POOL3_INDEX[char]; if(!info) return null;
   let score=0;
@@ -2031,60 +2168,70 @@ TX.charScore=function(char,xiyong,zo){
   const tags=info.r.split('');
   const likeHits=tags.filter(t=>zo&&zo.like.indexOf(t)>=0);
   const avoidHits=tags.filter(t=>zo&&zo.avoid.indexOf(t)>=0);
-  score+=likeHits.length;
-  score-=avoidHits.length*2;
-  return {info:info,score:score,like:likeHits,avoid:avoidHits};
+  score+=likeHits.length; score-=avoidHits.length*2;
+  return {info,score,like:likeHits,avoid:avoidHits};
 };
 
-// 評估組名:姓筆畫 + 名字陣列(1 或 2 字)
-TX.evalPick=function(sk,chars,zo){
-  const infos=chars.map(c=>TX.POOL3_INDEX[c]);
-  if(infos.some(x=>!x)) return null;
-  let wg, sancai, ge_score=0;
+// ===== 綜合姓名評分(0–100)=====
+TX.scoreName=function(sk,chars,zo,xiyong){
+  if(!chars||chars.length<1||chars.length>2) return null;
+  const infos=chars.map(c=>typeof c==='string'?TX.POOL3_INDEX[c]:c);
+  if(infos.some(x=>!x||x.s===undefined)) return null;
+  let wg; const NE=n=>['水','木','木','火','火','土','土','金','金','水'][n%10];
   if(chars.length===2){
     wg=TX.wuge(sk,infos[0].s,infos[1].s);
-    sancai=wg.sancai;
   }else{
-    // 單字名:借常用「外格 1」邏輯,五格簡化為三格
     const a=infos[0].s;
-    const tian=sk+1, ren=sk+a, di=a+1, zong=sk+a;
-    const NE=n=>['水','木','木','火','火','土','土','金','金','水'][n%10];
-    sancai=TX.sancai(NE(tian),NE(ren),NE(di));
-    wg={tian:tian,ren:ren,di:di,wai:1,zong:zong,levels:{tian:TX.n81(tian),ren:TX.n81(ren),di:TX.n81(di),wai:TX.n81(1),zong:TX.n81(zong)},sancai:sancai};
+    const tian=sk+1,ren=sk+a,di=a+1,wai=1,zong=sk+a;
+    wg={tian,ren,di,wai,zong,
+        levels:{tian:TX.n81(tian),ren:TX.n81(ren),di:TX.n81(di),wai:TX.n81(wai),zong:TX.n81(zong)},
+        sancai:TX.sancai(NE(tian),NE(ren),NE(di))};
   }
   const L=wg.levels;
-  ge_score+=(L.ren==='吉'?4:L.ren==='半'?1:-3);
-  ge_score+=(L.zong==='吉'?3:L.zong==='半'?1:-2);
-  ge_score+=(L.di==='吉'?2:L.di==='半'?0:-1);
-  ge_score+=(L.wai==='吉'?1:0);
-  ge_score+=(sancai.level==='吉'?4:sancai.level==='中'?1:-4);
-  // 生肖
-  let zo_score=0, zo_like=[], zo_avoid=[];
-  infos.forEach((info,i)=>{
-    const tags=info.r.split('');
-    tags.forEach(t=>{ if(zo.like.indexOf(t)>=0){ zo_score+=1; zo_like.push(info.c+'·'+t); } if(zo.avoid.indexOf(t)>=0){ zo_score-=2; zo_avoid.push(info.c+'·'+t); } });
+  let geS=0;
+  geS+=(L.ren==='吉'?20:L.ren==='半'?10:0);
+  geS+=(L.zong==='吉'?12:L.zong==='半'?6:0);
+  geS+=(L.di==='吉'?8:L.di==='半'?4:0);
+  geS+=(L.wai==='吉'?5:L.wai==='半'?3:0);
+  const sanS=wg.sancai.level==='吉'?25:wg.sancai.level==='中'?12:0;
+  let zoLikeN=0,zoAvoidN=0; const zoHits={like:[],avoid:[]};
+  if(zo) infos.forEach(info=>{
+    (info.r||'').split('').forEach(t=>{
+      if(zo.like.indexOf(t)>=0){ zoLikeN++; zoHits.like.push(info.c+'·'+t); }
+      if(zo.avoid.indexOf(t)>=0){ zoAvoidN++; zoHits.avoid.push(info.c+'·'+t); }
+    });
   });
-  return {wg:wg,sancai:sancai,ge_score:ge_score,zo_score:zo_score,zo_like:zo_like,zo_avoid:zo_avoid,
-          total:ge_score+zo_score};
+  const zoS=Math.max(0,Math.min(15,5+zoLikeN*3-zoAvoidN*5));
+  let xiHits=0;
+  if(xiyong) infos.forEach(info=>{ if(xiyong.indexOf(info.el)===0) xiHits+=2; else if(xiyong.indexOf(info.el)===1) xiHits+=1; });
+  const xiS=Math.min(15,xiHits*4);
+  const total=geS+sanS+zoS+xiS;
+  let verdict,grade;
+  if(total>=85){verdict='上上之名,格局俱佳';grade='A';}
+  else if(total>=72){verdict='良名可用,瑕不掩瑜';grade='B';}
+  else if(total>=58){verdict='中等之名,有可商榷處';grade='C';}
+  else if(total>=42){verdict='偏弱之名,建議斟酌';grade='D';}
+  else{verdict='格局不利,宜改名為宜';grade='E';}
+  return {chars:infos.map(x=>({c:x.c,s:x.s,m:x.m,el:x.el})),wg,sancai:wg.sancai,zoHits,xiHits,
+          breakdown:{ge:geS,sancai:sanS,zo:zoS,xi:xiS,total},
+          max:{ge:45,sancai:25,zo:15,xi:15,total:100},verdict,grade};
 };
 
-// 取得字庫(依喜用神排序、附生肖標記、依性別輕度排序)
+// ===== 字庫(含排序)=====
 TX.namePalette=function(SM,surname,skInput,gender,xiyong,yearZhi){
   const sk=skInput||TX.SURNAME[surname];
   if(!sk) return {err:'noStroke'};
   const zo=TX.ZODIAC[yearZhi];
   const ORDER=['木','火','土','金','水'];
-  // 喜用神在前
-  const sorted=[...xiyong, ...ORDER.filter(e=>xiyong.indexOf(e)<0)];
+  const sorted=[...xiyong,...ORDER.filter(e=>xiyong.indexOf(e)<0)];
   const palette={};
   sorted.forEach(el=>{
     const list=TX.POOL3[el].map(x=>{
       const tags=x.r.split('');
       const like=tags.filter(t=>zo.like.indexOf(t)>=0);
       const avoid=tags.filter(t=>zo.avoid.indexOf(t)>=0);
-      return {...x, zoLike:like, zoAvoid:avoid, isXi:xiyong.indexOf(el)>=0};
+      return {...x,zoLike:like,zoAvoid:avoid,isXi:xiyong.indexOf(el)>=0};
     });
-    // 性別契合度排序:同性別在前,通用次之,異性別在後;同類內按生肖匹配度(like-avoid*2)
     list.sort((a,b)=>{
       const ga=a.g===gender?2:a.g==='u'?1:0;
       const gb=b.g===gender?2:b.g==='u'?1:0;
@@ -2095,7 +2242,28 @@ TX.namePalette=function(SM,surname,skInput,gender,xiyong,yearZhi){
     });
     palette[el]=list;
   });
-  return {sk:sk, zodiac:zo.n, palette:palette, order:sorted};
+  return {sk,zodiac:zo.n,palette,order:sorted};
+};
+
+// ===== 解析既有姓名 =====
+TX.parseFullName=function(surname,given,strokeOverride){
+  let sk=TX.SURNAME[surname];
+  if(strokeOverride&&strokeOverride[0]) sk=strokeOverride[0];
+  if(!sk) return {err:'unknownSurname',surname};
+  const chars=Array.from(given.trim());
+  if(chars.length<1||chars.length>2) return {err:'badGiven',count:chars.length};
+  const info=[];
+  for(let i=0;i<chars.length;i++){
+    const c=chars[i];
+    if(strokeOverride&&strokeOverride[i+1]){
+      info.push({c,s:+strokeOverride[i+1],m:'(筆畫自填)',el:'?',r:''});
+    }else if(TX.POOL3_INDEX[c]){
+      info.push(TX.POOL3_INDEX[c]);
+    }else{
+      return {err:'unknownChar',char:c,index:i};
+    }
+  }
+  return {surname,sk,chars:info};
 };
 })();
 
@@ -2419,60 +2587,61 @@ window.addEventListener('DOMContentLoaded',function(){
 });
 })();
 
-/* naming-ui.js — 取名建議互動介面 */
+/* naming-ui.js — 取名工作台 + 姓名評分 */
 "use strict";
 (function(){
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 let STATE=null;
+
 function getInp(prefix){
   const cal=$(prefix+'-cal')?$(prefix+'-cal').value:'solar';
   return {y:+$(prefix+'-y').value, m:+$(prefix+'-m').value, d:+$(prefix+'-d').value,
           h:+$(prefix+'-h').value, min:+($(prefix+'-min').value||0), g:$(prefix+'-g').value,
           cal:cal, leap:cal==='lunar'&&$(prefix+'-leap')?$(prefix+'-leap').checked:false};
 }
+
 window.addEventListener('DOMContentLoaded',function(){
-  const btn=$('btn-nm'); if(!btn) return;
-  btn.onclick=null;
-  btn.addEventListener('click',function(){
-    try{
-      const surname=$('nm-surname').value.trim();
-      if(!surname){ alert('請先輸入姓氏'); return; }
-      const skIn=parseInt($('nm-strokes').value)||0;
-      const inp=getInp('n1');
-      let y=inp.y,m=inp.m,d=inp.d;
-      if(inp.cal==='lunar'){
-        const sol=SM.solarFromLunar(inp.y,inp.m,inp.d,inp.leap);
-        if(!sol){ alert('該農曆日期不存在'); return; }
-        y=sol.y; m=sol.m; d=sol.d;
-      }
-      const bz=SM.bazi(y,m,d,inp.h,inp.min);
-      const st=SM.fiveElemStats(bz);
-      const r=TX.namePalette(SM,surname,skIn,inp.g,st.xiyong,bz.pillars.year[1]);
-      if(r.err==='noStroke'){ alert('「'+surname+'」不在內建姓氏字庫,請於「姓氏筆畫」欄填入該字的康熙筆畫數再試。'); return; }
-      STATE={surname:surname, sk:r.sk, gender:inp.g, xiyong:st.xiyong,
-             zo:TX.ZODIAC[bz.pillars.year[1]], zoName:r.zodiac,
-             palette:r.palette, order:r.order,
-             dayMaster:SM.GAN[bz.pillars.day[0]]+SM.GAN_ELEM[bz.pillars.day[0]],
-             strong:st.strong, mode:2, picks:[], activeEl:r.order[0]};
-      render();
-    }catch(e){ alert('取名失敗:'+e.message); }
-  });
+  const btn=$('btn-nm'); if(btn) btn.addEventListener('click',startPalette);
+  const evb=$('btn-nm-eval'); if(evb) evb.addEventListener('click',doEvaluate);
 });
+
+function startPalette(){
+  try{
+    const surname=$('nm-surname').value.trim();
+    if(!surname){ alert('請先輸入姓氏'); return; }
+    const skIn=parseInt($('nm-strokes').value)||0;
+    const inp=getInp('n1');
+    let y=inp.y,m=inp.m,d=inp.d;
+    if(inp.cal==='lunar'){
+      const sol=SM.solarFromLunar(inp.y,inp.m,inp.d,inp.leap);
+      if(!sol){ alert('該農曆日期不存在'); return; }
+      y=sol.y; m=sol.m; d=sol.d;
+    }
+    const bz=SM.bazi(y,m,d,inp.h,inp.min);
+    const st=SM.fiveElemStats(bz);
+    const r=TX.namePalette(SM,surname,skIn,inp.g,st.xiyong,bz.pillars.year[1]);
+    if(r.err==='noStroke'){ alert('「'+surname+'」不在內建姓氏字庫,請於「姓氏筆畫」欄填入該字的康熙筆畫數再試。'); return; }
+    STATE={surname:surname, sk:r.sk, gender:inp.g, xiyong:st.xiyong,
+           zo:TX.ZODIAC[bz.pillars.year[1]], zoName:r.zodiac,
+           palette:r.palette, order:r.order,
+           dayMaster:SM.GAN[bz.pillars.day[0]]+SM.GAN_ELEM[bz.pillars.day[0]],
+           strong:st.strong, mode:2, picks:[], activeEl:r.order[0]};
+    render();
+  }catch(e){ alert('字庫開啟失敗:'+e.message); }
+}
 
 function render(){
   if(!STATE) return;
   const S=STATE;
   let h='<div class="nm-panel">';
-  // 命局摘要
   h+='<div class="nm-summary">'
     +'<p>日主 <b>'+esc(S.dayMaster)+'</b>,'+(S.strong?'身強':'身弱')+',喜用神 '
     +S.xiyong.map(e=>'<b class="e'+e+'">'+e+'</b>').join('、')
     +';生肖 <b>'+esc(S.zoName)+'</b>;'
     +'姓氏「'+esc(S.surname)+'」康熙 <b>'+S.sk+'</b> 畫。</p>'
-    +'<p class="mini">下方依五行分類提供建議用字,喜用神元素已置頂並標<span class="xi-mark">✦</span>。點字加入名格、再點已選字可移除。生肖喜根用字以淡綠標、忌根用紅標。</p>'
+    +'<p class="mini">依五行分類列出 280+ 字字庫,喜用神元素已置頂並標<span class="xi-mark">✦</span>。點字加入名格、再點已選字可移除;選滿後即時顯示綜合評分(滿分 100)與八十一數理逐格解說。</p>'
     +'</div>';
-  // 已選名格
   h+='<div class="nm-picker">'
     +'<div class="nm-modes">'
     +'<button class="nm-mode'+(S.mode===2?' on':'')+'" data-len="2" type="button">雙字名</button>'
@@ -2485,39 +2654,17 @@ function render(){
     h+='<span class="slot'+(c?' filled':'')+'" data-i="'+i+'">'+esc(c||'?')+'</span>';
   }
   h+='</div>';
-  // 即時評分
   if(S.picks.length===S.mode){
-    const ev=TX.evalPick(S.sk,S.picks,S.zo);
-    const L=ev.wg.levels;
-    h+='<div class="nm-eval">'
-      +'<div class="nm-fullname">'+esc(S.surname+S.picks.join(''))+'</div>'
-      +'<div class="nm-stat-row">'
-      +'<div class="nm-stat"><span class="nm-stat-lbl">三才</span><span class="nm-stat-val ge'+ev.sancai.level+'">'+ev.sancai.str+'('+ev.sancai.level+')</span></div>'
-      +'<div class="nm-stat"><span class="nm-stat-lbl">總筆畫</span><span class="nm-stat-val">'+S.sk+'-'+S.picks.map(c=>TX.POOL3_INDEX[c].s).join('-')+'</span></div>';
-    if(S.mode===2){
-      h+='<div class="nm-stat"><span class="nm-stat-lbl">五格</span><span class="nm-stat-val">';
-      ['tian','ren','di','wai','zong'].forEach(k=>{
-        h+='<span class="ge ge'+L[k]+'">'+TX.GE_NAME[k]+ev.wg[k]+'<i>'+L[k]+'</i></span>';
-      });
-      h+='</span></div>';
-    }
-    h+='</div>';
-    if(ev.zo_like.length||ev.zo_avoid.length){
-      h+='<div class="nm-zo">生肖'+esc(S.zoName);
-      if(ev.zo_like.length) h+='・<span class="zo-like">喜根:'+ev.zo_like.join('、')+'</span>';
-      if(ev.zo_avoid.length) h+='・<span class="zo-avoid">忌根:'+ev.zo_avoid.join('、')+'</span>';
-      h+='</div>';
-    }
-    h+='</div>';
+    const sc=TX.scoreName(S.sk,S.picks,S.zo,S.xiyong);
+    h+=renderScore(S.surname,sc,true);
   }else{
-    h+='<div class="nm-eval-empty">'+(S.mode-S.picks.length)+' 字未選,點下方字庫加入</div>';
+    h+='<div class="nm-eval-empty">尚有 '+(S.mode-S.picks.length)+' 字未選,點下方字庫加入</div>';
   }
   h+='</div>';
-  // 字庫:tabs + grid
   h+='<div class="nm-tabs">';
   S.order.forEach(el=>{
     const isXi=S.xiyong.indexOf(el)>=0;
-    h+='<button class="nm-tab'+(el===S.activeEl?' on':'')+(isXi?' xi':'')+'" data-el="'+el+'" type="button">'+el+(isXi?' ✦':'')+'</button>';
+    h+='<button class="nm-tab'+(el===S.activeEl?' on':'')+(isXi?' xi':'')+'" data-el="'+el+'" type="button">'+el+(isXi?' ✦':'')+'<span class="nm-tab-n">'+S.palette[el].length+'</span></button>';
   });
   h+='</div><div class="nm-grid">';
   const list=S.palette[S.activeEl]||[];
@@ -2539,7 +2686,63 @@ function render(){
   h+='</div></div>';
   $('nm-out').innerHTML=h;
   $('nm-out').classList.remove('hide');
-  // 事件
+  bindEvents();
+}
+
+function renderScore(surname,sc,full){
+  if(!sc) return '<p class="dim">無法評分(字未在字庫且未提供筆畫)</p>';
+  const L=sc.wg.levels;
+  let h='<div class="nm-eval">'
+    +'<div class="nm-fullname">'+esc(surname+sc.chars.map(x=>x.c).join(''))+'</div>'
+    +'<div class="nm-score-row">'
+    +'<div class="nm-bigscore grade-'+sc.grade+'">'
+    +'<div class="bs-num">'+sc.breakdown.total+'</div>'
+    +'<div class="bs-max">/ 100</div>'
+    +'<div class="bs-grade">'+sc.grade+'</div></div>'
+    +'<div class="nm-verdict">'+esc(sc.verdict)+'</div>'
+    +'</div>'
+    +'<div class="nm-bar-row">'
+    +scoreBar('五格',sc.breakdown.ge,sc.max.ge)
+    +scoreBar('三才',sc.breakdown.sancai,sc.max.sancai)
+    +scoreBar('生肖',sc.breakdown.zo,sc.max.zo)
+    +scoreBar('喜用',sc.breakdown.xi,sc.max.xi)
+    +'</div>';
+  if(full){
+    h+='<details class="nm-details" open><summary>五格・三才・八十一數理解說</summary><div class="nm-details-body">';
+    h+='<table class="ge-table">';
+    ['tian','ren','di','wai','zong'].forEach(k=>{
+      const n=sc.wg[k], lv=L[k], txt=TX.SHU81[((n-1)%81)+1]||'';
+      h+='<tr><th>'+TX.GE_NAME[k]+'</th><td class="ge-num">'+n+'</td>'
+        +'<td class="ge-lv ge'+lv+'">'+lv+'</td>'
+        +'<td class="ge-txt">'+esc(txt)+'</td></tr>'
+        +'<tr class="ge-mean"><td></td><td colspan="3" class="mini">'+esc(TX.GE_MEAN[k])+'</td></tr>';
+    });
+    h+='</table>';
+    h+='<p class="mini"><b>三才</b> '+esc(sc.sancai.str)+'('+sc.sancai.level+'):為天人地三格五行之生剋關係——'
+      +(sc.sancai.level==='吉'?'三才相生流通,氣機順暢、福運綿長':
+        sc.sancai.level==='中'?'三才平衡,吉凶相參,可努力轉化':
+        '三才相剋,易有阻滯起伏,須以德養命、行善積福以化之')+'。</p>';
+    if(sc.zoHits.like.length||sc.zoHits.avoid.length){
+      h+='<p class="mini"><b>生肖契合</b>';
+      if(sc.zoHits.like.length) h+='・<span class="zo-like">喜根:'+esc(sc.zoHits.like.join('、'))+'</span>';
+      if(sc.zoHits.avoid.length) h+='・<span class="zo-avoid">忌根:'+esc(sc.zoHits.avoid.join('、'))+'</span>';
+      h+='</p>';
+    }
+    h+='</div></details>';
+  }
+  h+='</div>';
+  return h;
+}
+
+function scoreBar(label,v,max){
+  const pct=Math.round(v/max*100);
+  const cls=pct>=70?'good':pct>=40?'mid':'bad';
+  return '<div class="nm-bar"><div class="nm-bar-lbl">'+label+'</div>'
+    +'<div class="nm-bar-track"><div class="nm-bar-fill '+cls+'" style="width:'+pct+'%"></div></div>'
+    +'<div class="nm-bar-val">'+v+'/'+max+'</div></div>';
+}
+
+function bindEvents(){
   $('nm-out').querySelectorAll('.nm-mode').forEach(b=>b.addEventListener('click',()=>{
     STATE.mode=+b.dataset.len;
     if(STATE.picks.length>STATE.mode) STATE.picks=STATE.picks.slice(0,STATE.mode);
@@ -2552,13 +2755,56 @@ function render(){
     const c=b.dataset.c;
     if(STATE.picks.indexOf(c)>=0) STATE.picks=STATE.picks.filter(x=>x!==c);
     else if(STATE.picks.length<STATE.mode) STATE.picks.push(c);
-    else STATE.picks=[STATE.picks[1],c]; // 已滿,替換最早一個
+    else STATE.picks=[STATE.picks[1],c];
     render();
   }));
   $('nm-out').querySelectorAll('.slot[data-i]').forEach(b=>b.addEventListener('click',()=>{
     const i=+b.dataset.i;
     if(STATE.picks[i]){ STATE.picks.splice(i,1); render(); }
   }));
+}
+
+// ===== 姓名評分模式 =====
+function doEvaluate(){
+  try{
+    const sur=$('nme-sur').value.trim();
+    const giv=$('nme-given').value.trim();
+    if(!sur||!giv){ alert('請輸入姓氏與名字'); return; }
+    const skIn=parseInt($('nme-sk').value);
+    const givStrokesRaw=$('nme-gst').value.trim();
+    const givStrokes=givStrokesRaw?givStrokesRaw.split(/[,，、\s]+/).map(x=>+x).filter(x=>x>0):[];
+    const stroke=[skIn||null].concat(givStrokes);
+    const p=TX.parseFullName(sur,giv,stroke);
+    if(p.err==='unknownSurname'){ alert('姓氏「'+p.surname+'」不在內建字庫,請於「姓氏筆畫」欄填入康熙筆畫'); return; }
+    if(p.err==='badGiven'){ alert('名字請輸入 1–2 字'); return; }
+    if(p.err==='unknownChar'){ alert('字「'+p.char+'」不在內建字庫,請於「名字筆畫」欄逐字填入(用逗號分隔)。範例:11,8'); return; }
+    let zo=null, xiyong=null, ctxLine='';
+    const useBirth=$('nme-use-birth').checked;
+    if(useBirth){
+      const inp=getInp('n1');
+      let y=inp.y,m=inp.m,d=inp.d;
+      if(inp.cal==='lunar'){
+        const sol=SM.solarFromLunar(inp.y,inp.m,inp.d,inp.leap);
+        if(sol){ y=sol.y;m=sol.m;d=sol.d; }
+      }
+      const bz=SM.bazi(y,m,d,inp.h,inp.min);
+      const st=SM.fiveElemStats(bz);
+      zo=TX.ZODIAC[bz.pillars.year[1]]; xiyong=st.xiyong;
+      ctxLine='<p class="mini">結合生辰命局評估:日主 '+SM.GAN[bz.pillars.day[0]]+SM.GAN_ELEM[bz.pillars.day[0]]+(st.strong?'(身強)':'(身弱)')+',喜用神 '+xiyong.join('、')+';生肖 '+zo.n+'。</p>';
+    }else{
+      ctxLine='<p class="mini">純就五格・三才・八十一數理評估,未結合命局喜用神與生肖。</p>';
+    }
+    const sc=TX.scoreName(p.sk,p.chars,zo,xiyong);
+    let h='<h4 class="sec">姓名評分結果</h4>'+ctxLine;
+    h+=renderScore(p.surname,sc,true);
+    h+='<h4 class="sec">用字明細</h4><table class="char-tbl">'
+      +'<tr><th>位序</th><th>字</th><th>康熙筆畫</th><th>五行</th><th>字義</th></tr>'
+      +'<tr><td>姓</td><td class="nm-c-cell">'+esc(p.surname)+'</td><td>'+p.sk+'</td><td class="dim">—</td><td class="dim">—</td></tr>'
+      +p.chars.map((x,i)=>'<tr><td>名'+(i+1)+'</td><td class="nm-c-cell">'+esc(x.c)+'</td><td>'+x.s+'</td><td class="e'+x.el+'">'+(x.el||'?')+'</td><td>'+esc(x.m)+'</td></tr>').join('')
+      +'</table>';
+    $('nme-out').innerHTML=h;
+    $('nme-out').classList.remove('hide');
+  }catch(e){ alert('評分失敗:'+e.message); }
 }
 })();
 
