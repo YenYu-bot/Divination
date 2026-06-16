@@ -10,10 +10,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0C1022; --bg2:#11172E; --card:#141A33; --line:rgba(217,179,108,.30);
-  --ink:#EDE6D3; --ink2:#A89F8C;
-  --cinnabar:#E0584A; --gold:#D9B36C; --gold2:#F4DFA8; --navy:#7FA8D9;
-  --wood:#7CC49A; --fire:#E0584A; --earth:#D9B36C; --metal:#CDC6B6; --water:#7FA8D9;
+  --bg:#070C1A; --bg2:#0D1228; --card:#0F1530; --line:rgba(217,179,108,.28);
+  --ink:#EDE6D3; --ink2:#A89F8C; --starwhite:#F0EAD8;
+  --cinnabar:#E05C4A; --gold:#D9B36C; --gold2:#F4DFA8; --navy:#7FA8D9;
+  --wood:#7CC49A; --fire:#E05C4A; --earth:#D9B36C; --metal:#CDC6B6; --water:#7FA8D9;
+  --brass:#B8960C; --brass2:#E8C84A; --glow:rgba(217,179,108,.18);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
@@ -21,77 +22,114 @@ body{
   font-family:"Noto Serif TC","Kaiti TC","DFKai-SB","標楷體",serif;
   background:var(--bg); color:var(--ink); line-height:1.85; font-size:16px;
   background-image:
-    radial-gradient(ellipse 90% 55% at 50% -12%,rgba(127,168,217,.14),transparent 60%),
-    radial-gradient(ellipse 60% 40% at 85% 8%,rgba(217,179,108,.08),transparent 55%),
-    radial-gradient(ellipse 70% 50% at 10% 100%,rgba(224,88,74,.05),transparent 50%);
+    radial-gradient(ellipse 120% 45% at 50% -5%,rgba(90,130,200,.18),transparent 55%),
+    radial-gradient(ellipse 55% 35% at 88% 6%,rgba(217,179,108,.10),transparent 52%),
+    radial-gradient(ellipse 65% 45% at 8% 95%,rgba(224,88,74,.07),transparent 50%),
+    radial-gradient(ellipse 40% 60% at 50% 105%,rgba(60,90,160,.12),transparent 60%);
   background-attachment:fixed;
 }
 #sky{position:fixed;inset:0;z-index:0;pointer-events:none}
 .wrap{max-width:980px;margin:0 auto;padding:0 16px 60px;position:relative;z-index:1}
 ::selection{background:rgba(217,179,108,.35)}
 /* ===== 頁首 ===== */
-header{text-align:center;padding:54px 0 28px;position:relative;animation:rise .8s ease both}
-header .deco{font-size:13px;letter-spacing:.7em;color:var(--gold);text-indent:.7em;opacity:.9}
+header{text-align:center;padding:60px 0 32px;position:relative;animation:rise .9s ease both}
+header .deco{
+  font-size:11px;letter-spacing:1em;color:var(--gold);text-indent:1em;opacity:.7;
+  text-transform:uppercase;margin-bottom:6px;
+}
 h1{
-  font-size:clamp(32px,6vw,50px);font-weight:900;letter-spacing:.18em;text-indent:.18em;margin:10px 0 6px;
-  background:linear-gradient(100deg,#C9A55E 0%,#F4DFA8 28%,#FFF3D6 50%,#F4DFA8 72%,#C9A55E 100%);
-  background-size:220% 100%;
+  font-size:clamp(30px,6vw,52px);font-weight:900;letter-spacing:.22em;text-indent:.22em;margin:10px 0 8px;
+  background:linear-gradient(110deg,#A07820 0%,#D9B36C 22%,#F4DFA8 42%,#FFF8E8 50%,#F4DFA8 58%,#D9B36C 78%,#A07820 100%);
+  background-size:250% 100%;
   -webkit-background-clip:text;background-clip:text;color:transparent;
-  animation:shimmer 7s linear infinite;
-  text-shadow:0 0 36px rgba(217,179,108,.25);
+  animation:shimmer 8s linear infinite;
+  filter:drop-shadow(0 0 20px rgba(217,179,108,.3));
 }
-h1 .dot{-webkit-text-fill-color:var(--cinnabar);color:var(--cinnabar)}
-header .sub{color:var(--ink2);font-size:14px;letter-spacing:.22em}
-header::after{content:"";display:block;width:200px;height:1px;margin:22px auto 0;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);box-shadow:0 0 12px rgba(217,179,108,.6)}
-@keyframes shimmer{to{background-position:220% 0}}
-@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+h1 .dot{-webkit-text-fill-color:var(--cinnabar);color:var(--cinnabar);filter:drop-shadow(0 0 8px rgba(224,88,74,.8))}
+header .sub{color:var(--ink2);font-size:13px;letter-spacing:.3em;opacity:.8}
+header::after{
+  content:"";display:block;width:280px;height:1px;margin:24px auto 0;
+  background:linear-gradient(90deg,transparent,rgba(217,179,108,.3),var(--gold),rgba(217,179,108,.3),transparent);
+  box-shadow:0 0 16px rgba(217,179,108,.5);
+}
+/* 標題裝飾角架 */
+header::before{
+  content:"";display:block;width:60px;height:2px;margin:0 auto 12px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:.5;
+}
+@keyframes shimmer{to{background-position:250% 0}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pulse-glow{0%,100%{opacity:.6}50%{opacity:1}}
 /* ===== 分頁 ===== */
-.tabs{display:flex;justify-content:center;gap:10px;margin:26px 0 18px;flex-wrap:wrap;animation:rise .8s .1s ease both}
+.tabs{display:flex;justify-content:center;gap:8px;margin:28px 0 20px;flex-wrap:wrap;animation:rise .8s .1s ease both}
 .tabbtn{
-  font-family:inherit;font-size:17px;letter-spacing:.15em;padding:10px 26px;cursor:pointer;
-  background:rgba(20,26,51,.6);color:var(--ink2);border:1px solid var(--line);border-radius:3px;
-  transition:all .25s;backdrop-filter:blur(6px);
+  font-family:inherit;font-size:16px;letter-spacing:.2em;padding:10px 28px;cursor:pointer;
+  background:rgba(15,21,48,.7);color:var(--ink2);
+  border:1px solid rgba(217,179,108,.2);border-radius:2px;
+  transition:all .28s;backdrop-filter:blur(8px);
+  position:relative;overflow:hidden;
 }
-.tabbtn:hover{color:var(--gold2);border-color:var(--gold);box-shadow:0 0 14px rgba(217,179,108,.25)}
+.tabbtn::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(217,179,108,.05),transparent 60%);
+  opacity:0;transition:opacity .28s;
+}
+.tabbtn:hover{color:var(--gold2);border-color:rgba(217,179,108,.5);box-shadow:0 0 18px rgba(217,179,108,.2)}
+.tabbtn:hover::before{opacity:1}
 .tabbtn.on{
-  background:linear-gradient(135deg,#C9A55E,#E9CF93);color:#1A1408;border-color:transparent;font-weight:700;
-  box-shadow:0 0 22px rgba(217,179,108,.45),0 2px 8px rgba(0,0,0,.5);
+  background:linear-gradient(135deg,#9A7010,#C9A030 40%,#E8C050);
+  color:#0D0A02;border-color:transparent;font-weight:700;
+  box-shadow:0 0 28px rgba(217,179,108,.5),0 2px 12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,200,.3);
 }
 .tab.hide{display:none}
 /* ===== 卡片與表單 ===== */
 .card{
-  background:linear-gradient(160deg,rgba(24,30,58,.78),rgba(16,21,42,.86));
-  border:1px solid var(--line); border-radius:6px;
-  padding:26px 24px; margin-bottom:24px;
-  box-shadow:0 8px 32px rgba(0,0,0,.45), inset 0 1px 0 rgba(244,223,168,.08);
-  position:relative; backdrop-filter:blur(10px);
-  animation:rise .6s ease both;
+  background:linear-gradient(155deg,rgba(18,24,54,.85),rgba(11,16,38,.92));
+  border:1px solid rgba(217,179,108,.22); border-radius:4px;
+  padding:28px 26px; margin-bottom:22px;
+  box-shadow:0 12px 40px rgba(0,0,0,.55), inset 0 1px 0 rgba(244,223,168,.06), inset 0 0 80px rgba(0,0,0,.2);
+  position:relative; backdrop-filter:blur(12px);
+  animation:rise .65s ease both;
 }
-.card::before{content:"";position:absolute;inset:6px;border:1px solid rgba(217,179,108,.14);border-radius:4px;pointer-events:none}
-.card h2{font-size:20px;letter-spacing:.22em;color:var(--gold2);margin-bottom:14px;font-weight:700;text-shadow:0 0 18px rgba(217,179,108,.3)}
-.card h2::before{content:"✦";color:var(--cinnabar);font-size:13px;margin-right:9px;vertical-align:1px;text-shadow:0 0 10px rgba(224,88,74,.8)}
+/* 黃銅角架效果 */
+.card::before,.card::after{content:"";position:absolute;width:14px;height:14px;border-color:rgba(217,179,108,.5);border-style:solid}
+.card::before{top:8px;left:8px;border-width:1px 0 0 1px}
+.card::after{bottom:8px;right:8px;border-width:0 1px 1px 0}
+.card h2{
+  font-size:19px;letter-spacing:.25em;color:var(--gold2);margin-bottom:16px;font-weight:700;
+  display:flex;align-items:center;gap:10px;
+}
+.card h2::before{
+  content:"✦";color:var(--cinnabar);font-size:11px;flex-shrink:0;
+  filter:drop-shadow(0 0 8px rgba(224,88,74,.9));animation:pulse-glow 2.5s ease-in-out infinite;
+}
 .frow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
-.frow label{font-size:15px;color:var(--ink2);min-width:64px}
+.frow label{font-size:15px;color:var(--ink2);min-width:64px;letter-spacing:.1em}
 select,input[type=text]{
-  font-family:inherit;font-size:16px;padding:8px 12px;background:#0E1326;color:var(--ink);
-  border:1px solid rgba(217,179,108,.35);border-radius:3px;outline:none;transition:all .2s;
+  font-family:inherit;font-size:16px;padding:8px 12px;
+  background:rgba(8,12,28,.8);color:var(--ink);
+  border:1px solid rgba(217,179,108,.3);border-radius:2px;outline:none;transition:all .22s;
 }
-select:focus,input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(217,179,108,.3)}
+select:focus,input:focus{border-color:var(--gold);box-shadow:0 0 14px rgba(217,179,108,.25),inset 0 0 8px rgba(217,179,108,.04)}
 .gender{display:flex;gap:14px;align-items:center;font-size:16px}
 .gender input{accent-color:var(--cinnabar);transform:scale(1.15);margin-right:4px}
 .btn{
-  font-family:inherit;font-size:18px;letter-spacing:.3em;text-indent:.3em;
-  padding:13px 44px;cursor:pointer;border:none;border-radius:3px;
-  background:linear-gradient(135deg,#C9483B,#E0584A 55%,#EE7A60);color:#FFF3E8;font-weight:700;
-  box-shadow:0 0 24px rgba(224,88,74,.4),0 4px 14px rgba(0,0,0,.5);
-  transition:all .2s;
+  font-family:inherit;font-size:18px;letter-spacing:.35em;text-indent:.35em;
+  padding:13px 46px;cursor:pointer;border:none;border-radius:2px;
+  background:linear-gradient(135deg,#B03828,#D94838 45%,#EC6855);color:#FFF0E8;font-weight:700;
+  box-shadow:0 0 28px rgba(224,88,74,.45),0 4px 16px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,200,180,.2);
+  transition:all .22s;position:relative;overflow:hidden;
 }
-.btn:hover{box-shadow:0 0 34px rgba(224,88,74,.65),0 4px 14px rgba(0,0,0,.5);transform:translateY(-1px)}
-.btn:active{transform:translateY(1px)}
-.btn.alt{background:linear-gradient(135deg,#22335A,#3A5684);box-shadow:0 0 20px rgba(127,168,217,.3),0 4px 14px rgba(0,0,0,.5)}
-.btn.alt:hover{box-shadow:0 0 30px rgba(127,168,217,.5),0 4px 14px rgba(0,0,0,.5)}
-.btnrow{text-align:center;margin-top:8px}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08),transparent);pointer-events:none}
+.btn:hover{box-shadow:0 0 40px rgba(224,88,74,.7),0 4px 16px rgba(0,0,0,.55);transform:translateY(-2px)}
+.btn:active{transform:translateY(1px);box-shadow:0 0 20px rgba(224,88,74,.4)}
+.btn.alt{
+  background:linear-gradient(135deg,#1A2B50,#2A4070 45%,#3A5A98);
+  box-shadow:0 0 22px rgba(127,168,217,.28),0 4px 16px rgba(0,0,0,.55),inset 0 1px 0 rgba(150,200,255,.15);
+}
+.btn.alt:hover{box-shadow:0 0 34px rgba(127,168,217,.5),0 4px 16px rgba(0,0,0,.55);transform:translateY(-2px)}
+.btnrow{text-align:center;margin-top:10px}
 .note{font-size:13px;color:var(--ink2);margin-top:10px}
 /* ===== 結果區 ===== */
 .hide{display:none}
@@ -101,9 +139,12 @@ select:focus,input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(217,
 .kv b{font-weight:700;color:var(--gold2)}
 /* 四柱表 */
 .pillars{width:100%;border-collapse:collapse;text-align:center;margin-top:4px}
-.pillars th,.pillars td{border:1px solid rgba(217,179,108,.25);padding:9px 6px;font-size:15px}
-.pillars tr:first-child th{background:linear-gradient(135deg,#1A2142,#232C56);color:var(--gold2);letter-spacing:.2em;font-weight:600}
-.pillars th{background:rgba(217,179,108,.08);color:var(--ink2);font-weight:600}
+.pillars th,.pillars td{border:1px solid rgba(217,179,108,.18);padding:9px 6px;font-size:15px}
+.pillars tr:first-child th{
+  background:linear-gradient(135deg,rgba(20,28,60,.9),rgba(28,38,80,.9));
+  color:var(--gold2);letter-spacing:.2em;font-weight:600;
+}
+.pillars th{background:rgba(217,179,108,.06);color:var(--ink2);font-weight:600}
 .pillars .big{font-size:30px;font-weight:900;line-height:1.2;text-shadow:0 0 16px currentColor}
 .pillars small{display:block;font-size:11px;color:var(--ink2)}
 .dim{color:var(--ink2);font-size:13px}
@@ -112,72 +153,109 @@ select:focus,input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(217,
 .e金{color:var(--metal)} .e水{color:var(--water)}
 /* 五行能量條 */
 .bars{margin-top:6px}
-.barrow{display:flex;align-items:center;gap:10px;margin:8px 0}
+.barrow{display:flex;align-items:center;gap:10px;margin:9px 0}
 .blabel{width:24px;font-weight:700;font-size:17px}
-.btrack{flex:1;height:13px;background:rgba(217,179,108,.10);border-radius:7px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5)}
-.bfill{height:100%;border-radius:7px;transform-origin:left;animation:grow 1s cubic-bezier(.2,.8,.3,1) both;box-shadow:0 0 10px currentColor}
+.btrack{
+  flex:1;height:12px;
+  background:rgba(255,255,255,.05);border-radius:6px;overflow:hidden;
+  box-shadow:inset 0 1px 4px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.bfill{height:100%;border-radius:6px;transform-origin:left;animation:grow 1.1s cubic-bezier(.15,.9,.25,1) both;box-shadow:0 0 12px currentColor}
 @keyframes grow{from{transform:scaleX(0)}}
-.f木{background:linear-gradient(90deg,#4E8E68,#7CC49A);color:#7CC49A}
-.f火{background:linear-gradient(90deg,#B43E32,#E0584A);color:#E0584A}
-.f土{background:linear-gradient(90deg,#A9854B,#D9B36C);color:#D9B36C}
-.f金{background:linear-gradient(90deg,#9C9587,#CDC6B6);color:#CDC6B6}
-.f水{background:linear-gradient(90deg,#4E76A8,#7FA8D9);color:#7FA8D9}
+.f木{background:linear-gradient(90deg,#3A7054,#7CC49A);color:#7CC49A}
+.f火{background:linear-gradient(90deg,#A03028,#E0584A);color:#E0584A}
+.f土{background:linear-gradient(90deg,#906030,#D9B36C);color:#D9B36C}
+.f金{background:linear-gradient(90deg,#807870,#CDC6B6);color:#CDC6B6}
+.f水{background:linear-gradient(90deg,#385880,#7FA8D9);color:#7FA8D9}
 .bval{width:42px;text-align:right;font-size:14px;color:var(--ink2);font-variant-numeric:tabular-nums}
 /* 大運 */
 .dy-note{font-size:14px;color:var(--ink2);margin-bottom:10px}
-.dyrow{display:flex;gap:9px;overflow-x:auto;padding-bottom:8px}
+.dyrow{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
 .dycard{
-  min-width:88px;text-align:center;border:1px solid var(--line);border-radius:4px;
-  padding:11px 6px;background:rgba(14,19,38,.7);flex-shrink:0;transition:all .25s;
+  min-width:88px;text-align:center;
+  border:1px solid rgba(217,179,108,.2);border-radius:2px;
+  padding:12px 6px;background:linear-gradient(160deg,rgba(14,20,42,.9),rgba(9,13,30,.95));
+  flex-shrink:0;transition:all .28s;position:relative;overflow:hidden;
 }
-.dycard:hover{border-color:var(--gold);box-shadow:0 0 16px rgba(217,179,108,.3);transform:translateY(-2px)}
-.dygz{font-size:21px;font-weight:900;letter-spacing:.1em;color:var(--gold2)}
+.dycard::before,.dycard::after{content:"";position:absolute;width:8px;height:8px;border-color:rgba(217,179,108,.4);border-style:solid}
+.dycard::before{top:4px;left:4px;border-width:1px 0 0 1px}
+.dycard::after{bottom:4px;right:4px;border-width:0 1px 1px 0}
+.dycard:hover{border-color:rgba(217,179,108,.6);box-shadow:0 0 20px rgba(217,179,108,.25);transform:translateY(-2px)}
+.dycard.current{border-color:var(--cinnabar);box-shadow:0 0 18px rgba(224,88,74,.3)}
+.dygz{font-size:21px;font-weight:900;letter-spacing:.1em;color:var(--gold2);text-shadow:0 0 10px rgba(217,179,108,.4)}
 .dyage{font-size:13px;color:var(--cinnabar);margin-top:2px}
 .dyyr{font-size:11px;color:var(--ink2)}
 /* ===== 紫微命盤:星圖 ===== */
-.chartwrap{overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--gold) transparent}
+.chartwrap{overflow-x:auto;scrollbar-width:thin;scrollbar-color:rgba(217,179,108,.4) transparent}
 .chart{
   display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));grid-template-rows:repeat(4,minmax(152px,auto));
-  gap:2px;min-width:620px;position:relative;
-  background:rgba(217,179,108,.22);border:1px solid var(--line);border-radius:6px;overflow:hidden;
-  box-shadow:0 0 44px rgba(127,168,217,.12), inset 0 0 60px rgba(0,0,0,.4);
+  gap:1px;min-width:620px;position:relative;
+  background:rgba(217,179,108,.15);
+  border:1px solid rgba(217,179,108,.3);border-radius:3px;overflow:hidden;
+  box-shadow:0 0 60px rgba(60,100,200,.15), 0 0 30px rgba(0,0,0,.5), inset 0 0 80px rgba(0,0,0,.5);
+}
+/* 命盤中心標記 */
+.chart::after{
+  content:"紫微斗數";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:11px;letter-spacing:.6em;text-indent:.6em;color:rgba(217,179,108,.12);
+  pointer-events:none;font-weight:900;white-space:nowrap;
 }
 .cell{
-  background:linear-gradient(160deg,#131A35,#0E1428);
+  background:linear-gradient(160deg,rgba(12,17,36,.95),rgba(8,12,28,.98));
   padding:9px;display:flex;flex-direction:column;
-  justify-content:space-between;min-height:152px;position:relative;transition:all .3s;
+  justify-content:space-between;min-height:152px;position:relative;transition:background .3s,box-shadow .3s;
 }
-.cell:hover{background:linear-gradient(160deg,#1A2348,#121A36);box-shadow:inset 0 0 24px rgba(217,179,108,.12)}
+.cell:hover{
+  background:linear-gradient(160deg,rgba(22,30,60,.98),rgba(14,20,46,.98));
+  box-shadow:inset 0 0 30px rgba(217,179,108,.08);
+  z-index:1;
+}
 .cell.ming{
-  background:radial-gradient(ellipse at 50% 36%,rgba(224,88,74,.22),rgba(19,26,53,.95) 72%);
-  box-shadow:inset 0 0 0 1.5px rgba(224,88,74,.8), inset 0 0 30px rgba(224,88,74,.15);
-  animation:polaris 3.2s ease-in-out infinite;
+  background:radial-gradient(ellipse at 50% 30%,rgba(200,70,55,.25),rgba(15,22,48,.97) 68%);
+  box-shadow:inset 0 0 0 1.5px rgba(224,88,74,.7), inset 0 0 36px rgba(224,88,74,.12);
+  animation:polaris 3.5s ease-in-out infinite;
+}
+.cell.key-palace{
+  box-shadow:inset 0 0 0 1px rgba(217,179,108,.4)!important;
+  background:linear-gradient(160deg,rgba(18,24,48,.98),rgba(10,15,34,.98))!important;
 }
 @keyframes polaris{
-  0%,100%{box-shadow:inset 0 0 0 1.5px rgba(224,88,74,.8), inset 0 0 26px rgba(224,88,74,.12)}
-  50%{box-shadow:inset 0 0 0 1.5px rgba(238,122,96,1), inset 0 0 44px rgba(224,88,74,.30)}
+  0%,100%{box-shadow:inset 0 0 0 1.5px rgba(224,88,74,.7), inset 0 0 28px rgba(224,88,74,.10)}
+  50%{box-shadow:inset 0 0 0 1.5px rgba(240,120,100,.9), inset 0 0 48px rgba(224,88,74,.28)}
 }
-.cstars{display:flex;flex-wrap:wrap;gap:4px 8px;align-content:flex-start}
-.star{font-size:17px;font-weight:900;letter-spacing:.05em;white-space:nowrap;color:#F2EADA;text-shadow:0 0 12px rgba(244,223,168,.5)}
-.aux{font-size:13px;color:var(--ink2);white-space:nowrap}
-sup.br{font-size:9px;font-weight:400;margin-left:1px;vertical-align:super}
-.br廟,.br旺{color:var(--wood)} .br得,.br利{color:var(--gold)}
-.br平,.br閒{color:var(--ink2)} .br陷{color:var(--cinnabar)}
+.cstars{display:flex;flex-wrap:wrap;gap:3px 7px;align-content:flex-start}
+.star{
+  font-size:16px;font-weight:900;letter-spacing:.04em;white-space:nowrap;
+  color:#F2EADA;text-shadow:0 0 14px rgba(244,223,168,.45);
+}
+.aux{font-size:12px;color:var(--ink2);white-space:nowrap}
+sup.br{font-size:8px;font-weight:600;margin-left:1px;vertical-align:super;opacity:.9}
+.br廟{color:#8DD4B0;text-shadow:0 0 6px rgba(141,212,176,.6)}
+.br旺{color:#7CC49A}
+.br得,.br利{color:var(--gold);opacity:.85}
+.br平,.br閒{color:var(--ink2);opacity:.6}
+.br陷{color:#FF8070;text-shadow:0 0 6px rgba(255,128,112,.5)}
 .seal{
-  display:inline-block;font-style:normal;font-size:10px;line-height:1;color:#10140A;
-  padding:2.5px 3.5px;border-radius:2px;margin-left:2px;vertical-align:3px;letter-spacing:0;font-weight:700;
+  display:inline-block;font-style:normal;font-size:9.5px;line-height:1;color:#08100A;
+  padding:2px 3px;border-radius:1px;margin-left:2px;vertical-align:3px;letter-spacing:0;font-weight:900;
 }
-.seal祿{background:var(--wood);box-shadow:0 0 8px rgba(124,196,154,.7)}
-.seal權{background:var(--navy);box-shadow:0 0 8px rgba(127,168,217,.7)}
-.seal科{background:var(--gold);box-shadow:0 0 8px rgba(217,179,108,.7)}
-.seal忌{background:var(--cinnabar);color:#FFF;box-shadow:0 0 8px rgba(224,88,74,.7)}
-.csbs{font-size:10.5px;color:var(--gold);border-top:1px dotted rgba(217,179,108,.3);padding-top:3px;margin-top:4px;letter-spacing:.05em}
-.cfoot{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px dashed rgba(217,179,108,.25);padding-top:5px;margin-top:6px}
-.pname{font-size:15px;font-weight:700;color:var(--navy);letter-spacing:.1em}
-.pname em{font-style:normal;font-size:10px;color:#10140A;background:var(--navy);padding:1px 4px;border-radius:2px;margin-left:3px;vertical-align:2px;font-weight:700}
-.cell.ming .pname{color:#F0917F}
-.dx{font-size:11px;color:var(--ink2)}
-.gz{font-size:13px;color:var(--gold);font-weight:700}
+.seal祿{background:#7CC49A;box-shadow:0 0 10px rgba(124,196,154,.8)}
+.seal權{background:#7FA8D9;box-shadow:0 0 10px rgba(127,168,217,.8)}
+.seal科{background:#D9B36C;box-shadow:0 0 10px rgba(217,179,108,.8)}
+.seal忌{background:#E0584A;color:#FFF8F6;box-shadow:0 0 10px rgba(224,88,74,.8)}
+.csbs{
+  font-size:10px;color:rgba(217,179,108,.6);
+  border-top:1px solid rgba(217,179,108,.15);padding-top:3px;margin-top:4px;letter-spacing:.06em;
+}
+.cfoot{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  border-top:1px solid rgba(217,179,108,.18);padding-top:5px;margin-top:5px;
+}
+.pname{font-size:14px;font-weight:700;color:rgba(127,168,217,.9);letter-spacing:.12em}
+.pname em{font-style:normal;font-size:9px;color:#0A1220;background:rgba(127,168,217,.85);padding:1px 4px;border-radius:1px;margin-left:3px;vertical-align:2px;font-weight:700}
+.cell.ming .pname{color:#F09080}
+.dx{font-size:10px;color:rgba(168,159,140,.6)}
+.gz{font-size:12px;color:rgba(217,179,108,.7);font-weight:700}
 /* 中央星樞羅盤 */
 .chart::after{
   content:"紫　微　垣";grid-row:2/4;grid-column:2/4;
@@ -204,49 +282,97 @@ sup.br{font-size:9px;font-weight:400;margin-left:1px;vertical-align:super}
 /* 格局 */
 .patrow{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:10px}
 /* 快速摘要卡 */
-#res-summary-card{padding:0;overflow:hidden;background:linear-gradient(135deg,rgba(15,22,48,.95),rgba(22,32,68,.9));border:1px solid rgba(217,179,108,.35)}
+#res-summary-card{
+  padding:0;overflow:hidden;
+  background:linear-gradient(150deg,rgba(12,18,42,.98),rgba(7,11,28,.99));
+  border:1px solid rgba(217,179,108,.3);
+  box-shadow:0 0 60px rgba(30,60,120,.2), inset 0 0 40px rgba(0,0,0,.3);
+}
 .sumgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0}
-.sumcell{padding:16px 20px;border-right:1px solid rgba(217,179,108,.15);border-bottom:1px solid rgba(217,179,108,.15)}
-.sumcell:last-child{border-right:none}
-.sumcell .slabel{font-size:12px;letter-spacing:.2em;color:var(--ink2);margin-bottom:5px}
-.sumcell .sval{font-size:22px;font-weight:700;color:var(--starwhite);letter-spacing:.05em}
-.sumcell .ssub{font-size:13px;color:var(--gold);margin-top:3px}
-.sumcell .srating{font-size:18px;margin-top:2px}
-.sumcell.highlight .sval{color:var(--gold)}
-.sumtitle{padding:12px 20px 0;font-size:12px;letter-spacing:.3em;color:var(--ink2);text-transform:uppercase}
+.sumcell{
+  padding:18px 22px;
+  border-right:1px solid rgba(217,179,108,.12);
+  border-bottom:1px solid rgba(217,179,108,.12);
+  position:relative;transition:background .25s;
+}
+.sumcell:hover{background:rgba(217,179,108,.04)}
+.sumcell .slabel{
+  font-size:10px;letter-spacing:.35em;color:rgba(168,159,140,.7);margin-bottom:7px;
+  text-transform:uppercase;
+}
+.sumcell .sval{
+  font-size:20px;font-weight:700;color:var(--starwhite);letter-spacing:.06em;
+  font-variant-numeric:tabular-nums;line-height:1.2;
+}
+.sumcell .ssub{font-size:12px;color:var(--gold);margin-top:5px;opacity:.85}
+.sumcell .srating{font-size:16px;margin-top:5px;font-variant-numeric:tabular-nums}
+.sumcell.highlight{background:linear-gradient(135deg,rgba(217,179,108,.08),rgba(217,179,108,.03))}
+.sumcell.highlight .sval{color:var(--gold2)}
+.sumtitle{
+  padding:12px 22px 0;font-size:10px;letter-spacing:.4em;
+  color:rgba(168,159,140,.6);text-transform:uppercase;
+}
 
 .patchip{
-  display:inline-block;border:1px solid var(--gold);color:var(--gold2);
-  padding:4px 14px;font-weight:700;letter-spacing:.15em;font-size:15px;border-radius:3px;
-  background:linear-gradient(135deg,rgba(217,179,108,.14),rgba(217,179,108,.04));
-  box-shadow:0 0 14px rgba(217,179,108,.18);
+  display:inline-block;border:1px solid rgba(217,179,108,.5);color:var(--gold2);
+  padding:4px 14px;font-weight:700;letter-spacing:.15em;font-size:14px;border-radius:2px;
+  background:linear-gradient(135deg,rgba(217,179,108,.12),rgba(217,179,108,.03));
+  box-shadow:0 0 16px rgba(217,179,108,.15);
 }
 .patname{color:var(--navy)}
 #res-patterns p{margin:7px 0;font-size:15.5px}
 /* 十二宮詳解 */
-details{border:1px solid rgba(217,179,108,.22);border-radius:4px;background:rgba(14,19,38,.6);margin-bottom:9px;transition:border-color .25s}
-details:hover{border-color:rgba(217,179,108,.5)}
-details[open]{border-color:rgba(217,179,108,.45);box-shadow:0 0 18px rgba(217,179,108,.08)}
-summary{
-  cursor:pointer;padding:11px 15px;font-weight:700;letter-spacing:.08em;color:var(--gold2);
-  list-style:none;position:relative;transition:color .2s;
+details{
+  border:1px solid rgba(217,179,108,.18);border-radius:3px;
+  background:linear-gradient(160deg,rgba(10,14,32,.92),rgba(7,10,24,.96));
+  margin-bottom:8px;transition:border-color .25s,box-shadow .25s;
 }
-summary:hover{color:#FFF3D6}
-summary::before{content:"✧";color:var(--cinnabar);margin-right:9px;font-size:13px}
-details[open] summary{border-bottom:1px dashed rgba(217,179,108,.25)}
+details:hover{border-color:rgba(217,179,108,.4)}
+details[open]{
+  border-color:rgba(217,179,108,.4);
+  box-shadow:0 4px 24px rgba(0,0,0,.4), inset 0 0 40px rgba(0,0,0,.2);
+}
+summary{
+  cursor:pointer;padding:12px 16px;font-weight:700;letter-spacing:.08em;color:var(--gold2);
+  list-style:none;position:relative;transition:color .2s;
+  display:flex;align-items:center;gap:10px;
+}
+summary:hover{color:#FFF8E8}
+summary::before{
+  content:"✧";color:var(--cinnabar);font-size:12px;flex-shrink:0;
+  filter:drop-shadow(0 0 6px rgba(224,88,74,.7));
+}
+summary::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(217,179,108,.15),transparent);
+  margin-left:4px;
+}
+details[open] summary{border-bottom:1px solid rgba(217,179,108,.2)}
 summary::-webkit-details-marker{display:none}
-.pbody{padding:10px 17px 15px;font-size:15px}
-.pbody p{margin:7px 0}
+.pbody{padding:12px 18px 16px;font-size:15px}
+.pbody p{margin:8px 0}
 /* 流年 */
 .lnctrl{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
 .ln-mini h4{margin:14px 0 6px;color:var(--navy);letter-spacing:.15em}
 .mini{font-size:13.5px;color:var(--ink2)}
 .hua祿{color:var(--wood)} .hua權{color:var(--navy)} .hua科{color:var(--gold)} .hua忌{color:var(--cinnabar)}
-.r5{color:#d4a017;font-weight:bold} .r4{color:#4a8f5c} .r3{color:var(--ink2)} .r2{color:#8a6820} .r1{color:var(--cinnabar);font-weight:bold}
+.r5{color:#E8C040;font-weight:700;text-shadow:0 0 8px rgba(232,192,64,.4)}
+.r4{color:#6EC498;font-weight:600}
+.r3{color:var(--ink2)}
+.r2{color:#C09040}
+.r1{color:#E06050;font-weight:700}
 .csnap{font-size:11px;color:var(--gold);letter-spacing:.05em;padding:2px 4px;margin:2px 0;background:rgba(217,179,108,.08);border-radius:2px;line-height:1.4}
 .key-palace{border:1px solid rgba(217,179,108,.35)!important}
 .hist-btn{background:rgba(217,179,108,.12);border:1px solid rgba(217,179,108,.3);color:var(--starwhite);padding:4px 10px;border-radius:3px;font-size:12px;cursor:pointer;letter-spacing:.05em}
 .hist-btn:hover{background:rgba(217,179,108,.25)}
+.nm-filter-bar{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:8px 0;border-bottom:1px solid rgba(217,179,108,.15);margin-bottom:8px}
+.nm-filter-label{font-size:12px;letter-spacing:.15em;color:var(--ink2)}
+.nm-flt{background:rgba(217,179,108,.08);border:1px solid rgba(217,179,108,.2);color:var(--ink2);padding:3px 10px;border-radius:3px;font-size:12px;cursor:pointer}
+.nm-flt.on{background:rgba(217,179,108,.25);color:var(--starwhite);border-color:var(--gold)}
+.nm-filter-sep{color:var(--ink2);font-size:12px}
+.nm-fsearch{background:rgba(255,255,255,.05);border:1px solid rgba(217,179,108,.25);color:var(--starwhite);padding:3px 8px;border-radius:3px;font-size:12px;width:90px;outline:none}
+.nm-fsearch:focus{border-color:var(--gold)}
+.nm-filter-empty{padding:20px;text-align:center;color:var(--ink2);font-size:13px;width:100%}
 /* 合婚 */
 .score{text-align:center;margin:10px 0 12px}
 .scnum{
@@ -444,7 +570,7 @@ footer .stamp{
   #sky,.tabs,.btnrow,.lnctrl,.noprint,header .deco,.warnbox{display:none !important}
   /* 摘要卡在PDF中顯示但重排為列印樣式 */
   #res-summary-card{display:block !important;background:#fff !important;border:1px solid #888 !important;margin-bottom:4mm}
-  .sumgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .sumgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(35mm,1fr));gap:0}
   .sumcell{padding:3mm 4mm;border-right:1px solid #ccc;border-bottom:1px solid #ccc}
   .sumcell .slabel{font-size:7.5pt;color:#666;letter-spacing:.1em}
   .sumcell .sval{font-size:11pt;font-weight:700;color:#1A1A1A}
@@ -543,6 +669,9 @@ footer .stamp{
   /* 廟旺色 */
   .br廟,.br旺{color:#3E6B4F} .br得,.br利{color:#8C7242}
   .br平,.br閒{color:#666} .br陷{color:#A93B2A}
+  /* 命盤格一句定論 */
+  .csnap{font-size:7pt;color:#8C7242;padding:1px 2px;background:none;border-radius:0;line-height:1.3;border-top:1px dotted #ddd;margin-top:1mm}
+  .key-palace{border:1px solid #8C7242 !important}
   /* 格局 chip */
   .patrow{gap:4px;margin-bottom:1.5mm}
   .patchip{border:1px solid #A93B2A;color:#A93B2A;padding:1px 7px;font-size:9.5pt;background:#fff;letter-spacing:.1em;font-weight:700;border-radius:1px}
@@ -728,7 +857,7 @@ footer .stamp{
     <div class="card"><h2>紫微斗數命盤</h2><div class="chartwrap"><div id="res-chart"></div></div></div>
     <div class="card"><h2>格局與身宮</h2><div id="res-patterns"></div></div>
     <div class="card"><h2>十二宮詳解</h2><div id="res-palaces"></div></div>
-    <div class="card"><h2>流年運勢</h2>
+    <div class="card" id="liunian-section"><h2>流年運勢</h2>
       <div class="lnctrl">
         <label>查詢年份</label>
         <input type="text" id="ln-year" size="6" inputmode="numeric">
@@ -1134,10 +1263,14 @@ function autoYongShen(bz){
   // ── 步驟3: 從格判斷(極強/極弱特殊格) ──
   let geju='', isConf=false;
 
-  // 從格:日主極弱,全局無生扶之氣
+  // 從格:日主極弱,全局無生扶之氣(天干無比劫透出，地支無印根)
   if(strongFlag<=-2){
     const biJ=sc[de], yinJ=sc[sheng];
-    if(biJ+yinJ<0.5){
+    // 更嚴格:天干沒有比劫且印氣極弱
+    const allGans=[P.year[0],P.month[0],P.hour[0]];
+    const hasBiGan=allGans.some(g=>GAN_ELEM[g]===de);
+    const hasYinGan=allGans.some(g=>GAN_ELEM[g]===sheng);
+    if(!hasBiGan&&!hasYinGan&&biJ+yinJ<0.8){
       // 判斷從哪一五行
       let maxE=ELEMS[0], maxV=0;
       for(const e of ELEMS){ if(sc[e]>maxV){ maxV=sc[e]; maxE=e; } }
@@ -1552,11 +1685,34 @@ TX.liunianText=function(SM,year,bz,zw,age){
     mergeLines.push('💕 感情合參:八字日支受衝/刑、紫微感情宮又化忌——今年感情波折明顯,已婚者防爭執冷戰,單身者防爛桃花;感情問題宜冷靜處理,別衝動。');
   // 若沒有特別合參結論，給一個總結
   if(mergeLines.length===0){
-    const overall=bzFinance||bzCareer?'今年八字主動能量充足':'今年八字以內斂蓄積為主';
-    const zwOverall=lu?'紫微化祿入'+lu+'添加助力':'紫微無特別加持';
-    mergeLines.push('📊 兩套合參:'+overall+','+zwOverall+';整體運勢平穩推進,按部就班即可。');
+    const tgTheme={'比肩':'強調自我主張與平輩競爭','劫財':'財務波動與合夥衝突','食神':'才華展現與生活享受','傷官':'創意突破與官非口舌','正財':'穩定收入與踏實積累','偏財':'機緣財與業務拓展','正官':'晉升評核與形象管理','七殺':'壓力挑戰與執行衝刺','正印':'學習進修與貴人庇護','偏印':'靈感創作與孤立沉澱'};
+    const bzTheme=tgTheme[tg]||'個人主題深化';
+    const zwTheme=lu?lu+'方面機緣旺':lp.name+'成為今年主場';
+    const advice=(['正官','七殺','偏財','正財'].includes(tg)&&(lu&&['財帛宮','官祿宮'].includes(lu)))?
+      '八字與紫微方向一致,今年可主動出擊,勝算高。':
+      '兩套各有側重,選定一個主攻方向,不要分散資源。';
+    mergeLines.push('📊 今年八字主題是「'+bzTheme+'」,紫微面'+zwTheme+';'+advice);
   }
   out.push('【兩套合參】'+mergeLines.join(' '));
+  // ── 本年三大注意事項 ─────────────────────────────────────────
+  const warns3=[];
+  // 1. 財務警示
+  if(zwFinanceJi) warns3.push('💰 財務:化忌入財宮,嚴控支出、暫緩大型投資,現金為王。');
+  else if(R.isChong(yZ,dZ)) warns3.push('💰 財務:日支受沖,合夥財務易生變,合約用印前再三確認。');
+  // 2. 健康警示
+  const SHA_ZHI=[2,5,8,11]; // 寅申巳亥 四長生,驛馬年易波動
+  if(SHA_ZHI.includes(yZ)) warns3.push('🏥 健康:今年地支動盪('+SM.ZHI[yZ]+'),注意交通安全與勿過度勞累。');
+  else if(R.isXing(yZ,dZ)) warns3.push('🏥 健康:流年刑日支,注意口腔、腸胃與法律文書問題。');
+  // 3. 人際/感情警示
+  if(zwLoveJi) warns3.push('💕 感情:化忌入感情宮,婚姻關係需主動維繫,防冷戰或誤解。');
+  else if(yZ===bz_yZ) warns3.push('⚡ 本命年:太歲壓身,不宜大動(搬家、結婚、投資),以靜制動。');
+  else if(R.isChong(yZ,bz_yZ)) warns3.push('⚡ 沖太歲:變動衝擊大,安太歲、多行善,凡事留後路。');
+  // 補滿三條
+  if(warns3.length===0) warns3.push('✅ 今年無明顯重大警示,按部就班推進即可。');
+  if(warns3.length===1) warns3.push('📋 人際:'+SM.GAN[yG]+'年流年天干「'+SM.tenGod(dG,yG)+'」當令,注意'+({'比肩':'平輩競爭合夥','劫財':'財務分配與合夥','食神':'才藝表達展現','傷官':'創意與口舌是非','正財':'正職收入穩定','偏財':'投機偏財起伏','正官':'職場升遷評核','七殺':'工作壓力與競爭','正印':'學習進修貴人','偏印':'靈感孤立需覺察'}[SM.tenGod(dG,yG)]||'人際關係')+'面向。');
+  if(warns3.length===2) warns3.push('🌟 貴人方向:流年化祿「'+sh[0]+'」入'+(lu||'盤外')+',主動往'+(lu||'貴人')+'方向尋求協助,事半功倍。');
+  // 三大注意各自獨立段落
+  warns3.slice(0,3).forEach((w,i)=>out.push((i===0?'【本年三大注意】':'')+w));
   return out;
 };
 TX.hehun=function(SM,b1,b2){
@@ -1657,12 +1813,56 @@ TX.hehun=function(SM,b1,b2){
     D:'沖剋偏多,不代表不能成,而是需要刻意設計相處模式才能長久。'
   };
 
+  // ── 最適婚期建議 ────────────────────────────────────────────
+  const curYear=new Date().getFullYear();
+  const weddingYears=[];
+  // 找未來5年中，流年對兩人日支皆無沖刑的年份
+  for(let y=curYear;y<=curYear+8;y++){
+    const yZ2=((y-4)%12+12)%12;
+    const yG2=((y-4)%10+10)%10;
+    const bad1=R.isChong(yZ2,d1[1])||R.isXing(yZ2,d1[1]);
+    const bad2=R.isChong(yZ2,d2[1])||R.isXing(yZ2,d2[1]);
+    const good1=R.isLiuhe(yZ2,d1[1])||R.isSanhe(yZ2,d1[1]);
+    const good2=R.isLiuhe(yZ2,d2[1])||R.isSanhe(yZ2,d2[1]);
+    // 流年天干對兩人用神的影響
+    const yElem=SM.ZHI_ELEM[yZ2];
+    const yGElem=SM.GAN_ELEM[yG2];
+    const bothBadElem=(ay1.ji.includes(yGElem)&&ay2.ji.includes(yGElem)); // 共同忌年
+    const bothGoodElem=(ay1.yong.includes(yGElem)&&ay2.yong.includes(yGElem)); // 共同喜年
+    const isTaiSui1=yZ2===b1.pillars.year[1], isTaiSui2=yZ2===b2.pillars.year[1];
+    if(!bad1&&!bad2&&!isTaiSui1&&!isTaiSui2){
+      const boost=(good1||good2?'吉合':'')+(bothGoodElem?'+用神旺':'');
+      const boostStr=boost?'('+boost+')':'';
+      weddingYears.push({y,boost:boostStr,score:(good1?1:0)+(good2?1:0)+(bothGoodElem?1:0)-(bad1?2:0)-(bad2?2:0)-(bothBadElem?1:0)});
+    }
+  }
+  weddingYears.sort((a,b)=>b.score-a.score);
+  let weddingAdvice='';
+  if(weddingYears.length){
+    const top=weddingYears.slice(0,2);
+    weddingAdvice='近年最適婚期:'+top.map(w=>w.y+'年'+w.boost).join('、')+'為宜。';
+  } else {
+    weddingAdvice='近年流年皆有沖刑,建議請命理師擇吉時、選吉月以化解。';
+  }
+  // 忌婚年
+  const avoidYears=[];
+  for(let y=curYear;y<=curYear+5;y++){
+    const yZ2=((y-4)%12+12)%12;
+    const isTaiSui1=yZ2===b1.pillars.year[1], isTaiSui2=yZ2===b2.pillars.year[1];
+    const chong1=R.isChong(yZ2,d1[1]), chong2=R.isChong(yZ2,d2[1]);
+    const yGElem2=SM.GAN_ELEM[((y-4)%10+10)%10];
+    const bothBad2=(ay1.ji.includes(yGElem2)&&ay2.ji.includes(yGElem2));
+    if(isTaiSui1||isTaiSui2||(chong1&&chong2)||bothBad2)
+      avoidYears.push(y+'年('+(isTaiSui1?'甲方本命年':isTaiSui2?'乙方本命年':bothBad2?'雙方共同忌年':'雙方日支均沖')+')');
+  }
+  const avoidAdvice=avoidYears.length?'建議避開:'+avoidYears.join('、')+'。':'';
   return {
     score, verdict, grade,
     verdictDesc: verdictDesc[grade],
     sc1, sc2, sc3,
     n1, n2, n3,
     issues, advice,
+    weddingAdvice, avoidAdvice,
     notes:[...n1,...n2,...n3]
   };
 };
@@ -2068,6 +2268,21 @@ TX.baziReport2=function(SM,bz,gender){
   // 1 命局總覽
   const sec1=[];
   sec1.push(TX.DAYMASTER[SM.GAN[dG]]);
+  // ── 命主一句話 ──
+  const DAYMASTER_LINE={
+    '甲':{極強:'甲木參天,領袖氣質天生,但剛則易折——需修圓融,才能成就大業。',偏強:'甲木旺發,進取心強,適合獨立創業或擔任先鋒角色。',中和:'甲木中正,人緣廣結,在群體中擔任推動者最有成就感。',偏弱:'甲木弱枝,根基尚淺,先深耕一個領域再圖擴張。',極弱:'甲木飄零,宜選擇有組織靠山的環境,中年後逐漸站穩自己的位置。'},
+    '乙':{極強:'乙木繁茂,適應力驚人,擅於在複雜環境中找到生機,越亂越能發揮。',偏強:'乙木柔韌,外柔內剛,以靈活周旋取代正面衝突是最大優勢。',中和:'乙木和順,人際關係是最大資產,文教美學公關皆得心應手。',偏弱:'乙木細苗,需要好的土壤——貴人、環境、時機缺一不可。',極弱:'乙木凋零,宜找到能栽培你的伯樂,單打獨鬥不是現階段的選項。'},
+    '丙':{極強:'丙火日中,光芒太盛易招妒——以名號取人不如以實績立業。',偏強:'丙火旺盛,感染力與行動力俱佳,最適合帶領團隊往前衝。',中和:'丙火溫暖,樂觀外向,天生活動家,讓人如沐春風。',偏弱:'丙火需薪傳,借助平台與貴人才能充分發光,獨自悶燒效率低。',極弱:'丙火微弱,宜厚積薄發,低調積累至三十五歲後再積極展現自我。'},
+    '丁':{極強:'丁火旺熾,精神力強,但易過熱——定期讓自己冷靜沉澱才能走得長遠。',偏強:'丁火有力,洞察細膩,以智慧和精準判斷勝過蠻力。',中和:'丁火溫煦,細膩體貼,在需要耐心與精緻度的領域中最能出類拔萃。',偏弱:'丁火需薪傳,找一位真正懂你的導師或夥伴,能讓你事半功倍。',極弱:'丁火如燭,宜擇一精深,博而不專會讓優勢全部稀釋。'},
+    '戊':{極強:'戊土如山,穩重可靠,但山不移則失機——需主動培養對變化的敏感度。',偏強:'戊土厚實,可靠度極高,管理監督職位最能發揮。',中和:'戊土均衡,行事穩健,財務資源管理是天生優勢。',偏弱:'戊土疏薄,借力使力優先——加入有資源有背景的組織比自立門戶更有效率。',極弱:'戊土貧瘠,根基需要時間養成,先求穩定再求突破,不要急。'},
+    '己':{極強:'己土過旺,容易執念太深——多走出去接觸新事物,開闊視野才能突破框架。',偏強:'己土豐饒,細心周到,後勤服務輔助型角色最能展現價值。',中和:'己土中和,親切踏實,人際溫和是讓所有事情推進的潤滑劑。',偏弱:'己土需培育,結構清晰的環境讓你最有安全感也最有生產力。',極弱:'己土貧瘠,找一個有前輩帶領的環境,避免一開始就扛全部責任。'},
+    '庚':{極強:'庚金剛猛,意志力超強,但太硬易折——學會示弱與讓步,才能留住盟友。',偏強:'庚金有力,執行力一流,業務攻堅與目標達成是天生強項。',中和:'庚金均衡,原則鮮明,法律財務需要公正判斷的領域最適合你。',偏弱:'庚金需火煉,壓力反而是激發潛能的催化劑,不要逃避困境。',極弱:'庚金未煉,先紮根本業練就基本功,再尋求突破的機會。'},
+    '辛':{極強:'辛金過銳,容易招妒——才華不必全部展示,留三分低調換七分長久。',偏強:'辛金精緻,品味與審美出眾,精品藝術時尚美容皆有天分。',中和:'辛金中正,外表優雅內心堅毅,兼顧人際與專業的能力均衡。',偏弱:'辛金需水洗,貴人點撥是你最需要的——主動向前輩請益。',極弱:'辛金柔弱,宜從事精細技術型工作,以一技之精換取穩定。'},
+    '壬':{極強:'壬水氾濫,思路廣博但易分散——設一個五年主目標,讓能量聚焦。',偏強:'壬水奔騰,思路活躍,快速反應與靈活變通是最大競爭力。',中和:'壬水通暢,智慧靈活,貿易流通傳媒網路皆能發揮所長。',偏弱:'壬水需源頭活水——持續學習和建立人脈是補充能量的最佳方式。',極弱:'壬水枯竭,宜靜心蓄積,等待水量充沛再出手,急不得。'},
+    '癸':{極強:'癸水旺滿,感知力超強但易情緒淹沒——建立情緒邊界是一生的功課。',偏強:'癸水豐沛,直覺敏銳,心理諮商、藝術、哲學領域特別有天分。',中和:'癸水潤澤,溫柔細膩,在滋養輔助型職位最能長久發光。',偏弱:'癸水細流,柔性影響力是你的武器——以溫柔持續滋潤比急進更有效。',極弱:'癸水微弱,選擇耗損少的環境至關重要,保護能量才能走得遠。'}
+  };
+  const dl=DAYMASTER_LINE[SM.GAN[dG]];
+  if(dl&&dl[ay.strengthLevel]) sec1.push('【命主特質】'+dl[ay.strengthLevel]);
   sec1.push('【格局】'+ay.geju+'　【強弱】'+ay.strengthLevel+'(同黨力量約佔'+Math.round(ay.ratio*100)+'%)');
   if(ay.seasonDesc) sec1.push('【調候】'+ay.seasonDesc+'。');
   const _fmt=(label,arr)=>arr.length?'【'+label+'】'+arr.join('、'):'';
@@ -2084,6 +2299,25 @@ TX.baziReport2=function(SM,bz,gender){
     sec1.push('身弱者宜生扶:命局日主氣弱,需印星滋養、比劫扶身,行運走向印比時才能穩住根基、接得住財官。');
   else
     sec1.push('命局中和:強弱適中,行運不偏不倚,各方面均衡發展。');
+  // ── 格局成立與破壞條件 ──
+  const GE_WARN={
+    '從兒格':'【從格注意】從兒格忌比劫、印星大運入場——一旦行比劫/印運,同黨力量回頭就是破格,那幾年運勢大起大落需謹慎。',
+    '從財格':'【從格注意】從財格忌比劫、印星——行比劫/印運時財星受剋,格局動搖,財務易受衝擊。',
+    '從殺格':'【從格注意】從殺格忌食傷制殺、比劫——行食傷或比劫運時,七殺被制或格局被破,需特別留意。',
+    '建祿格':'【格局】建祿格以財官為用,忌命局財官受傷——若行比劫運奪財,或印運壞官,格局效用減弱。',
+    '月刃格':'【格局】月刃格剛強,最忌再行比劫運(比劫疊比劫易惹官非),宜行官殺運制刃成格。',
+    '食神格':'【格局】食神格忌梟神(偏印)奪食——若命有偏印或行偏印運,食神受制,創作才華大打折扣。',
+    '傷官格':'【格局】傷官格最忌見官——若命有正官且無印化解,或行官運,傷官見官易生官非是非。',
+    '正財格':'【格局】正財格忌身弱——若日主無根或行比劫運奪財,財多反成負擔;需確認日主有根才能擔財。',
+    '偏財格':'【格局】偏財格忌比劫重重——比劫太多會奪財,合夥生意尤其要立合約保護。',
+    '正官格':'【格局】正官格忌傷官——命有傷官混雜或行傷官運,官職名譽易受損,需印星化解。',
+    '七殺格':'【格局】七殺格必需制化——無食傷制殺或印化殺,七殺格易有衝突意外;制化得宜方是英雄格。',
+    '正印格':'【格局】正印格忌財破印——財旺剋印時,學業貴人運減弱,物質追求過重反失格局優勢。',
+    '偏印格':'【格局】偏印格忌食神——食神剋偏印,才華被壓抑;另偏印旺則依賴心重,需主動出擊。'
+  };
+  // 找格局對應
+  const geKey=Object.keys(GE_WARN).find(k=>ay.geju.startsWith(k));
+  if(geKey) sec1.push(GE_WARN[geKey]);
   if(ay.yong.length){
     const life=TX.ELEM_LIFE[ay.yong[0]]||{};
     sec1.push('【開運建議】用神為「'+ay.yong.join('、')+'」:幸運色 '+(life.color||'—')+';有利方位 '+(life.dir||'—')+';適合往 '+(life.ind||'—')+' 等領域發展。');
@@ -2694,6 +2928,26 @@ TX.daxianBrief=function(SM,zw,bz,age,inp){
     lines.push('【大限飛星入本命】這十年的四化飛星直接引動本命盤以下領域:');
     flyLines.forEach(l=>lines.push(l));
   }
+  // ── 本大限行動建議 ────────────────────────────────────────────
+  const dxRaw2=SM.scoreDaxian(SM,zw,bz,age);
+  const dxSc=dxRaw2?dxRaw2.score:50;
+  const ACTION_BY_PAL={
+    '命宮':'這十年是定義自我的關鍵期,重大決定（轉職/創業/成家）都應在此十年內定調。',
+    '兄弟宮':'這十年合夥人脈是主軸,平輩現金流也是重點,適合拓展合作關係。',
+    '夫妻宮':'這十年婚姻感情是核心功課,單身者把握婚緣,已婚者用心經營婚姻。',
+    '子女宮':'這十年子女晚輩關係是主題,桃花創作也在此爆發,適合培養第二專長。',
+    '財帛宮':'這十年財運主軸,主動求財成效最佳,是累積財富的關鍵十年。',
+    '疾厄宮':'這十年健康是重點,宜定期健檢保養,情緒管理也比其他時期重要。',
+    '遷移宮':'這十年適合外出發展、移居異地或開拓海外市場,貴人在遠方。',
+    '交友宮':'這十年靠人脈,廣結善緣、善用朋友資源是最有效的策略。',
+    '官祿宮':'這十年事業是重心,全力衝刺職涯,是一生事業最關鍵的十年之一。',
+    '田宅宮':'這十年適合置產、安頓家庭基地,財庫管理比開源更重要。',
+    '福德宮':'這十年精神追求比物質重要,宜培養信仰興趣,過度追逐外物反失去重心。',
+    '父母宮':'這十年長輩貴人是助力,文書學歷證照也有助力,善用前輩資源。'
+  };
+  const actionBase=ACTION_BY_PAL[dx.name]||'';
+  const actionScore=dxSc>=70?'整體評級良好,可主動積極出手。':dxSc>=50?'整體評級中等,謀定後動、步步為營。':'評級偏弱,此十年以守成避險為主,等待下一個大限的機會。';
+  lines.push('【本大限行動建議】'+actionBase+actionScore);
   return lines;
 };
 /* ===== 小限批命 ===== */
@@ -3900,13 +4154,35 @@ function chartHTML(zw,R){
       const hua=zw.sihua[mainStar];
       const sha=p.aux.filter(a=>['擎羊','陀羅','火星','鈴星','地空','地劫'].includes(a));
       const ji=p.aux.filter(a=>['左輔','右弼','文昌','文曲','天魁','天鉞','祿存'].includes(a));
-      let snap=mainStar+(p.stars.length>1?'+'+p.stars.slice(1).join('+'):'');
-      if(hua) snap+='化'+hua;
-      if(br==='陷') snap+=' ⚠陷';
-      else if(br==='廟'||br==='旺') snap+=' ✦'+br;
-      if(sha.length) snap+=' 煞×'+sha.length;
-      if(ji.length) snap+=' 吉×'+ji.length;
-      snapLine='<div class="csnap">'+snap+'</div>';
+      // 主星×宮位×廟陷 動態一句定論
+      const SNAP_CORE={
+        '紫微':{命:'天生領導氣場,一生自帶貴氣',財:'財由地位來,管理型求財最順',官:'主掌實權,宜往管理核心發展',夫:'另一半有能力有地位',福:'精神享受要高品質,不將就'},
+        '天機':{命:'謀略智慧型,靠腦袋吃飯',財:'以智取財,企劃顧問有收穫',官:'策略規劃強,適合幕僚或顧問',夫:'另一半聰明多變,相處需耐心',福:'思慮過多易失眠,需靜心'},
+        '太陽':{命:'積極外向,名聲是最大資產',財:'靠名聲人脈生財,公開形象帶財',官:'事業重名望,政商公眾最發光',夫:'另一半光明正直,但付出多',福:'享受分享與被需要的感覺'},
+        '武曲':{命:'剛毅果決,靠實力與行動力立命',財:'正財穩健,靠努力踏實累積',官:'執行力強,業績導向最有成就',夫:'另一半務實能幹,但表達較硬',福:'享受成就感,閒不住型'},
+        '天同':{命:'溫和隨和,福氣自來不強求',財:'財隨緣來,守住比追求重要',官:'和諧型工作環境最有效率',夫:'另一半溫柔體貼,相處舒服',福:'享受生活小確幸,知足常樂'},
+        '廉貞':{命:'才幹與魅力兼具,易走極端',財:'靠才能與人際生財,業務型',官:'公關周旋一流,政商皆可',夫:'另一半才幹強但感情複雜',福:'享受刺激與掌控感'},
+        '天府':{命:'穩健保守,天生守成持家',財:'善理財聚財,財庫豐厚',官:'管理行政強,適合財務後勤',夫:'另一半穩重可靠,婚姻安穩',福:'享受安穩與豐足感'},
+        '太陰':{命:'細膩感性,財緣與人緣俱佳',財:'陰財暗進,不動產或穩健投資',官:'幕後貢獻型,適合輔助或研究',夫:'另一半溫柔體貼,感情細水長流',福:'享受安靜與美感生活'},
+        '貪狼':{命:'多才多藝,桃花與才華並具',財:'偏財運旺,多元收入最合適',官:'才藝交際打天下,人脈即財脈',夫:'另一半多才有魅力,感情豐富',福:'享受多元刺激,不愛一成不變'},
+        '巨門':{命:'口才與洞察力是最大武器',財:'靠口才協商談判生財',官:'以說以寫立業,傳媒教學強',夫:'另一半口才好但嘴硬,需磨合',福:'享受辯論鑽研,腦袋閒不住'},
+        '天相':{命:'公正持平,靠規則與關係立身',財:'薪資正財穩,體制內安穩',官:'適合法政財務,公正有才',夫:'另一半穩重有禮,婚姻講體面',福:'享受有秩序的安穩生活'},
+        '天梁':{命:'蔭護力強,逢凶必有貴人解',財:'意外之財或長輩資助',官:'長輩提攜型,醫療公益最發揮',夫:'另一半有蔭護力或年齡差',福:'享受助人與被尊重的感覺'},
+        '七殺':{命:'衝勁魄力型,獨當一面最強',財:'靠拚搏行動力賺錢',官:'創業開疆型,獨立掌權最合適',夫:'另一半強勢主導,愛恨分明',福:'享受挑戰與征服的成就感'},
+        '破軍':{命:'破舊立新,一生多次重大轉折',財:'財來財去,敢換敢賺',官:'改革開創型,不適合守成',夫:'感情多波折,緣分聚散明顯',福:'享受突破與自由,討厭束縛'}
+      };
+      const palKey={'命宮':'命','財帛宮':'財','官祿宮':'官','夫妻宮':'夫','福德宮':'福'};
+      const pk=palKey[p.name];
+      const coreDesc=(SNAP_CORE[mainStar]&&pk)?SNAP_CORE[mainStar][pk]:'';
+      // 廟陷修飾
+      const brSuffix=br==='廟'||br==='旺'?'('+br+'✦,能量全發)'
+        :br==='陷'?'(陷⚠,需克服阻力)':'';
+      // 四化修飾
+      const huaSuffix=hua?'・化'+hua+(hua==='忌'?'⚠':''):'';
+      // 煞吉
+      const auxSuffix=(sha.length?` 煞×${sha.length}`:'')+(ji.length?` 吉×${ji.length}`:'');
+      const snapTxt=coreDesc+brSuffix+huaSuffix+auxSuffix;
+      snapLine='<div class="csnap">'+(snapTxt||mainStar)+'</div>';
     }
     h+='<div class="cell'+(p.name==='命宮'?' ming':'')+(z===cxxZ?' has-xxnow':'')+(KEY_PALACES.includes(p.name)?' key-palace':'')+'" style="grid-row:'+pos[0]+';grid-column:'+pos[1]+'">'
       +nowBadge
@@ -3929,73 +4205,13 @@ function renderResult(R){
   (function(){
     const yr=new Date().getFullYear();
     const age=yr-bz.byear+1;
-    // 當前大限
     let dx=null;
     for(const p of zw.palaces){ if(p.daxian&&age>=p.daxian[0]&&age<=p.daxian[1]){ dx=p; break; } }
-    // 今年小限
     const xxZ=SM.xiaoxian(P.year[1],inp.g,age);
     const xxP=zw.palaces[xxZ];
-    // 用神
     const ay=SM.autoYongShen(bz);
-    const st=SM.fiveElemStats(bz);
-    // 大限評級
     const dxRaw=dx?SM.scoreDaxian(SM,zw,bz,age):null;
-    const dxRt=dxRaw?ratingStars(dxRaw.score):{stars:'—',cls:''};
-    // 小限評級(快速算)
-    let xxSc=50;
-    const BPTS={'廟':10,'旺':8,'得':6,'利':5,'平':4,'閒':3,'陷':1};
-    let sp=0,scnt=0;
-    xxP.stars.forEach(s=>{ const br=SM.bright(s,xxZ); sp+=(BPTS[br]||4); scnt++; });
-    if(scnt>0) xxSc+=(sp/scnt-5)*3;
-    Object.entries(zw.sihua).filter(([s])=>xxP.stars.includes(s)||xxP.aux.includes(s))
-      .forEach(([s,h])=>{ if(h==='祿') xxSc+=6; else if(h==='權') xxSc+=4; else if(h==='科') xxSc+=3; else xxSc-=8; });
     const lnG=((yr-4)%10+10)%10;
-    const HH=['祿','權','科','忌'];
-    SM.SIHUA[lnG].forEach((star,i)=>{
-      let atZ=-1;
-      for(let z=0;z<12;z++){ if(zw.palaces[z].stars.includes(star)||zw.palaces[z].aux.includes(star)){ atZ=z; break; } }
-      if(atZ===xxZ){ if(HH[i]==='祿') xxSc+=10; else if(HH[i]==='權') xxSc+=7; else if(HH[i]==='科') xxSc+=4; else xxSc-=12; }
-    });
-    xxSc-=xxP.aux.filter(a=>['擎羊','陀羅','火星','鈴星','地空','地劫'].includes(a)).length*4;
-    xxSc+=xxP.aux.filter(a=>['左輔','右弼','文昌','文曲','天魁','天鉞','祿存','天馬'].includes(a)).length*3;
-    if(dx&&xxZ===dx.zhi) xxSc+=6;
-    xxSc=Math.max(5,Math.min(99,Math.round(xxSc)));
-    const xxRt=ratingStars(xxSc);
-    // 格局年份
-    const dxYrFrom=dx?bz.byear+dx.daxian[0]-1:0;
-    const dxYrTo=dx?bz.byear+dx.daxian[1]-1:0;
-
-    $('res-summary').innerHTML=
-      '<div class="sumtitle">命盤速覽 · '+yr+'年 · 虛歲 '+age+'</div>'
-      +'<div class="sumgrid">'
-      // 格局+強弱
-      +'<div class="sumcell highlight">'
-        +'<div class="slabel">八字格局</div>'
-        +'<div class="sval">'+ay.geju+'</div>'
-        +'<div class="ssub">'+ay.strengthLevel+' · 用神:'+ay.yong.join('、')+'</div>'
-      +'</div>'
-      // 當前大限
-      +'<div class="sumcell">'
-        +'<div class="slabel">當前大限</div>'
-        +'<div class="sval">'+(dx?dx.daxian[0]+'–'+dx.daxian[1]+'歲 '+dx.name:'—')+'</div>'
-        +'<div class="ssub">'+(dx?SM.GAN[dx.gan]+SM.ZHI[dx.zhi]+' · '+dxYrFrom+'–'+dxYrTo:'')+'</div>'
-        +'<div class="srating '+(dxRt.cls||'')+'">'+(dxRaw?dxRt.stars+' '+dxRaw.score+'分':'')+'</div>'
-      +'</div>'
-      // 今年小限
-      +'<div class="sumcell">'
-        +'<div class="slabel">今年小限 ('+yr+')</div>'
-        +'<div class="sval">'+xxP.name+'</div>'
-        +'<div class="ssub">'+SM.ZHI[xxZ]+'宮 · '+xxP.stars.join('、')+(xxP.stars.length?'':'借對宮')+'</div>'
-        +'<div class="srating '+xxRt.cls+'">'+xxRt.stars+' '+xxSc+'分</div>'
-      +'</div>'
-      // 今年太歲
-      +'<div class="sumcell">'
-        +'<div class="slabel">今年流年</div>'
-        +'<div class="sval">'+SM.gz(((yr-4)%60+60)%60)+'年</div>'
-        +'<div class="ssub">四化:'+SM.SIHUA[lnG].map((s,i)=>s+['祿','權','科','忌'][i]).join(' · ')+'</div>'
-      +'</div>'
-      +'</div>';
-
     function ratingStars(s){
       if(s>=85) return {stars:'★★★★★',cls:'r5'};
       if(s>=70) return {stars:'★★★★☆',cls:'r4'};
@@ -4003,6 +4219,74 @@ function renderResult(R){
       if(s>=40) return {stars:'★★☆☆☆',cls:'r2'};
       return {stars:'★☆☆☆☆',cls:'r1'};
     }
+    const dxRt=dxRaw?ratingStars(dxRaw.score):{stars:'—',cls:''};
+    // 小限評級
+    let xxSc=50;
+    const BPTS={'廟':10,'旺':8,'得':6,'利':5,'平':4,'閒':3,'陷':1};
+    let sp=0,scnt=0;
+    xxP.stars.forEach(s=>{ const br=SM.bright(s,xxZ); sp+=(BPTS[br]||4); scnt++; });
+    if(scnt>0) xxSc+=(sp/scnt-5)*3;
+    Object.entries(zw.sihua).filter(([s])=>xxP.stars.includes(s)||xxP.aux.includes(s))
+      .forEach(([s,h])=>{ if(h==='祿') xxSc+=6; else if(h==='權') xxSc+=4; else if(h==='科') xxSc+=3; else xxSc-=8; });
+    SM.SIHUA[lnG].forEach((star,i)=>{
+      let atZ=-1;
+      for(let z=0;z<12;z++){ if(zw.palaces[z].stars.includes(star)||zw.palaces[z].aux.includes(star)){ atZ=z; break; } }
+      if(atZ===xxZ){ const HH=['祿','權','科','忌']; if(HH[i]==='祿') xxSc+=10; else if(HH[i]==='權') xxSc+=7; else if(HH[i]==='科') xxSc+=4; else xxSc-=12; }
+    });
+    xxSc-=xxP.aux.filter(a=>['擎羊','陀羅','火星','鈴星','地空','地劫'].includes(a)).length*4;
+    xxSc+=xxP.aux.filter(a=>['左輔','右弼','文昌','文曲','天魁','天鉞','祿存','天馬'].includes(a)).length*3;
+    if(dx&&xxZ===dx.zhi) xxSc+=6;
+    xxSc=Math.max(5,Math.min(99,Math.round(xxSc)));
+    const xxRt=ratingStars(xxSc);
+    const dxYrFrom=dx?bz.byear+dx.daxian[0]-1:0;
+    const dxYrTo=dx?bz.byear+dx.daxian[1]-1:0;
+    // 下一個大限
+    let ndx=null;
+    for(const p of zw.palaces){ if(p.daxian&&p.daxian[0]>age){ if(!ndx||p.daxian[0]<ndx.daxian[0]) ndx=p; } }
+    let ndxHtml='';
+    if(ndx){
+      const ndxRaw=SM.scoreDaxian(SM,zw,bz,ndx.daxian[0]);
+      const ndxRt=ndxRaw?ratingStars(ndxRaw.score):{stars:'—',cls:''};
+      const ndxYr=bz.byear+ndx.daxian[0]-1;
+      ndxHtml='<div class="sumcell">'
+        +'<div class="slabel">下一個大限</div>'
+        +'<div class="sval">'+ndx.daxian[0]+'–'+ndx.daxian[1]+'歲 '+ndx.name+'</div>'
+        +'<div class="ssub">'+SM.GAN[ndx.gan]+SM.ZHI[ndx.zhi]+' · 約'+ndxYr+'年起</div>'
+        +'<div class="srating '+ndxRt.cls+'">'+ndxRt.stars+(ndxRaw?' '+ndxRaw.score+'分':'')+'</div>'
+      +'</div>';
+    }
+    $('res-summary').innerHTML=
+      '<div class="sumtitle">命盤速覽 · '+yr+'年 · 虛歲 '+age+'</div>'
+      +'<div class="sumgrid">'
+      +'<div class="sumcell highlight">'
+        +'<div class="slabel">八字格局</div>'
+        +'<div class="sval">'+ay.geju+'</div>'
+        +'<div class="ssub">'+ay.strengthLevel+' · 用神:'+ay.yong.join('、')+'</div>'
+      +'</div>'
+      +'<div class="sumcell">'
+        +'<div class="slabel">當前大限</div>'
+        +'<div class="sval">'+(dx?dx.daxian[0]+'–'+dx.daxian[1]+'歲 '+dx.name:'—')+'</div>'
+        +'<div class="ssub">'+(dx?SM.GAN[dx.gan]+SM.ZHI[dx.zhi]+' · '+dxYrFrom+'–'+dxYrTo:'')+'</div>'
+        +'<div class="srating '+dxRt.cls+'">'+(dxRaw?dxRt.stars+' '+dxRaw.score+'分':'')+'</div>'
+      +'</div>'
+      +'<div class="sumcell">'
+        +'<div class="slabel">今年小限 ('+yr+')</div>'
+        +'<div class="sval">'+xxP.name+'</div>'
+        +'<div class="ssub">'+SM.ZHI[xxZ]+'宮 · '+(xxP.stars.length?xxP.stars.join('、'):'借對宮')+'</div>'
+        +'<div class="srating '+xxRt.cls+'">'+xxRt.stars+' '+xxSc+'分</div>'
+      +'</div>'
+      +'<div class="sumcell">'
+        +'<div class="slabel">今年流年</div>'
+        +'<div class="sval">'+SM.gz(((yr-4)%60+60)%60)+'年</div>'
+        +'<div class="ssub">四化:'+SM.SIHUA[lnG].map((s,i)=>s+['祿','權','科','忌'][i]).join(' · ')+'</div>'
+      +'</div>'
+      +ndxHtml
+      +'</div>'
+      +'<div style="padding:8px 20px;border-top:1px solid rgba(217,179,108,.15);display:flex;gap:16px;flex-wrap:wrap">'
+        +'<a href="#liunian-section" onclick="document.getElementById(\'liunian-section\').scrollIntoView({behavior:\'smooth\'});return false;" style="font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:.1em">↓ 流年分析</a>'
+        +'<a href="#res-palaces" onclick="document.getElementById(\'res-palaces\').scrollIntoView({behavior:\'smooth\'});return false;" style="font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:.1em">↓ 十二宮詳解</a>'
+        +'<a href="#res-bazitext" onclick="document.getElementById(\'res-bazitext\').scrollIntoView({behavior:\'smooth\'});return false;" style="font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:.1em">↓ 八字總論</a>'
+      +'</div>';
   })();
   // ── 快速摘要卡 end ──────────────────────────────────────────
   $('res-basic').innerHTML=
@@ -4188,7 +4472,8 @@ window.addEventListener('DOMContentLoaded',function(){
         // 主要課題與建議
         +(r.issues.length?'<h4 class="sec">需要注意的課題</h4>'
           +r.issues.map((iss,i)=>'<p><b>'+esc(iss)+'</b>：'+esc(r.advice[i]||'')+'</p>').join(''):'')
-        +'<p class="mini" style="margin-top:12px">※ 合婚以日柱為核心、五行互補為要,生肖僅為參考。沖剋非絕對不可,知其性而善處之即是化解。</p>';
+        +'<p class="mini" style="margin-top:12px">※ 合婚以日柱為核心、五行互補為要,生肖僅為參考。沖剋非絕對不可,知其性而善處之即是化解。</p>'
+        +(r.weddingAdvice?'<div style="margin-top:12px;padding:12px 16px;background:rgba(217,179,108,.1);border-left:3px solid var(--gold);border-radius:0 4px 4px 0"><b style="color:var(--gold)">📅 婚期建議</b><p style="margin:6px 0">'+esc(r.weddingAdvice)+'</p>'+(r.avoidAdvice?'<p style="margin:4px 0;color:var(--cinnabar)">⚠ '+esc(r.avoidAdvice)+'</p>':'')+'</div>':'');
       $('hh-out').classList.remove('hide');
     }catch(e){ alert('合婚計算失敗:'+e.message); }
   });
@@ -4207,7 +4492,9 @@ function renderHistory(){
       btn.addEventListener('click',function(){
         const s=saved[+this.dataset.i];
         ['y','m','d','h','min'].forEach(k=>{ const el=$('p1-'+k); if(el) el.value=s[k]||''; });
-        if($('p1-g-m')&&$('p1-g-f')){ $('p1-g-m').checked=(s.g==='m'); $('p1-g-f').checked=(s.g!=='m'); }
+        // 回填性別radio(用name選擇)
+        document.querySelectorAll('input[name="p1g"]').forEach(r=>{ r.checked=(r.value===s.g); r.dispatchEvent(new Event('change')); });
+        if($('p1-g')) $('p1-g').value=s.g||'m';
         if($('p1-cal')){ $('p1-cal').value=s.cal||'solar'; }
         window.scrollTo({top:0,behavior:'smooth'});
       });
@@ -4326,9 +4613,11 @@ function startPalette(){
     }
     const bz=SM.bazi(y,m,d,inp.h,inp.min);
     const st=SM.fiveElemStats(bz);
-    const r=TX.namePalette(SM,surname,skIn,inp.g,st.xiyong,bz.pillars.year[1]);
+    const ay=SM.autoYongShen(bz);
+    const xiyongFinal=ay.yong.length?ay.yong:st.xiyong; // 優先用autoYongShen
+    const r=TX.namePalette(SM,surname,skIn,inp.g,xiyongFinal,bz.pillars.year[1]);
     if(r.err==='noStroke'){ alert('「'+surname+'」不在內建姓氏字庫,請於「姓氏筆畫」欄填入該字的康熙筆畫數再試。'); return; }
-    STATE={surname:surname, sk:r.sk, gender:inp.g, xiyong:st.xiyong,
+    STATE={surname:surname, sk:r.sk, gender:inp.g, xiyong:xiyongFinal,
            zo:TX.ZODIAC[bz.pillars.year[1]], zoName:r.zodiac,
            palette:r.palette, order:r.order,
            dayMaster:SM.GAN[bz.pillars.day[0]]+SM.GAN_ELEM[bz.pillars.day[0]],
@@ -4367,13 +4656,30 @@ function render(){
     h+='<div class="nm-eval-empty">尚有 '+(S.mode-S.picks.length)+' 字未選,點下方字庫加入</div>';
   }
   h+='</div>';
+  if(!S.filter) S.filter={gender:'',kw:''};
   h+='<div class="nm-tabs">';
   S.order.forEach(el=>{
     const isXi=S.xiyong.indexOf(el)>=0;
-    h+='<button class="nm-tab'+(el===S.activeEl?' on':'')+(isXi?' xi':'')+'" data-el="'+el+'" type="button">'+el+(isXi?' ✦':'')+'<span class="nm-tab-n">'+S.palette[el].length+'</span></button>';
+    h+='<button class="nm-tab'+(el===S.activeEl?' on':'')+(isXi?' xi':'')+'" data-el="'+el+'" type="button">'+el+(isXi?' ✦':'')+' <span class="nm-tab-n">'+S.palette[el].length+'</span></button>';
   });
-  h+='</div><div class="nm-grid">';
-  const list=S.palette[S.activeEl]||[];
+  h+='</div>'
+    +'<div class="nm-filter-bar">'
+    +'<span class="nm-filter-label">篩選</span>'
+    +'<button class="nm-flt'+(S.filter.gender===''?' on':'')+'" data-fg="" type="button">全部</button>'
+    +'<button class="nm-flt'+(S.filter.gender==='m'?' on':'')+'" data-fg="m" type="button">♂ 男</button>'
+    +'<button class="nm-flt'+(S.filter.gender==='f'?' on':'')+'" data-fg="f" type="button">♀ 女</button>'
+    +'<span class="nm-filter-sep">｜</span>'
+    +'<input class="nm-fsearch" type="text" placeholder="搜寓意/字…" value="'+esc(S.filter.kw||'')+'" maxlength="6">'
+    +'</div>'
+    +'<div class="nm-grid">';
+  const rawList=S.palette[S.activeEl]||[];
+  // 套用篩選
+  const list=rawList.filter(x=>{
+    if(S.filter.gender&&x.g!=='u'&&x.g!==S.filter.gender) return false;
+    if(S.filter.kw&&!(x.c.includes(S.filter.kw)||x.m.includes(S.filter.kw))) return false;
+    return true;
+  });
+  if(list.length===0) h+='<div class="nm-filter-empty">無符合字，請放寬篩選條件</div>';
   list.forEach(x=>{
     const used=S.picks.indexOf(x.c)>=0;
     const cls=['nm-char','e'+S.activeEl];
@@ -4499,6 +4805,42 @@ function scoreBar(label,v,max,hint){
     +'<div class="nm-bar-val">'+v+'/'+max+'</div></div>';
 }
 
+function updateGrid(S){
+  const grid=$('nm-out').querySelector('.nm-grid');
+  if(!grid) return;
+  const rawList=S.palette[S.activeEl]||[];
+  const list=rawList.filter(x=>{
+    if(S.filter.gender&&x.g!=='u'&&x.g!==S.filter.gender) return false;
+    if(S.filter.kw&&!(x.c.includes(S.filter.kw)||x.m.includes(S.filter.kw))) return false;
+    return true;
+  });
+  let h='';
+  if(list.length===0) h='<div class="nm-filter-empty">無符合字，請放寬篩選條件</div>';
+  list.forEach(x=>{
+    const used=S.picks.indexOf(x.c)>=0;
+    const cls=['nm-char','e'+S.activeEl];
+    if(used) cls.push('used');
+    if(x.zoLike.length) cls.push('zo-like-bg');
+    if(x.zoAvoid.length) cls.push('zo-avoid-bg');
+    if(x.g===S.gender) cls.push('g-match');
+    h+='<button class="'+cls.join(' ')+'" data-c="'+x.c+'" type="button">'
+      +'<div class="nm-c">'+x.c+'</div>'
+      +'<div class="nm-m">'+x.m+'</div>'
+      +'<div class="nm-meta">'+x.s+'畫'+(x.g!=='u'?' · '+(x.g==='m'?'男':'女'):'')+'</div>';
+    if(x.zoLike.length) h+='<div class="nm-zo-tag like">'+x.zoLike.join('')+'</div>';
+    if(x.zoAvoid.length) h+='<div class="nm-zo-tag avoid">'+x.zoAvoid.join('')+'</div>';
+    h+='</button>';
+  });
+  grid.innerHTML=h;
+  // 重綁字格點擊
+  grid.querySelectorAll('.nm-char').forEach(b=>b.addEventListener('click',()=>{
+    const ch=b.dataset.c;
+    const idx=S.picks.indexOf(ch);
+    if(idx>=0) S.picks.splice(idx,1);
+    else if(S.picks.length<S.mode) S.picks.push(ch);
+    renderPickerUI(S);
+  }));
+}
 function bindEvents(){
   $('nm-out').querySelectorAll('.nm-mode').forEach(b=>b.addEventListener('click',()=>{
     STATE.mode=+b.dataset.len;
@@ -4506,8 +4848,19 @@ function bindEvents(){
     render();
   }));
   $('nm-out').querySelectorAll('.nm-tab').forEach(b=>b.addEventListener('click',()=>{
-    STATE.activeEl=b.dataset.el; render();
+    STATE.activeEl=b.dataset.el; if(STATE.filter) STATE.filter.kw=''; render();
   }));
+  // 篩選按鈕
+  $('nm-out').querySelectorAll('.nm-flt').forEach(b=>b.addEventListener('click',()=>{
+    S.filter.gender=b.dataset.fg;
+    renderPickerUI(S);
+  }));
+  // 搜尋框：只更新字格，不重渲染整個面板
+  const fsEl=$('nm-out').querySelector('.nm-fsearch');
+  if(fsEl) fsEl.addEventListener('input',function(){
+    S.filter.kw=this.value.trim();
+    updateGrid(S);
+  });
   $('nm-out').querySelectorAll('.nm-char').forEach(b=>b.addEventListener('click',()=>{
     const c=b.dataset.c;
     if(STATE.picks.indexOf(c)>=0) STATE.picks=STATE.picks.filter(x=>x!==c);
@@ -4546,8 +4899,9 @@ function doEvaluate(){
       }
       const bz=SM.bazi(y,m,d,inp.h,inp.min);
       const st=SM.fiveElemStats(bz);
-      zo=TX.ZODIAC[bz.pillars.year[1]]; xiyong=st.xiyong;
-      ctxLine='<p class="mini">結合生辰命局評估:日主 '+SM.GAN[bz.pillars.day[0]]+SM.GAN_ELEM[bz.pillars.day[0]]+(st.strong?'(身強)':'(身弱)')+',喜用神 '+xiyong.join('、')+';生肖 '+zo.n+'。</p>';
+      const ay2=SM.autoYongShen(bz);
+      zo=TX.ZODIAC[bz.pillars.year[1]]; xiyong=ay2.yong.length?ay2.yong:st.xiyong;
+      ctxLine='<p class="mini">結合生辰命局評估:日主 '+SM.GAN[bz.pillars.day[0]]+SM.GAN_ELEM[bz.pillars.day[0]]+'・'+ay2.strengthLevel+'・'+ay2.geju+',用神 '+xiyong.join('、')+';生肖 '+zo.n+'。</p>';
     }else{
       ctxLine='<p class="mini">純就五格・三才・八十一數理評估,未結合命局喜用神與生肖。</p>';
     }
@@ -4594,7 +4948,8 @@ window.addEventListener('DOMContentLoaded',function(){
       if(expMG!==P.month[0]) warns.push('依年干五虎遁,'+SM.ZHI[P.month[1]]+'月之月干應為「'+SM.GAN[expMG]+'」,您輸入「'+SM.GAN[P.month[0]]+'」');
       const expHG=((P.day[0]%5)*2+P.hour[1])%10;
       if(expHG!==P.hour[0]) warns.push('依日干五鼠遁,'+SM.ZHI[P.hour[1]]+'時之時干應為「'+SM.GAN[expHG]+'」,您輸入「'+SM.GAN[P.hour[0]]+'」');
-      const bz={pillars:P};
+      // 補齊bazi缺少的屬性(手動四柱無出生年份,給預設值)
+      const bz={pillars:P, byear:0}; // 手動模式無出生年,大運起算不適用
       const rep=TX.baziReport2(SM,bz,$('mz-g').value);
       const kw=SM.kongwang(bz), ss=SM.shensha(bz);
       let h='';
