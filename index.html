@@ -412,6 +412,60 @@ summary::-webkit-details-marker{display:none}
 .nm-tab.on .nm-tab-n{color:rgba(255,243,232,.7)}
 .nm-tab.xi.on .nm-tab-n{color:rgba(16,20,10,.6)}
 
+/* ===== 智能推薦組合 ===== */
+.nm-suggest-block{
+  margin:16px 0;padding:16px;border-radius:4px;
+  background:linear-gradient(135deg,rgba(217,179,108,.08),rgba(15,22,48,.5));
+  border:1px solid rgba(217,179,108,.25);
+}
+.nm-suggest-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:12px;font-size:14px;letter-spacing:.1em;color:var(--gold2);font-weight:700;
+}
+.nm-suggest-refresh{
+  font-family:inherit;font-size:12px;padding:5px 12px;cursor:pointer;
+  background:rgba(217,179,108,.12);color:var(--gold);border:1px solid rgba(217,179,108,.35);
+  border-radius:3px;transition:all .2s;
+}
+.nm-suggest-refresh:hover{background:rgba(217,179,108,.25);box-shadow:0 0 10px rgba(217,179,108,.2)}
+.nm-suggest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.nm-sugg-card{
+  font-family:inherit;cursor:pointer;text-align:center;padding:12px 8px;
+  background:rgba(8,12,28,.6);border:1px solid rgba(217,179,108,.2);border-radius:4px;
+  transition:all .22s;position:relative;
+}
+.nm-sugg-card:hover{border-color:var(--gold);background:rgba(217,179,108,.1);transform:translateY(-2px);box-shadow:0 4px 14px rgba(217,179,108,.2)}
+.nm-sugg-name{font-size:18px;font-weight:700;color:var(--starwhite);letter-spacing:.08em;margin-bottom:6px}
+.nm-sugg-score{display:flex;justify-content:center;align-items:center;gap:6px}
+.nm-sugg-num{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+.nm-sugg-grade{
+  font-size:11px;font-weight:700;padding:1px 6px;border-radius:2px;
+  background:rgba(217,179,108,.2);color:var(--gold2);
+}
+.nm-sugg-card.grade-A .nm-sugg-num{color:#E8C040}
+.nm-sugg-card.grade-A .nm-sugg-grade{background:rgba(232,192,64,.25);color:#E8C040}
+.nm-sugg-card.grade-B .nm-sugg-num{color:#6EC498}
+.nm-sugg-card.grade-B .nm-sugg-grade{background:rgba(110,196,152,.25);color:#6EC498}
+.nm-sugg-card.grade-C .nm-sugg-num{color:var(--ink2)}
+.nm-sugg-card.grade-D .nm-sugg-num,.nm-sugg-card.grade-E .nm-sugg-num{color:#E06050}
+
+/* ===== 取名篩選工具列 ===== */
+.nm-filter-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0 10px;padding:10px 0;border-top:1px solid rgba(217,179,108,.12);border-bottom:1px solid rgba(217,179,108,.12)}
+.nm-search-input{
+  flex:1;min-width:140px;font-family:inherit;font-size:14px;padding:7px 12px;
+  background:rgba(8,12,28,.7);color:var(--ink);border:1px solid rgba(217,179,108,.3);
+  border-radius:3px;outline:none;
+}
+.nm-search-input:focus{border-color:var(--gold)}
+.nm-stroke-select{
+  font-family:inherit;font-size:13px;padding:6px 8px;
+  background:rgba(8,12,28,.7);color:var(--ink);border:1px solid rgba(217,179,108,.3);
+  border-radius:3px;outline:none;
+}
+.nm-sort-toggle{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--ink2);white-space:nowrap;cursor:pointer}
+.nm-sort-toggle input{accent-color:var(--gold)}
+.nm-empty-hint{grid-column:1/-1;text-align:center;padding:30px 0;color:var(--ink2);font-size:14px}
+
 /* 評分原理區 */
 .nm-method h5.m-h{color:var(--cinnabar);letter-spacing:.18em;margin:10px 0 4px;font-size:14px;font-weight:700;padding-left:6px;border-left:3px solid var(--cinnabar)}
 .nm-method h5.m-h:first-child{margin-top:2px}
@@ -2751,6 +2805,66 @@ TX.namePalette=function(SM,surname,skInput,gender,xiyong,yearZhi){
   return {sk,zodiac:zo.n,palette,order:sorted};
 };
 
+// ===== 智能推薦組合 =====
+// 從喜用神優先的候選字中,抽樣排列組合並評分,回傳前N名
+TX.suggestNames=function(SM,surname,sk,gender,xiyong,yearZhi,mode,topN){
+  const zo=TX.ZODIAC[yearZhi];
+  // 候選池:喜用神元素字優先,且符合性別或中性,排除生肖大忌字
+  const pools=xiyong.map(el=>(TX.POOL3[el]||[]).filter(x=>{
+    if(x.g!=='u'&&x.g!==gender) return false;
+    const avoidHit=(x.r||'').split('').some(t=>zo.avoid.indexOf(t)>=0);
+    return !avoidHit;
+  }));
+  let candidates=pools.flat();
+  // 候選不足時,放寬到全部喜用神字(含跨性別)
+  if(candidates.length<6){
+    candidates=xiyong.map(el=>TX.POOL3[el]||[]).flat();
+  }
+  // 取前40字做排列組合,避免效能爆炸
+  candidates=candidates.slice(0,40);
+  const results=[];
+  const seen=new Set();
+  if(mode===1){
+    candidates.forEach(c=>{
+      const sc=TX.scoreName(sk,[c.c],zo,xiyong);
+      if(sc) results.push({chars:[c.c],score:sc});
+    });
+  }else{
+    // 雙字:第一字限喜用神字,第二字可跨全字庫(含中性五行)增加多樣性,但仍排除生肖大忌
+    const secondPool=Object.values(TX.POOL3).flat().filter(x=>{
+      const avoidHit=(x.r||'').split('').some(t=>zo.avoid.indexOf(t)>=0);
+      return !avoidHit;
+    });
+    for(let i=0;i<candidates.length && results.length<400;i++){
+      const c1=candidates[i];
+      // 第二字從候選池本身與較大池中各取樣,確保有喜用神字組合也有多樣搭配
+      const partners=[...candidates.slice(0,15),...secondPool.slice(0,25)];
+      for(let j=0;j<partners.length;j++){
+        const c2=partners[j];
+        if(c1.c===c2.c) continue;
+        const key=c1.c+c2.c;
+        if(seen.has(key)) continue;
+        seen.add(key);
+        const sc=TX.scoreName(sk,[c1.c,c2.c],zo,xiyong);
+        if(sc) results.push({chars:[c1.c,c2.c],score:sc});
+      }
+    }
+  }
+  results.sort((a,b)=>b.score.breakdown.total-a.score.breakdown.total);
+  // 去除同首字過度集中,盡量呈現不同首字的高分組合
+  const diversified=[];
+  const firstCharCount={};
+  for(const r of results){
+    const fc=r.chars[0];
+    firstCharCount[fc]=(firstCharCount[fc]||0);
+    if(firstCharCount[fc]>=2) continue; // 同首字最多2組
+    firstCharCount[fc]++;
+    diversified.push(r);
+    if(diversified.length>=(topN||8)) break;
+  }
+  return diversified;
+};
+
 // ===== 解析既有姓名 =====
 TX.parseFullName=function(surname,given,strokeOverride){
   let sk=TX.SURNAME[surname];
@@ -4680,10 +4794,11 @@ function startPalette(){
     const r=TX.namePalette(SM,surname,skIn,inp.g,st.xiyong,bz.pillars.year[1]);
     if(r.err==='noStroke'){ alert('「'+surname+'」不在內建姓氏字庫,請於「姓氏筆畫」欄填入該字的康熙筆畫數再試。'); return; }
     STATE={surname:surname, sk:r.sk, gender:inp.g, xiyong:st.xiyong,
-           zo:TX.ZODIAC[bz.pillars.year[1]], zoName:r.zodiac,
+           zo:TX.ZODIAC[bz.pillars.year[1]], zoName:r.zodiac, yearZhi:bz.pillars.year[1],
            palette:r.palette, order:r.order,
            dayMaster:SM.GAN[bz.pillars.day[0]]+SM.GAN_ELEM[bz.pillars.day[0]],
-           strong:st.strong, mode:2, picks:[], activeEl:r.order[0]};
+           strong:st.strong, mode:2, picks:[], activeEl:r.order[0],
+           searchKw:'', strokeFilter:0, sortByStroke:false, suggestions:null};
     render();
   }catch(e){ alert('字庫開啟失敗:'+e.message); }
 }
@@ -4715,19 +4830,70 @@ function render(){
     const sc=TX.scoreName(S.sk,S.picks,S.zo,S.xiyong);
     h+=renderScore(S.surname,sc,true);
   }else{
-    h+='<div class="nm-eval-empty">尚有 '+(S.mode-S.picks.length)+' 字未選,點下方字庫加入</div>';
+    h+='<div class="nm-eval-empty">尚有 '+(S.mode-S.picks.length)+' 字未選,點下方字庫加入,或直接採用下方「智能推薦」一鍵套用</div>';
   }
   h+='</div>';
+
+  // ── 智能推薦組合 ──
+  h+='<div class="nm-suggest-block">'
+    +'<div class="nm-suggest-head"><span>✦ 智能推薦組合</span><button class="nm-suggest-refresh" type="button">🔄 換一批</button></div>';
+  if(!S.suggestions) S.suggestions=TX.suggestNames(SM,S.surname,S.sk,S.gender,S.xiyong,S.yearZhi,S.mode,8);
+  if(S.suggestions.length){
+    h+='<div class="nm-suggest-grid">';
+    S.suggestions.forEach(r=>{
+      const full=S.surname+r.chars.join('');
+      const grade=r.score.grade;
+      h+='<button class="nm-sugg-card grade-'+grade+'" data-chars="'+r.chars.join(',')+'" type="button">'
+        +'<div class="nm-sugg-name">'+esc(full)+'</div>'
+        +'<div class="nm-sugg-score"><span class="nm-sugg-num">'+r.score.breakdown.total+'</span><span class="nm-sugg-grade">'+grade+'</span></div>'
+        +'</button>';
+    });
+    h+='</div>';
+  }else{
+    h+='<p class="mini">候選字不足,請於下方字庫手動選字。</p>';
+  }
+  h+='</div>';
+
+  h+='<div class="nm-filter-bar">'
+    +'<input type="text" id="nm-search" class="nm-search-input" placeholder="搜尋字或寓意關鍵字…" value="'+esc(S.searchKw||'')+'">'
+    +'<select id="nm-stroke-filter" class="nm-stroke-select">'
+    +'<option value="">不限筆畫</option>'
+    +Array.from({length:30},(_,i)=>i+1).map(n=>'<option value="'+n+'"'+(S.strokeFilter===n?' selected':'')+'>'+n+'畫</option>').join('')
+    +'</select>'
+    +'<label class="nm-sort-toggle"><input type="checkbox" id="nm-sort-stroke"'+(S.sortByStroke?' checked':'')+'> 依筆畫排序</label>'
+    +'</div>';
+
   h+='<div class="nm-tabs">';
   S.order.forEach(el=>{
     const isXi=S.xiyong.indexOf(el)>=0;
     h+='<button class="nm-tab'+(el===S.activeEl?' on':'')+(isXi?' xi':'')+'" data-el="'+el+'" type="button">'+el+(isXi?' ✦':'')+'<span class="nm-tab-n">'+S.palette[el].length+'</span></button>';
   });
-  h+='</div><div class="nm-grid">';
-  const list=S.palette[S.activeEl]||[];
+  h+='</div><div class="nm-grid" id="nm-grid">'+renderGrid(S)+'</div>';
+  h+='</div>';
+  $('nm-out').innerHTML=h;
+  $('nm-out').classList.remove('hide');
+  bindEvents();
+}
+
+function renderGrid(S){
+  let list;
+  if(S.searchKw && S.searchKw.trim()){
+    // 有關鍵字時跨全部五行分類搜尋,方便找字不必切分頁
+    const kw=S.searchKw.trim();
+    list=Object.values(S.palette).flat().filter(x=>x.c.includes(kw)||x.m.includes(kw));
+    // 去重(同一字不會出現在多分類,但保險起見)
+    const seen=new Set(); list=list.filter(x=>!seen.has(x.c)&&seen.add(x.c));
+  }else{
+    list=S.palette[S.activeEl]||[];
+  }
+  if(S.strokeFilter) list=list.filter(x=>x.s===S.strokeFilter);
+  if(S.sortByStroke) list=[...list].sort((a,b)=>a.s-b.s);
+  if(!list.length) return '<div class="nm-empty-hint">沒有符合條件的字,試試清除篩選</div>';
+  let h='';
   list.forEach(x=>{
     const used=S.picks.indexOf(x.c)>=0;
-    const cls=['nm-char','e'+S.activeEl];
+    const elKey=Object.keys(S.palette).find(el=>S.palette[el].some(p=>p.c===x.c))||S.activeEl;
+    const cls=['nm-char','e'+elKey];
     if(used) cls.push('used');
     if(x.zoLike.length) cls.push('zo-like-bg');
     if(x.zoAvoid.length) cls.push('zo-avoid-bg');
@@ -4740,10 +4906,7 @@ function render(){
     if(x.zoAvoid.length) h+='<div class="nm-zo-tag avoid">'+x.zoAvoid.join('')+'</div>';
     h+='</button>';
   });
-  h+='</div></div>';
-  $('nm-out').innerHTML=h;
-  $('nm-out').classList.remove('hide');
-  bindEvents();
+  return h;
 }
 
 function renderScore(surname,sc,full){
@@ -4854,10 +5017,13 @@ function bindEvents(){
   $('nm-out').querySelectorAll('.nm-mode').forEach(b=>b.addEventListener('click',()=>{
     STATE.mode=+b.dataset.len;
     if(STATE.picks.length>STATE.mode) STATE.picks=STATE.picks.slice(0,STATE.mode);
+    STATE.suggestions=null;
     render();
   }));
   $('nm-out').querySelectorAll('.nm-tab').forEach(b=>b.addEventListener('click',()=>{
-    STATE.activeEl=b.dataset.el; render();
+    STATE.activeEl=b.dataset.el;
+    STATE.searchKw=''; STATE.strokeFilter=0;
+    render();
   }));
   $('nm-out').querySelectorAll('.nm-char').forEach(b=>b.addEventListener('click',()=>{
     const c=b.dataset.c;
@@ -4869,6 +5035,51 @@ function bindEvents(){
   $('nm-out').querySelectorAll('.slot[data-i]').forEach(b=>b.addEventListener('click',()=>{
     const i=+b.dataset.i;
     if(STATE.picks[i]){ STATE.picks.splice(i,1); render(); }
+  }));
+  // 智能推薦卡片點擊→直接套用
+  $('nm-out').querySelectorAll('.nm-sugg-card').forEach(b=>b.addEventListener('click',()=>{
+    const chars=b.dataset.chars.split(',');
+    STATE.mode=chars.length;
+    STATE.picks=chars;
+    render();
+    const evalEl=$('nm-out').querySelector('.nm-eval');
+    if(evalEl) evalEl.scrollIntoView({behavior:'smooth',block:'center'});
+  }));
+  // 換一批推薦
+  const refreshBtn=$('nm-out').querySelector('.nm-suggest-refresh');
+  if(refreshBtn) refreshBtn.addEventListener('click',()=>{
+    STATE.suggestions=TX.suggestNames(SM,STATE.surname,STATE.sk,STATE.gender,STATE.xiyong,STATE.yearZhi,STATE.mode,16).slice(8,16);
+    if(!STATE.suggestions.length) STATE.suggestions=TX.suggestNames(SM,STATE.surname,STATE.sk,STATE.gender,STATE.xiyong,STATE.yearZhi,STATE.mode,8);
+    render();
+  });
+  // 搜尋框:只更新字庫格,不重渲染整個面板(避免失焦)
+  const searchEl=$('nm-search');
+  if(searchEl) searchEl.addEventListener('input',function(){
+    STATE.searchKw=this.value;
+    updateGrid();
+  });
+  const strokeEl=$('nm-stroke-filter');
+  if(strokeEl) strokeEl.addEventListener('change',function(){
+    STATE.strokeFilter=+this.value||0;
+    updateGrid();
+  });
+  const sortEl=$('nm-sort-stroke');
+  if(sortEl) sortEl.addEventListener('change',function(){
+    STATE.sortByStroke=this.checked;
+    updateGrid();
+  });
+}
+
+function updateGrid(){
+  const grid=$('nm-grid');
+  if(!grid) return;
+  grid.innerHTML=renderGrid(STATE);
+  grid.querySelectorAll('.nm-char').forEach(b=>b.addEventListener('click',()=>{
+    const c=b.dataset.c;
+    if(STATE.picks.indexOf(c)>=0) STATE.picks=STATE.picks.filter(x=>x!==c);
+    else if(STATE.picks.length<STATE.mode) STATE.picks.push(c);
+    else STATE.picks=[STATE.picks[1],c];
+    render();
   }));
 }
 
