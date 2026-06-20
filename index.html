@@ -115,7 +115,7 @@ select:focus,input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(168,
 /* 五行色 */
 .e木{color:var(--wood)} .e火{color:var(--fire)} .e土{color:var(--earth)}
 .e金{color:var(--metal)} .e水{color:var(--water)}
-.e比{color:#84c9ec} .e食{color:#86e3b2} .e財{color:#D9B36C} .e官{color:#E05C4A} .e印{color:#cba8ff}
+.e比{color:#84c9ec} .e食{color:#86e3b2} .e財{color:#a892ff} .e官{color:#ff8aa6} .e印{color:#cba8ff}
 /* 五行能量條 */
 .bars{margin-top:6px}
 .barrow{display:flex;align-items:center;gap:10px;margin:8px 0}
@@ -143,7 +143,7 @@ select:focus,input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(168,
 @keyframes grow{from{transform:scaleX(0)}}
 .f木{background:linear-gradient(90deg,#3fa078,#86e3b2);color:#86e3b2}
 .f火{background:linear-gradient(90deg,#ff7a98,#ff86bf);color:#ff86bf}
-.f土{background:linear-gradient(90deg,#A9854B,#D9B36C);color:#D9B36C}
+.f土{background:linear-gradient(90deg,#A9854B,#a892ff);color:#a892ff}
 .f金{background:linear-gradient(90deg,#9C9587,#ddd3ff);color:#ddd3ff}
 .f水{background:linear-gradient(90deg,#4E76A8,#84c9ec);color:#84c9ec}
 .bval{width:42px;text-align:right;font-size:14px;color:var(--ink2);font-variant-numeric:tabular-nums}
@@ -247,8 +247,8 @@ sup.br{font-size:9px;font-weight:400;margin-left:1px;vertical-align:super}
 .rel-badge{padding:2px 8px;border-radius:2px;font-size:11px;font-weight:700}
 .rel-六合{background:rgba(124,196,154,.25);color:#86e3b2;border:1px solid rgba(124,196,154,.4)}
 .rel-三合{background:rgba(132,201,236,.25);color:#84c9ec;border:1px solid rgba(132,201,236,.4)}
-.rel-六沖{background:rgba(224,92,74,.25);color:#E05C4A;border:1px solid rgba(224,92,74,.4)}
-.rel-相刑{background:rgba(168,146,255,.25);color:#D9B36C;border:1px solid rgba(168,146,255,.4)}
+.rel-六沖{background:rgba(224,92,74,.25);color:#ff8aa6;border:1px solid rgba(224,92,74,.4)}
+.rel-相刑{background:rgba(168,146,255,.25);color:#a892ff;border:1px solid rgba(168,146,255,.4)}
 .rel-相害{background:rgba(176,144,208,.25);color:#cba8ff;border:1px solid rgba(176,144,208,.4)}
 .rel-同支{background:rgba(136,150,168,.25);color:#A8B4C4;border:1px solid rgba(136,150,168,.4)}
 .analysis-box{background:linear-gradient(135deg,rgba(15,22,48,.9),rgba(10,15,36,.95));border:1px solid rgba(168,146,255,.18);border-radius:3px;padding:14px 16px;margin-top:10px}
@@ -290,7 +290,7 @@ summary::-webkit-details-marker{display:none}
 .score{text-align:center;margin:10px 0 12px}
 .scnum{
   font-size:72px;font-weight:900;line-height:1;
-  background:linear-gradient(160deg,#d6c8ff,#D9B36C 60%,#B08A44);
+  background:linear-gradient(160deg,#d6c8ff,#a892ff 60%,#B08A44);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 0 22px rgba(168,146,255,.45));
   animation:pop .7s cubic-bezier(.2,1.4,.4,1) both;
@@ -383,7 +383,7 @@ summary::-webkit-details-marker{display:none}
 .nm-eval{margin-top:8px;text-align:center}
 .nm-score-row{display:flex;justify-content:center;align-items:flex-start;gap:18px;margin:8px 0 10px;flex-wrap:wrap}
 .nm-bigscore{position:relative;border:2px solid var(--gold);border-radius:6px;padding:10px 22px 12px;background:rgba(168,146,255,.08);min-width:120px}
-.nm-bigscore .bs-num{font-size:48px;font-weight:900;line-height:1;background:linear-gradient(160deg,#d6c8ff,#D9B36C 60%,#B08A44);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px rgba(168,146,255,.4))}
+.nm-bigscore .bs-num{font-size:48px;font-weight:900;line-height:1;background:linear-gradient(160deg,#d6c8ff,#a892ff 60%,#B08A44);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px rgba(168,146,255,.4))}
 .nm-bigscore .bs-max{font-size:11px;color:var(--ink2);letter-spacing:.2em;margin-top:1px}
 .nm-bigscore .bs-grade{position:absolute;top:6px;right:8px;font-size:14px;font-weight:900;color:var(--gold2);letter-spacing:0}
 .grade-A{border-color:var(--wood);background:rgba(124,196,154,.12)}
@@ -400,13 +400,13 @@ summary::-webkit-details-marker{display:none}
 .nm-confidence{display:flex;align-items:center;gap:8px}
 .nm-conf-label{font-size:11px;color:var(--ink2);white-space:nowrap;letter-spacing:.05em}
 .nm-conf-track{flex:1;max-width:140px;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
-.nm-conf-fill{height:100%;background:linear-gradient(90deg,#84c9ec,#D9B36C);border-radius:4px}
+.nm-conf-fill{height:100%;background:linear-gradient(90deg,#84c9ec,#a892ff);border-radius:4px}
 .nm-conf-num{font-size:12px;color:var(--gold);font-weight:700;font-variant-numeric:tabular-nums}
 .nm-pros-cons{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0;padding:12px 0;border-top:1px dashed rgba(168,146,255,.15);border-bottom:1px dashed rgba(168,146,255,.15)}
 .nm-pros,.nm-cons{flex:1;min-width:160px}
 .npc-title{font-size:12px;font-weight:700;letter-spacing:.1em;margin-bottom:6px}
 .nm-pros .npc-title{color:#86e3b2}
-.nm-cons .npc-title{color:#D9B36C}
+.nm-cons .npc-title{color:#a892ff}
 .npc-item{font-size:13px;color:var(--ink);line-height:1.6;padding-left:4px}
 .nm-bar-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px;margin:4px 0 6px}
 .nm-bar{display:flex;align-items:center;gap:8px;font-size:13px}
@@ -414,7 +414,7 @@ summary::-webkit-details-marker{display:none}
 .nm-bar-track{flex:1;height:10px;background:rgba(168,146,255,.10);border-radius:5px;overflow:hidden;border:1px solid rgba(168,146,255,.18)}
 .nm-bar-fill{height:100%;border-radius:5px;transition:width .5s cubic-bezier(.2,.8,.3,1)}
 .nm-bar-fill.good{background:linear-gradient(90deg,#3fa078,#86e3b2);box-shadow:0 0 8px rgba(124,196,154,.5)}
-.nm-bar-fill.mid{background:linear-gradient(90deg,#A9854B,#D9B36C);box-shadow:0 0 8px rgba(168,146,255,.5)}
+.nm-bar-fill.mid{background:linear-gradient(90deg,#A9854B,#a892ff);box-shadow:0 0 8px rgba(168,146,255,.5)}
 .nm-bar-fill.bad{background:linear-gradient(90deg,#ff7a98,#ff86bf);box-shadow:0 0 8px rgba(255,134,191,.5)}
 .nm-bar-val{width:46px;text-align:right;font-size:12px;color:var(--ink2);font-variant-numeric:tabular-nums}
 .nm-details{margin-top:10px;text-align:left;background:rgba(14,19,38,.55);border-color:rgba(168,146,255,.25)}
@@ -2250,6 +2250,7 @@ TX.baziReport2=function(SM,bz,gender){
   sec4.push('整體十神分布(含地支主氣):'+sorted.map(k=>k+'×'+cnt[k]).join('、')+'。最多的是「'+sorted[0]+'」,可以說是你性格和際遇的主旋律。');
   sec4.push(TX.TENGOD_LONG[sorted[0]]);
   if(sorted[1]&&cnt[sorted[1]]>=2) sec4.push('再來「'+sorted[1]+'」也很有份量:'+TX.TENGOD_LONG[sorted[1]]);
+  if(cnt['比肩']||cnt['劫財']) sec4.push('小提醒:比肩和劫財同屬「比劫」、都會來幫身(身弱時是助力、身強時則跟你爭財)。差別在於——比肩跟你同陰陽,像同輩夥伴,個性比較穩;劫財跟你異陰陽,衝勁更強、也更容易破財,合夥和金錢界線要劃清楚。');
   const grp=t=>({'比肩':'比劫','劫財':'比劫','食神':'食傷','傷官':'食傷','正財':'財','偏財':'財','正官':'官殺','七殺':'官殺','正印':'印','偏印':'印'})[t];
   const groups={}; Object.keys(cnt).forEach(t=>{ groups[grp(t)]=(groups[grp(t)]||0)+cnt[t]; });
   const missing=['財','官殺','印','食傷'].filter(gname=>!groups[gname]);
@@ -4030,8 +4031,8 @@ const C = window.SM_CHARTS = {};
 const PI2 = Math.PI * 2;
 const ELEM_COLOR = {'木':'#84e3b4','火':'#ff8aa6','土':'#a892ff','金':'#ddd3ff','水':'#90d3f1'};
 const TENGOD_COLOR = {
-  '比肩':'#90d3f1','劫財':'#5A88C4',
-  '食神':'#84e3b4','傷官':'#5AAA78',
+  '比肩':'#90d3f1','劫財':'#6ab0e0',
+  '食神':'#84e3b4','傷官':'#5fc59a',
   '正財':'#a892ff','偏財':'#a892ff',
   '正官':'#ffb0a0','七殺':'#ff8aa6',
   '正印':'#cba8ff','偏印':'#b08fd0'
@@ -4846,11 +4847,11 @@ function renderResult(R){
       +'<div class="sumcell"><div class="slabel">今年小限 ('+yr+')</div><div class="sval">'+xxP.name+'</div><div class="ssub">'+ZHI[xxZ]+'宮 · '+(xxP.stars.length?xxP.stars.join('、'):'借對宮')+'</div><div class="srating '+xxRt.cls+'">'+xxRt.stars+' '+xxSc+'分</div></div>'
       +'<div class="sumcell"><div class="slabel">今年流年</div><div class="sval">'+SM.gz(((yr-4)%60+60)%60)+'年</div><div class="ssub">四化:'+SM.SIHUA[lnG].map((s,i)=>s+['祿','權','科','忌'][i]).join(' · ')+'</div></div>'
       +ndxHtml+'</div>'
-      +'<div style="padding:8px 20px;border-top:1px solid rgba(217,179,108,.12);display:flex;gap:16px;flex-wrap:wrap;align-items:center">'
+      +'<div style="padding:8px 20px;border-top:1px solid rgba(168,146,255,.12);display:flex;gap:16px;flex-wrap:wrap;align-items:center">'
       +"<a href=\"#rt-liunian\" onclick=\"switchResTab('rt-liunian');return false;\" style=\"font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:.1em\">↓ 流年分析</a>"
       +"<a href=\"#rt-dayun\" onclick=\"switchResTab('rt-dayun');return false;\" style=\"font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:.1em\">↓ 大運</a>"
       +"<a href=\"#rt-tengod\" onclick=\"switchResTab('rt-tengod');return false;\" style=\"font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:.1em\">↓ 八字總論</a>"
-      +'<button onclick="openShareCard()" style="margin-left:auto;font-family:inherit;font-size:12px;letter-spacing:.1em;padding:6px 16px;border-radius:3px;border:1px solid rgba(217,179,108,.4);background:rgba(217,179,108,.08);color:var(--gold2);cursor:pointer">📤 生成分享卡</button>'
+      +'<button onclick="openShareCard()" style="margin-left:auto;font-family:inherit;font-size:12px;letter-spacing:.1em;padding:6px 16px;border-radius:3px;border:1px solid rgba(168,146,255,.4);background:rgba(168,146,255,.08);color:var(--gold2);cursor:pointer">📤 生成分享卡</button>'
       +'</div>';
   })();
 
@@ -4938,7 +4939,7 @@ function renderResult(R){
   // 十神能量條
   let tbars='';
   Object.entries(groups).forEach(([g,v])=>{
-    const color={'比劫':'#7FA8D9','食傷':'#7CC49A','財':'#D9B36C','官殺':'#E05C4A','印':'#B090D0'}[g]||'#888';
+    const color={'比劫':'#90d3f1','食傷':'#84e3b4','財':'#a892ff','官殺':'#ff8aa6','印':'#cba8ff'}[g]||'#888';
     tbars+='<div class="barrow"><div class="blabel tg2 e'+g.slice(0,1)+'">'+g+'</div><div class="btrack"><div class="bfill" style="width:'+(v/5*100)+'%;background:'+color+';color:'+color+'"></div></div><div class="bval">'+v+'</div></div>';
   });
   $('res-tengod-bars').innerHTML=tbars;
@@ -4951,7 +4952,7 @@ function renderResult(R){
     const total=hidden.reduce((s,_,i)=>s+(weights[i]||0.2),0);
     const segs=hidden.map((hg,i)=>{
       const tg=SM.tenGod(P.day[0],SM.GAN.indexOf(hg));
-      const color={'比劫':'#7FA8D9','食傷':'#7CC49A','財':'#D9B36C','官殺':'#E05C4A','印':'#B090D0'}[Object.keys(TENGOD_GROUPS).find(g=>TENGOD_GROUPS[g].includes(tg))||'']||'#888';
+      const color={'比劫':'#90d3f1','食傷':'#84e3b4','財':'#a892ff','官殺':'#ff8aa6','印':'#cba8ff'}[Object.keys(TENGOD_GROUPS).find(g=>TENGOD_GROUPS[g].includes(tg))||'']||'#888';
       const pct=((weights[i]||0.2)/total*100).toFixed(0);
       return '<div class="hg-seg e'+tg[0]+'" style="flex:'+pct+';background:'+color+'88">'+hg+'</div>';
     }).join('');
@@ -5102,16 +5103,16 @@ function renderLiunian(R){
     const bzDayG=R.bz.pillars.day[0];
     const tg=SM.tenGod(bzDayG,dG);
     const TG_FORTUNE={
-      '比肩':{title:'人和日',desc:'今日適合與平輩夥伴交流合作，獨自行動容易事倍功半。',luck:72,color:'#7FA8D9'},
-      '劫財':{title:'守財日',desc:'財務上宜保守，避免大額借貸或衝動消費，與人合夥需更謹慎。',luck:48,color:'#7FA8D9'},
-      '食神':{title:'享受日',desc:'適合放鬆心情、享受美食與創作，靈感和表達力都不錯。',luck:80,color:'#7CC49A'},
-      '傷官':{title:'敏銳日',desc:'思路敏捷適合解決難題，但說話宜留三分，避免口舌是非。',luck:62,color:'#7CC49A'},
-      '正財':{title:'務實日',desc:'今日適合處理正職工作與穩定收入相關事務，按部就班最有效。',luck:75,color:'#D9B36C'},
-      '偏財':{title:'機緣日',desc:'偏財運活躍，留意意外機會，但投機決定仍須三思。',luck:78,color:'#D9B36C'},
-      '正官':{title:'進取日',desc:'適合處理職場升遷、考核、簽約等正式事務，表現容易被看見。',luck:82,color:'#E05C4A'},
-      '七殺':{title:'衝刺日',desc:'行動力旺盛適合衝刺目標，但壓力也較大，留意情緒管理。',luck:65,color:'#E05C4A'},
-      '正印':{title:'學習日',desc:'適合進修、閱讀、向長輩貴人請益，心境也較沉穩安定。',luck:85,color:'#B090D0'},
-      '偏印':{title:'內省日',desc:'適合獨處思考、鑽研專業，但避免過度鑽牛角尖或孤立自己。',luck:58,color:'#B090D0'}
+      '比肩':{title:'人和日',desc:'今日適合與平輩夥伴交流合作，獨自行動容易事倍功半。',luck:72,color:'#90d3f1'},
+      '劫財':{title:'守財日',desc:'財務上宜保守，避免大額借貸或衝動消費，與人合夥需更謹慎。',luck:48,color:'#90d3f1'},
+      '食神':{title:'享受日',desc:'適合放鬆心情、享受美食與創作，靈感和表達力都不錯。',luck:80,color:'#84e3b4'},
+      '傷官':{title:'敏銳日',desc:'思路敏捷適合解決難題，但說話宜留三分，避免口舌是非。',luck:62,color:'#84e3b4'},
+      '正財':{title:'務實日',desc:'今日適合處理正職工作與穩定收入相關事務，按部就班最有效。',luck:75,color:'#a892ff'},
+      '偏財':{title:'機緣日',desc:'偏財運活躍，留意意外機會，但投機決定仍須三思。',luck:78,color:'#a892ff'},
+      '正官':{title:'進取日',desc:'適合處理職場升遷、考核、簽約等正式事務，表現容易被看見。',luck:82,color:'#ff8aa6'},
+      '七殺':{title:'衝刺日',desc:'行動力旺盛適合衝刺目標，但壓力也較大，留意情緒管理。',luck:65,color:'#ff8aa6'},
+      '正印':{title:'學習日',desc:'適合進修、閱讀、向長輩貴人請益，心境也較沉穩安定。',luck:85,color:'#cba8ff'},
+      '偏印':{title:'內省日',desc:'適合獨處思考、鑽研專業，但避免過度鑽牛角尖或孤立自己。',luck:58,color:'#cba8ff'}
     };
     const f=TG_FORTUNE[tg]||{title:'平常日',desc:'今日運勢平穩，按既定計畫行事即可。',luck:60,color:'#A89F8C'};
     const stars='★★★★★'.slice(0,Math.round(f.luck/20))+'☆☆☆☆☆'.slice(0,5-Math.round(f.luck/20));
