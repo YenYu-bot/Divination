@@ -77,9 +77,11 @@ header::after{content:"";display:block;width:200px;height:1px;margin:22px auto 0
 .frow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
 .frow label{font-size:15px;color:var(--ink2);min-width:64px}
 select,input[type=text]{
-  font-family:inherit;font-size:16px;padding:10px 14px;background:rgba(255,255,255,.06);color:var(--ink);
-  border:1px solid rgba(255,255,255,.16);border-radius:13px;outline:none;transition:all .2s;backdrop-filter:blur(6px);
+  font-family:inherit;font-size:16px;padding:10px 14px;background:rgba(28,20,66,.62);color:var(--ink);font-weight:500;
+  border:1px solid rgba(255,255,255,.18);border-radius:13px;outline:none;transition:all .2s;backdrop-filter:blur(6px);
 }
+select option{background:#241c54;color:#f3efff}
+select{color:#f3efff}
 select:focus,input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(168,146,255,.3)}
 .gender{display:flex;gap:14px;align-items:center;font-size:16px}
 .gender input{accent-color:var(--cinnabar);transform:scale(1.15);margin-right:4px}
@@ -2199,10 +2201,10 @@ TX.baziReport2=function(SM,bz,gender){
   // 1 命局總覽
   const sec1=[];
   sec1.push(TX.DAYMASTER[SM.GAN[dG]]);
-  sec1.push('日主'+SM.GAN[dG]+SM.GAN_ELEM[dG]+'生於'+SM.ZHI[P.month[1]]+'月,綜合四柱干支與藏干權衡,日主'
-    +(st.strong?'偏強':'偏弱')+'(同黨力量約佔'+Math.round(st.ratio*100)+'%)。'
-    +(st.strong?'身強者能任財官,宜洩宜剋,以':'身弱者宜生宜扶,以')+'「'+st.xiyong.join('、')+'」為喜用之神,'
-    +'忌'+SM.ELEMS.filter(e=>!st.xiyong.includes(e)).join('、')+'過旺。喜用神是命局的藥:行運、方位、行業、用色,凡能補喜用者皆為開運之方。');
+  sec1.push('你的日主是'+SM.GAN[dG]+SM.GAN_ELEM[dG]+',生在'+SM.ZHI[P.month[1]]+'月。把四柱的天干地支連同藏干一起衡量,你的日主算'
+    +(st.strong?'偏強':'偏弱')+'(幫身的力量大約佔'+Math.round(st.ratio*100)+'%)。'
+    +(st.strong?'身強的人扛得住財與官,適合用「洩」和「剋」來平衡,所以':'身弱的人需要被生、被扶,所以')+'「'+st.xiyong.join('、')+'」就是你的喜用神(對你最有幫助的五行),'
+    +'要留意'+SM.ELEMS.filter(e=>!st.xiyong.includes(e)).join('、')+'太旺。喜用神可以想成命盤的「解藥」——走運、方位、行業、用色,只要能補到喜用神,都是替自己加分的方向。');
   const xy=st.xiyong[0], life=TX.ELEM_LIFE[xy];
   sec1.push('開運建議:幸運色為'+life.color+';有利方位在'+life.dir+';適合往'+life.ind+'等'+xy+'性質領域發展。');
   S.push({t:'命局總覽',ps:sec1});
@@ -2211,7 +2213,7 @@ TX.baziReport2=function(SM,bz,gender){
   const mHid=SM.HIDDEN[SM.ZHI[P.month[1]]][0];
   const mTG=SM.tenGod(dG,SM.GAN.indexOf(mHid));
   const season=SEASON[P.month[1]];
-  sec2.push('「欲知貴賤,先觀月令乃提綱」——月令是八字的司令部。本造生於'+season+'季'+SM.ZHI[P.month[1]]+'月,月支本氣透出「'+mTG+'」格之象。');
+  sec2.push('月令(出生的月份)是八字裡最關鍵的一格,等於整張命盤的「總指揮」,看命先看它最準。你生在'+season+'季的'+SM.ZHI[P.month[1]]+'月,月支的主氣偏向「'+mTG+'」,所以整體帶有「'+mTG+'」格的味道。');
   sec2.push(TX.TENGOD_LONG[mTG]);
   if(TIAOHOU[season] && (season==='夏'||season==='冬')) sec2.push(TIAOHOU[season]+'。');
   S.push({t:'月令提綱',ps:sec2});
@@ -2240,22 +2242,22 @@ TX.baziReport2=function(SM,bz,gender){
     const t=SM.tenGod(dG,SM.GAN.indexOf(hid)); cnt[t]=(cnt[t]||0)+1;
   });
   const sorted=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]);
-  sec4.push('全局十神分布(含地支主氣):'+sorted.map(k=>k+'×'+cnt[k]).join('、')+'。最旺者為「'+sorted[0]+'」,是性格與際遇的主旋律。');
+  sec4.push('整體十神分布(含地支主氣):'+sorted.map(k=>k+'×'+cnt[k]).join('、')+'。最多的是「'+sorted[0]+'」,可以說是你性格和際遇的主旋律。');
   sec4.push(TX.TENGOD_LONG[sorted[0]]);
-  if(sorted[1]&&cnt[sorted[1]]>=2) sec4.push('其次「'+sorted[1]+'」亦有力:'+TX.TENGOD_LONG[sorted[1]]);
+  if(sorted[1]&&cnt[sorted[1]]>=2) sec4.push('再來「'+sorted[1]+'」也很有份量:'+TX.TENGOD_LONG[sorted[1]]);
   const grp=t=>({'比肩':'比劫','劫財':'比劫','食神':'食傷','傷官':'食傷','正財':'財','偏財':'財','正官':'官殺','七殺':'官殺','正印':'印','偏印':'印'})[t];
   const groups={}; Object.keys(cnt).forEach(t=>{ groups[grp(t)]=(groups[grp(t)]||0)+cnt[t]; });
   const missing=['財','官殺','印','食傷'].filter(gname=>!groups[gname]);
-  if(missing.length) sec4.push('命局不見'+missing.join('、')+':'+missing.map(gn=>({'財':'財星不現,主財不外露、不善言利,然以才華間接生財反而長久','官殺':'官殺不現,主不受拘束、不喜體制,宜自由業或自行創業,惟自律須靠自己','印':'印星不現,主凡事親力親為、長輩助力較薄,學習靠自己摸索','食傷':'食傷不現,主才華內斂、表達含蓄,屬實做型而非表現型'}[gn])).join(';')+'。');
+  if(missing.length) sec4.push('命盤裡看不到'+missing.join('、')+':'+missing.map(gn=>({'財':'財星不現,主財不外露、不善言利,然以才華間接生財反而長久','官殺':'官殺不現,主不受拘束、不喜體制,宜自由業或自行創業,惟自律須靠自己','印':'印星不現,主凡事親力親為、長輩助力較薄,學習靠自己摸索','食傷':'食傷不現,主才華內斂、表達含蓄,屬實做型而非表現型'}[gn])).join(';')+'。');
   S.push({t:'十神結構',ps:sec4});
   // 5 空亡與神煞
   const sec5=[];
   const kw=SM.kongwang(bz);
-  sec5.push('日柱旬空在「'+kw.dayKong.join('、')+'」'+(kw.hits.length?(';四柱之中,'+kw.hits.map(h=>h.pos+h.zhi).join('、')+'逢空亡。'+kw.hits.map(h=>TX.KW_T[h.pos]||'').filter(Boolean).join(';')+'。'):',四柱地支皆不落空,根基實在。')+'空亡主「有而若無」,所臨之宮緣分易聚易散,然空亡之地亦主超脫——藝術、哲思、宗教反得其妙。');
+  sec5.push('從日柱推算,空亡落在「'+kw.dayKong.join('、')+'」'+(kw.hits.length?(';你的四柱裡,'+kw.hits.map(h=>h.pos+h.zhi).join('、')+'剛好踩到空亡。'+kw.hits.map(h=>TX.KW_T[h.pos]||'').filter(Boolean).join(';')+'。'):',而你四柱的地支都沒落空,根基算紮實。')+'空亡簡單講就是「看得到、抓不太住」,落在哪一柱,那方面的緣分就比較容易聚散無常;不過空掉的地方少了牽絆,在藝術、哲學、宗教這類精神領域反而常常更有發揮。');
   const ss=SM.shensha(bz);
   if(ss.length){
     ss.forEach(s=>{ sec5.push('◆'+s.name+'('+s.at+'):'+(TX.SS_T[s.name]||'')+'。'); });
-  }else sec5.push('本造四柱無明顯神煞,吉凶純以十神五行論,反而乾淨俐落。');
+  }else sec5.push('你的四柱沒有明顯神煞,吉凶就單純看十神和五行,反而清爽好讀。');
   S.push({t:'空亡與神煞',ps:sec5});
   // 6 分項運勢
   const sec6=[];
@@ -5044,7 +5046,8 @@ window.addEventListener('DOMContentLoaded',function(){
         +'<p class="verdict">'+esc(r.verdict)+'</p>'
         +'<p class="mini">甲方四柱:'+gz1+'<br>乙方四柱:'+gz2+'</p>'
         +r.notes.map(n=>'<p>'+esc(n)+'</p>').join('')
-        +'<p class="mini">註:合婚以日柱為核心、五行互補為要,生肖僅為參考。沖剋非絕對,知其性而善處之,即是化解。</p>';
+        +'<p class="mini">註:合婚以日柱為核心、五行互補為要,生肖僅為參考。沖剋非絕對,知其性而善處之,即是化解。</p>'
+        +'<div class="btnrow noprint" style="margin-top:18px"><button class="btn alt" onclick="window.__exportPDF&&window.__exportPDF()" style="padding:9px 26px;font-size:15px">匯出 PDF</button></div>';
       $('hh-out').classList.remove('hide');
     }catch(e){ alert('合婚計算失敗:'+e.message); }
   });
@@ -5235,6 +5238,7 @@ function render(){
   });
   h+='</div><div class="nm-grid" id="nm-grid">'+renderGrid(S)+'</div>';
   h+='</div>';
+  h+='<div class="btnrow noprint" style="margin-top:18px"><button class="btn alt" onclick="window.__exportPDF&&window.__exportPDF()" style="padding:9px 26px;font-size:15px">匯出 PDF</button></div>';
   $('nm-out').innerHTML=h;
   $('nm-out').classList.remove('hide');
   bindEvents();
