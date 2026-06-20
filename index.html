@@ -904,7 +904,8 @@ footer .stamp{
     <!-- 結果子分頁 -->
     <div class="card" style="padding:0;overflow:hidden">
       <div class="res-tabs" id="res-tabs">
-        <button class="res-tab on" data-rt="rt-mingpan">命盤</button>
+        <button class="res-tab on" data-rt="rt-overview">人生總覽</button>
+        <button class="res-tab" data-rt="rt-mingpan">命盤</button>
         <button class="res-tab" data-rt="rt-wuxing">五行</button>
         <button class="res-tab" data-rt="rt-tengod">十神</button>
         <button class="res-tab" data-rt="rt-wangxiang">旺衰</button>
@@ -912,8 +913,12 @@ footer .stamp{
         <button class="res-tab" data-rt="rt-dayun">大運</button>
         <button class="res-tab" data-rt="rt-liunian">流年流月</button>
       </div>
+      <!-- ⓪ 人生總覽 -->
+      <div id="rt-overview" class="rt-panel">
+        <div style="padding:18px 20px 20px"><h3 class="rt-title">命盤 × 八字 人生總覽</h3><div id="res-overview"></div></div>
+      </div>
       <!-- ① 命盤 -->
-      <div id="rt-mingpan" class="rt-panel">
+      <div id="rt-mingpan" class="rt-panel hide">
         <div style="padding:18px 20px 0"><h3 class="rt-title">基本命造</h3><div id="res-basic"></div></div>
         <div style="padding:12px 20px 0"><h3 class="rt-title">八字四柱</h3><div id="res-pillars"></div></div>
         <div style="padding:12px 20px 0"><h3 class="rt-title">紫微斗數命盤</h3><div class="chartwrap"><div id="res-chart"></div></div></div>
@@ -2411,6 +2416,82 @@ TX.ziweiPalaceText2=function(SM,zw,p){
   else verdict='三方吉煞互見,順逆相參,謀定後動則吉。';
   segs.push('三方四正會照:'+(sfDesc.join(';')||'會照諸宮主星偏弱')+'。會照吉曜'+jiN+'顆、煞曜'+shaN+'顆——'+verdict);
   return segs;
+};
+
+/* ===== 人生總覽:命盤(紫微)× 八字盤 綜合解說 ===== */
+function _starTrait(stars){
+  const M={
+    '紫微':['領導格局','lead'],'天府':['穩健務實','lead'],'武曲':['剛毅執行','lead'],
+    '七殺':['開創衝勁','action'],'破軍':['破舊立新','action'],
+    '太陽':['熱情外放','express'],'巨門':['口才思辨','express'],
+    '天機':['機敏善謀','think'],'太陰':['細膩內斂','think'],'天梁':['沉穩照顧','think'],
+    '貪狼':['多才多藝','charm'],'廉貞':['複雜有魅力','charm'],
+    '天同':['隨和享受','mild'],'天相':['協調得體','mild']
+  };
+  for(const s of stars){ if(M[s]) return {key:M[s][0],kind:M[s][1]}; }
+  return {key:'隨環境塑形、可塑性高',kind:'flex'};
+}
+function _gejuTrait(geju,level){
+  const g=geju||'';
+  if(/正官|七殺/.test(g)) return {key:'責任與權位',kind:'authority',theme:'你天生對「把事情做對、扛得起責任」這件事有感覺,適合在有規則、有舞台的地方發光——體制內升遷、專業權威、或自己當家做主都行。'};
+  if(/食神|傷官/.test(g)) return {key:'才華與表達',kind:'talent',theme:'你的能量在「創造和表達」上最旺,點子多、感受力強,適合靠才華、技術或內容吃飯,最怕被綁在死板的框框裡。'};
+  if(/正財|偏財/.test(g)) return {key:'務實與經營',kind:'wealth',theme:'你對「實際的成果和錢」很務實,務實肯做、懂得經營,財路靠的是穩紮穩打加上一點生意頭腦。'};
+  if(/正印|偏印/.test(g)) return {key:'學養與內修',kind:'study',theme:'你重思考、重內在,學東西快、有自己的精神世界,適合靠專業知識、研究或心靈相關的路線走長遠。'};
+  if(/建祿|月刃|比肩|劫財/.test(g)) return {key:'自立與拚搏',kind:'self',theme:'你獨立性強、靠自己,一生多半得自己打拚出一片天,合夥與金錢界線務必清楚。'};
+  return {key:g||'平實穩進',kind:'plain',theme:'你的格局平實,不靠一鳴驚人,靠的是照自己的步調穩穩累積。'};
+}
+function _combineNote(zt,bt,ay){
+  const strong=/強/.test(ay.strengthLevel);
+  const same={'lead':'authority','action':'authority','express':'talent','charm':'talent','think':'study','mild':'wealth'};
+  const aligned = same[zt.kind]===bt.kind;
+  let head;
+  if(zt.kind==='flex') head='你的命宮較有彈性,所以八字的「'+bt.key+'」會是你比較定型、可以放心發揮的主軸。';
+  else if(aligned) head='這兩股力量是同一個方向——紫微的「'+zt.key+'」剛好放大八字的「'+bt.key+'」,代表這條路你走起來最順、最像你,值得當主線全力投入。';
+  else head='這兩股力量各補一塊:紫微給你「'+zt.key+'」的天生氣質,八字給你「'+bt.key+'」的人生課題,合起來代表你最理想的樣子,是把前者的特質用在後者的領域上。';
+  const tail = strong
+    ? '加上你日主偏強,本錢夠、主見也夠,適合主動出擊、自己開局;只要別太衝、懂得留餘地,衝勁就是你的優勢。'
+    : '加上你日主偏弱,單打獨鬥較吃力,反而適合借力使力——找對團隊、貴人、平台,順勢而為比硬拚更容易成事。';
+  return head+tail;
+}
+TX.lifeOverview=function(SM,R){
+  const zw=R.zw, bz=R.bz, P=bz.pillars, dG=P.day[0];
+  const ay=SM.autoYongShen(bz);
+  const ming=zw.palaces.find(p=>p.name==='命宮');
+  let mStars=(ming&&ming.stars&&ming.stars.length)?ming.stars.slice():[];
+  let borrowed=false;
+  if(!mStars.length && ming){ const opp=zw.palaces.find(p=>p.zhi===((ming.zhi+6)%12)); if(opp){ mStars=(opp.stars||[]).slice(); borrowed=true; } }
+  const mainStars=mStars.filter(s=>TX.STAR&&TX.STAR[s]);
+  const S=[];
+  // 1 你是什麼樣的人
+  const sec1=[];
+  if(mainStars.length) sec1.push('紫微這邊,你的命宮坐「'+mainStars.join('、')+'」'+(borrowed?'(命宮本身無主星,借對宮來看)':'')+'——'+mainStars.map(s=>TX.STAR[s].b).join(';')+'。');
+  else sec1.push('紫微這邊,你的命宮沒有主星(空宮),代表你的性格比較像一塊會被環境塑形的料:可塑性高、適應力強,早年看環境長大,中年後自己的樣子才慢慢定下來。');
+  sec1.push('八字這邊,你的日主是'+SM.GAN[dG]+SM.GAN_ELEM[dG]+'——'+(TX.DAYMASTER[SM.GAN[dG]]||''));
+  const zt0=_starTrait(mainStars);
+  sec1.push('合起來看:紫微偏「'+zt0.key+'」、八字日主給你'+SM.GAN_ELEM[dG]+'的本性,這就是你給人的第一印象與骨子裡的脾性。底色是天生的,怎麼用、用在哪,才是後天能調整的。');
+  S.push({t:'你是什麼樣的人',ps:sec1});
+  // 2 你的人生劇本
+  const sec2=[];
+  const bt=_gejuTrait(ay.geju,ay.strengthLevel);
+  sec2.push('八字格局是「'+ay.geju+'」,日主'+ay.strengthLevel+'(幫身的力量約佔'+Math.round(ay.ratio*100)+'%),最需要補的喜用神是「'+ay.yong.join('、')+'」。'+bt.theme);
+  const pats=zw.patterns||[];
+  if(pats.length) sec2.push('紫微格局看到:'+pats.map(p=>p+(TX.PATTERN&&TX.PATTERN[p]?('——'+TX.PATTERN[p]):'')).join(';')+'。這是命盤替你標出的「人生亮點或要留意的劇情」。');
+  else sec2.push('紫微沒有形成特別強的格局,代表你的人生比較照自己步調走,不靠一鳴驚人,而是靠時間慢慢把實力疊起來。');
+  S.push({t:'你的人生劇本',ps:sec2});
+  // 3 命盤 × 八字 互相印證
+  const sec3=[];
+  sec3.push('兩套系統看的角度不同:紫微像「星圖」,擅長畫出人生各個領域(事業、感情、財帛…)的劇情;八字像「能量配方」,擅長看五行強弱與這輩子的核心課題。把它們疊在一起,可信度更高。');
+  sec3.push(_combineNote(zt0,bt,ay));
+  S.push({t:'命盤 × 八字 互相印證',ps:sec3});
+  // 4 一生重點與開運
+  const sec4=[];
+  const life=TX.ELEM_LIFE[ay.yong[0]]||{};
+  const shenName=zw.palaces.find(p=>p.zhi===zw.shenZhi)?.name;
+  sec4.push('開運方向:多借喜用神「'+ay.yong.join('、')+'」的力量——幸運色'+(life.color||'')+'、有利方位'+(life.dir||'')+',適合往'+(life.ind||'')+'這類領域發展。');
+  if(shenName) sec4.push('你的身宮落在「'+shenName+'」,代表中年以後你會把心力越來越放在這一塊,也是後天最該用力、最容易看到成果的地方。');
+  sec4.push('最後提醒:命盤和八字畫的是「天生的牌」跟「大致的劇本」,不是判決書。同一手牌,有人打成順風、有人打成逆轉,差別都在每個當下的選擇。看懂自己的長處跟罩門,把力氣花在對的方向,就是最實在的開運。');
+  S.push({t:'一生重點與開運',ps:sec4});
+  return {sections:S, ay:ay};
 };
 })();
 
@@ -4827,6 +4908,13 @@ function renderResult(R){
   const rep=TX.baziReport2(SM,bz,inp.g);
   const secHtml=rep.sections.map((s,idx)=>'<details'+(idx===0?' open':'')+'><summary>'+esc(s.t)+'</summary><div class="pbody">'+s.ps.map(p=>'<p>'+esc(p)+'</p>').join('')+'</div></details>').join('');
   $('res-bazitext').innerHTML=secHtml;
+
+  // 人生總覽(命盤 × 八字 綜合)
+  try{
+    const ov=TX.lifeOverview(SM,R);
+    $('res-overview').innerHTML='<p class="dim" style="margin-bottom:10px">綜合紫微命盤與八字盤,為你整理出一份白話的人生總覽。</p>'
+      +ov.sections.map(s=>'<details open><summary>'+esc(s.t)+'</summary><div class="pbody">'+s.ps.map(p=>'<p>'+esc(p)+'</p>').join('')+'</div></details>').join('');
+  }catch(e){ $('res-overview').innerHTML='<p class="dim">總覽產生失敗:'+esc(e.message)+'</p>'; }
 
   // ── 旺衰tab ──
   setTimeout(()=>{
