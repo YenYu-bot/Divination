@@ -2493,6 +2493,60 @@ TX.lifeOverview=function(SM,R){
   S.push({t:'一生重點與開運',ps:sec4});
   return {sections:S, ay:ay};
 };
+
+/* ===== 兩人合盤總覽:合婚綜合白話解說 ===== */
+TX.hehunOverview=function(SM,b1,b2,g1,g2,r){
+  const R=SM.rel, S=[];
+  const d1=b1.pillars.day, d2=b2.pillars.day, y1=b1.pillars.year, y2=b2.pillars.year;
+  const e1=SM.GAN_ELEM[d1[0]], e2=SM.GAN_ELEM[d2[0]];
+  const NAT={'木':'像樹木,溫和向上、重成長','火':'像火焰,熱情外放、講感覺','土':'像大地,務實穩重、重安全感','金':'像金屬,果決俐落、講原則','水':'像流水,靈活善變、重情緒交流'};
+  // 1 相處基調(日主關係)
+  const sec1=[];
+  sec1.push('你的日主是'+SM.GAN[d1[0]]+e1+'('+NAT[e1]+');對方的日主是'+SM.GAN[d2[0]]+e2+'('+NAT[e2]+')。日主代表一個人的本性,兩邊一比,就看得出你們相處的基本調性。');
+  if(R.ganHe(d1[0],d2[0])){
+    sec1.push('你們的日主天干「相合」('+SM.GAN[d1[0]]+SM.GAN[d2[0]]+'合)——這是合婚裡最難得的「天生相吸」:心性投得來、常常一個眼神就懂對方,屬於越處越離不開的類型。');
+  } else {
+    const rr=(SM.ELEMS.indexOf(e2)-SM.ELEMS.indexOf(e1)+5)%5;
+    if(rr===1||rr===4) sec1.push('兩人日主五行「相生」(一方生另一方)——像一個給、一個收,互補有情、相處滋潤;要留意別演變成單方面一直付出。');
+    else if(rr===2||rr===3) sec1.push('兩人日主五行「相剋」——個性上會互相刺激,火花多、但也容易針鋒相對。這種組合不是不好,而是「需要磨合」,只要懂得各退一步,反而很精彩、很有張力。');
+    else sec1.push('兩人日主「比和」(同屬'+e1+')——習性相近、頻率接近,像朋友也像伴侶,相處輕鬆自在;但太像有時少了互補,要刻意替關係製造新鮮感。');
+  }
+  S.push({t:'你們是哪一種組合',ps:sec1});
+  // 2 五行互補
+  const sec2=[];
+  const s1=SM.fiveElemStats(b1), s2=SM.fiveElemStats(b2);
+  const help2to1=s1.xiyong.some(e=>s2.score[e]>=2), help1to2=s2.xiyong.some(e=>s1.score[e]>=2);
+  sec2.push('你需要補的喜用神是「'+s1.xiyong.join('、')+'」,對方需要補的是「'+s2.xiyong.join('、')+'」。看彼此能不能補到對方缺的那一塊,是合八字最看重的事。');
+  if(help2to1&&help1to2) sec2.push('好消息是:你們的五行剛好「互補互旺」——你缺的對方有、對方缺的你有,這在合八字裡是最加分的一項,愈處愈旺,彼此都會因為對方變得更好。');
+  else if(help2to1||help1to2) sec2.push('五行上是「單向補益」:其中一方比較像對方的小太陽,明顯補到對方的喜用。受惠的一方記得多回饋、多表達感謝,關係才會平衡而不傾斜。');
+  else sec2.push('五行上你們比較「各自獨立」,沒有特別互補、也沒有互相消耗。這代表感情得靠後天用心經營,而不是吃天生的紅利——反而更能看出兩個人是不是真的願意為對方努力。');
+  S.push({t:'五行合不合',ps:sec2});
+  // 3 夫妻宮與緣分
+  const sec3=[];
+  let palace;
+  if(R.isLiuhe(d1[1],d2[1])) palace='你們的日支「六合」。日支就是八字裡的夫妻宮,六合主恩愛黏膩、感情濃度高,是婚配的大吉象。';
+  else if(R.isSanhe(d1[1],d2[1])) palace='你們的日支「三合」——夫妻宮價值觀契合,特別適合一起做事、一起規劃未來,是並肩型的伴侶。';
+  else if(R.isChong(d1[1],d2[1])) palace='你們的日支「相沖」(夫妻宮對沖)——相處容易各有堅持、互不相讓。化解之道是給彼此空間、保留一點距離,有時聚少離多反而更長久。';
+  else if(R.isXing(d1[1],d2[1])) palace='你們的日支「相刑」——容易彼此挑剔、看不順眼小毛病,溝通要講方法、對事不對人。';
+  else if(R.isHai(d1[1],d2[1])) palace='你們的日支「相害」——要防瑣事積怨、悶在心裡,有話直接說開最好,別讓小事滾成大事。';
+  else palace='你們的日支之間沒有特別的合或沖,夫妻宮平穩——沒有戲劇性的助力,也沒有明顯的阻力,屬於細水長流、慢慢加溫的類型。';
+  sec3.push(palace);
+  if(R.isLiuhe(y1[1],y2[1])||R.isSanhe(y1[1],y2[1])) sec3.push('生肖也合('+SM.SX[y1[1]]+'與'+SM.SX[y2[1]]+'),家庭融合與長輩緣這塊是加分的。');
+  else if(R.isChong(y1[1],y2[1])) sec3.push('生肖對沖('+SM.SX[y1[1]]+'與'+SM.SX[y2[1]]+'),傳統說法會比較緊張;但合婚以日柱為主、生肖為輔,別被「生肖不合」這四個字嚇到,參考就好。');
+  S.push({t:'夫妻宮與緣分深淺',ps:sec3});
+  // 4 整體與建議
+  const sec4=[];
+  const sc=r&&typeof r.score==='number'?r.score:70;
+  let tier;
+  if(sc>=85) tier='整體合婚指數很高,你們是先天就很契合的一對;接下來要做的不是擔心合不合,而是好好珍惜、用心經營。';
+  else if(sc>=75) tier='整體相當不錯,有很好的先天基礎;少數需要磨合的小地方,只要願意溝通,都會越來越順。';
+  else if(sc>=65) tier='整體中上,有相合、也有需要調整的部分;這段感情順不順,關鍵在你們願不願意為對方退一步。';
+  else tier='先天條件比較普通、甚至有些需要努力的地方——但請記得,合婚從來不是判決書。很多分數不高卻幸福長久的伴侶,靠的就是後天的理解與包容。命盤看的是「難易度」,不是「結局」。';
+  sec4.push(tier);
+  sec4.push('一句話總結:八字合盤看的是兩個人「天生的契合度」,而真正決定關係好壞的,永遠是相處時的態度。看懂彼此的個性與罩門,把力氣花在理解對方,比任何吉象都管用。');
+  S.push({t:'整體與相處建議',ps:sec4});
+  return {sections:S};
+};
 })();
 
 /* tx4.js — 大限/小限詳細批命 */
@@ -5130,10 +5184,17 @@ window.addEventListener('DOMContentLoaded',function(){
       const r=TX.hehun(SM,b1,b2);
       const gz1=['year','month','day','hour'].map(k=>SM.GAN[b1.pillars[k][0]]+SM.ZHI[b1.pillars[k][1]]).join(' ');
       const gz2=['year','month','day','hour'].map(k=>SM.GAN[b2.pillars[k][0]]+SM.ZHI[b2.pillars[k][1]]).join(' ');
+      let ovHeHtml='';
+      try{ const ovHe=TX.hehunOverview(SM,b1,b2,a.g,b.g,r);
+        ovHeHtml='<div style="margin-top:14px"><h3 class="rt-title">兩人合盤總覽</h3>'
+          +'<p class="dim" style="margin:6px 0 8px">綜合兩人八字日主、五行與夫妻宮,整理成白話的合盤解讀。</p>'
+          +ovHe.sections.map(s=>'<details open><summary>'+esc(s.t)+'</summary><div class="pbody">'+s.ps.map(p=>'<p>'+esc(p)+'</p>').join('')+'</div></details>').join('')+'</div>';
+      }catch(e){ ovHeHtml=''; }
       $('hh-out').innerHTML='<div class="score"><div class="scnum">'+r.score+'</div><div class="sclabel">合婚指數</div></div>'
         +'<p class="verdict">'+esc(r.verdict)+'</p>'
         +'<p class="mini">甲方四柱:'+gz1+'<br>乙方四柱:'+gz2+'</p>'
         +r.notes.map(n=>'<p>'+esc(n)+'</p>').join('')
+        +ovHeHtml
         +'<p class="mini">註:合婚以日柱為核心、五行互補為要,生肖僅為參考。沖剋非絕對,知其性而善處之,即是化解。</p>'
         +'<div class="btnrow noprint" style="margin-top:18px"><button class="btn alt" onclick="window.__exportPDF&&window.__exportPDF()" style="padding:9px 26px;font-size:15px">匯出 PDF</button></div>';
       $('hh-out').classList.remove('hide');
