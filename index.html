@@ -1666,9 +1666,9 @@ function ganHe(a,b){ return (a+5)%10===b||(b+5)%10===a; }
 const CS12_BAZI=['長生','沐浴','冠帶','臨官','帝旺','衰','病','死','墓','絕','胎','養'];
 // 五陽干長生地支起點(寅申巳亥四長生局): 甲長生在亥 丙長生在寅 戊長生在巳 庚長生在申 壬長生在亥... 採通行表
 const CS12_START={
-  // GAN index: 甲0乙1丙2丁3戊4己5庚6辛7壬8癸9
-  0:11, 1:6, 2:2, 3:9, 4:5, 5:8, 6:8, 7:0, 8:2, 9:5
-  // 甲亥 乙午 丙寅 丁酉 戊巳 己申 庚申 辛子 壬寅 癸卯(簡化通行版,啟用陽順陰逆)
+  // GAN index: 甲0乙1丙2丁3戊4己5庚6辛7壬8癸9 — 日干十二長生位(火土同根)
+  0:11, 1:6, 2:2, 3:9, 4:2, 5:9, 6:5, 7:0, 8:8, 9:3
+  // 甲亥 乙午 丙寅 丁酉 戊寅 己酉 庚巳 辛子 壬申 癸卯;陽順陰逆
 };
 function cs12Bazi(dayG, otherZ){
   const isYang=dayG%2===0;
@@ -1684,15 +1684,13 @@ function equationOfTime(y,m,d){
   const B=2*Math.PI*(N-81)/364;
   return 9.87*Math.sin(2*B)-7.53*Math.cos(B)-1.5*Math.sin(B);
 }
-// 流曜(流年干支安星)
+// 流曜(流年干支安星;依年干起,不用宮干)
 function liuYao(lnG,lnZ){
   const LU={0:2,1:3,2:5,3:6,4:5,5:6,6:8,7:9,8:11,9:0};
   const KUI={0:1,1:0,2:11,3:11,4:1,5:0,6:1,7:6,8:3,9:3}, YUE={0:7,1:8,2:9,3:9,4:7,5:8,6:7,7:2,8:5,9:5};
-  const CHANG={0:10,1:9,2:7,3:6,4:7,5:6,6:4,7:3,8:1,9:0}; // 流昌
-  const QU={0:4,1:5,2:7,3:8,4:7,5:8,6:10,7:11,8:1,9:2};    // 流曲
   const grp=[8,5,2,11].findIndex(z=>[z,(z+4)%12,(z+8)%12].includes(lnZ));
   return { 流祿:LU[lnG], 流羊:(LU[lnG]+1)%12, 流陀:(LU[lnG]+11)%12,
-           流魁:KUI[lnG], 流鉞:YUE[lnG], 流昌:CHANG[lnG], 流曲:QU[lnG], 流馬:[2,11,8,5][grp] };
+           流魁:KUI[lnG], 流鉞:YUE[lnG], 流馬:[2,11,8,5][grp] };
 }
 // 斗君(流月命宮起點):流年支宮起正月逆數至生月,再起子時順數至生時
 function douJun(lnZ,birthLunarMonth,birthHourZhi){
@@ -5346,9 +5344,10 @@ function renderLiunian(R){
   });
   // 流曜 + 斗君(專業參考)
   const lnZ=((yr-4)%12+12)%12, ly=SM.liuYao(lnG,lnZ), pn=z=>SM.ZHI[z]+'宮('+R.zw.palaces[z].name+')';
-  h+='<p><b>流曜('+SM.GAN[lnG]+SM.ZHI[lnZ]+'年)</b>:流祿存→'+pn(ly.流祿)+'、流羊→'+SM.ZHI[ly.流羊]+'、流陀→'+SM.ZHI[ly.流陀]+'、流昌→'+pn(ly.流昌)+'、流曲→'+pn(ly.流曲)+'、流魁→'+pn(ly.流魁)+'、流鉞→'+pn(ly.流鉞)+'、流馬→'+pn(ly.流馬)+'。</p>';
+  h+='<p><b>流曜('+SM.GAN[lnG]+SM.ZHI[lnZ]+'年)</b>:流祿存→'+pn(ly.流祿)+'、流羊→'+SM.ZHI[ly.流羊]+'宮、流陀→'+SM.ZHI[ly.流陀]+'宮、流魁→'+pn(ly.流魁)+'、流鉞→'+pn(ly.流鉞)+'、流馬→'+pn(ly.流馬)+'。<span class="mini">(昌曲為時系星,流昌流曲各派不一,此處不列。)</span></p>';
   const dj=SM.douJun(lnZ,R.lunar.month,R.hZ);
-  h+='<p><b>斗君(流月命宮起點)</b>:今年正月命宮落在'+pn(dj)+';流月命宮由此順數——二月'+SM.ZHI[(dj+1)%12]+'宮、三月'+SM.ZHI[(dj+2)%12]+'宮、…、十二月'+SM.ZHI[(dj+11)%12]+'宮。</p>';
+  const lmGZ=M=>{ const g=((lnG%5)*2+2+(M-1))%10, z=(2+(M-1))%12; return SM.GAN[g]+SM.ZHI[z]; }; // 五虎遁(建寅)
+  h+='<p><b>斗君(流月命宮起點)</b>:今年流月命宮從'+pn(dj)+'起正月,順數二月'+SM.ZHI[(dj+1)%12]+'宮、三月'+SM.ZHI[(dj+2)%12]+'宮…;流月天干另依流年干起五虎遁(正月'+lmGZ(1)+'、二月'+lmGZ(2)+'、三月'+lmGZ(3)+'…),流月四化以此天干論。</p>';
   // 大限批命
   h+='<h4 class="sec">大限批命</h4>';
   h+=TX.daxianBrief(SM,R.zw,R.bz,age,R.inp).map(l=>'<p>'+esc(l)+'</p>').join('');
