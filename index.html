@@ -111,7 +111,7 @@ select:focus,input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(168,
 .pillars th{background:rgba(168,146,255,.08);color:var(--ink2);font-weight:600}
 .pillars .big{font-size:30px;font-weight:900;line-height:1.2;text-shadow:0 0 16px currentColor}
 .pillars small{display:block;font-size:11px;color:var(--ink2)}
-.dim{color:var(--ink2);font-size:13px}
+.dim{color:#c9c0f2;font-size:13px}
 /* 五行色 */
 .e木{color:var(--wood)} .e火{color:var(--fire)} .e土{color:var(--earth)}
 .e金{color:var(--metal)} .e水{color:var(--water)}
@@ -230,6 +230,25 @@ sup.br{font-size:9px;font-weight:400;margin-left:1px;vertical-align:super}
 .res-tabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid rgba(168,146,255,.2);background:rgba(8,12,28,.8)}
 .res-tabs::-webkit-scrollbar{display:none}
 .res-tab{font-family:inherit;font-size:14px;letter-spacing:.18em;padding:13px 20px;cursor:pointer;background:transparent;color:var(--ink2);border:none;border-bottom:2px solid transparent;flex-shrink:0;transition:all .22s;white-space:nowrap}
+.res-tabs-wrap{position:relative}
+.res-tabs-wrap.has-more::before{content:"";position:absolute;right:0;top:0;bottom:0;width:48px;background:linear-gradient(to right,transparent,rgba(8,12,28,.92));pointer-events:none;z-index:2}
+.res-tabs-wrap.has-more::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--gold2);font-size:22px;font-weight:800;pointer-events:none;z-index:3;text-shadow:0 0 8px rgba(8,12,28,.9);animation:nudge 1.3s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateY(-50%) translateX(0)}50%{transform:translateY(-50%) translateX(4px)}}
+.mychip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+.mychip{font-family:inherit;font-size:13px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:var(--ink);cursor:pointer;transition:all .2s;backdrop-filter:blur(6px)}
+.mychip:hover{background:rgba(168,146,255,.2);border-color:rgba(168,146,255,.5)}
+.mychip-clear{color:var(--ink2);border-style:dashed}
+.adv-settings{margin:8px 0 16px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.04);overflow:hidden}
+.adv-settings>summary{cursor:pointer;padding:11px 16px;font-size:14px;color:var(--gold2);letter-spacing:.05em;list-style:none}
+.adv-settings>summary::-webkit-details-marker{display:none}
+.adv-settings>summary::before{content:"⚙ "}
+.adv-body{padding:4px 16px 14px}
+.adv-body .chk{display:inline-flex;align-items:center;gap:5px;font-size:14px;color:var(--ink);margin-right:14px;cursor:pointer}
+.adv-body .frow{flex-wrap:wrap;gap:8px}
+.algo-note{margin-top:10px;padding:11px 13px;border-radius:11px;background:rgba(132,201,236,.08);border:1px solid rgba(132,201,236,.2);font-size:12.5px;line-height:1.85;color:#c4baee}
+.seal.selfhua{background:rgba(132,201,236,.25);color:#bfe6ff;border:1px solid rgba(132,201,236,.5)}
+.fh-block{margin-top:12px}
+.fh-title{font-size:13.5px;font-weight:700;color:var(--gold2);letter-spacing:.05em;margin-bottom:4px}
 .res-tab:hover{color:var(--gold2);background:rgba(168,146,255,.06)}
 .res-tab.on{color:var(--gold2);border-bottom-color:var(--gold);background:rgba(168,146,255,.08);font-weight:700}
 .rt-panel{display:block}
@@ -284,7 +303,7 @@ summary::-webkit-details-marker{display:none}
 /* 流年 */
 .lnctrl{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
 .ln-mini h4{margin:14px 0 6px;color:var(--navy);letter-spacing:.15em}
-.mini{font-size:13.5px;color:var(--ink2)}
+.mini{font-size:13.5px;color:#c4baee}
 .hua祿{color:var(--wood)} .hua權{color:var(--navy)} .hua科{color:var(--gold)} .hua忌{color:var(--cinnabar)}
 /* 合婚 */
 .score{text-align:center;margin:10px 0 12px}
@@ -861,8 +880,10 @@ footer .stamp{
 
 <!-- ===== 排盤 ===== -->
 <section id="tab-pan" class="tab">
+  <div id="my-charts"></div>
   <div class="card">
     <h2>輸入生辰</h2>
+    <p class="dim" style="margin:-4px 0 12px">填入出生年月日時,30 秒看懂你的命盤與八字。</p>
     <div class="frow">
       <label>紀年・曆法</label>
       <select id="p1-era"><option value="ad">西元</option><option value="roc">民國</option></select>
@@ -891,6 +912,19 @@ footer .stamp{
       </span>
       <input type="hidden" id="p1-g" value="m">
     </div>
+    <details class="adv-settings">
+      <summary>進階排盤設定 / 演算法說明</summary>
+      <div class="adv-body">
+        <div class="frow"><label>真太陽時</label>
+          <label class="chk"><input type="checkbox" id="p1-truesolar"> 校正經度+均時差</label>
+          <span><input type="number" id="p1-lng" value="121.5" step="0.1" style="width:84px"> °E</span></div>
+        <p class="note">不勾選=東八區標準時(120°E)。台北約 121.5、台中 120.7、高雄 120.3;海外請填當地經度。近時辰邊界才會影響時柱。</p>
+        <div class="frow"><label>子時換日</label>
+          <label class="chk"><input type="radio" name="p1zi" value="switch" checked> 子初換日(23:00起次日)</label>
+          <label class="chk"><input type="radio" name="p1zi" value="keep"> 子正換日(晚子時不換日)</label></div>
+        <div class="algo-note"><b>本排盤約定:</b>年柱以立春分界、月柱依節氣(定氣);日月採天文定朔定氣並含 ΔT 修正;起運 3 日 1 歲、數至節氣;紫微閏月以「過十五日歸次月」分月;火鈴依年支三合起例;四化採生年四化,另提供宮干自化與飛星四化盤。以上為固定演算法,結果僅供命理參考。</div>
+      </div>
+    </details>
     <div class="btnrow"><button class="btn" id="btn-pan">排　盤</button></div>
     <p class="note">※ 以國曆(西元)輸入;系統依天文曆算自動換算農曆與節氣。晚子時(23:00 後)依傳統換日柱。</p>
   </div>
@@ -903,7 +937,7 @@ footer .stamp{
     <div class="card" id="res-summary-card"><div id="res-summary"></div></div>
     <!-- 結果子分頁 -->
     <div class="card" style="padding:0;overflow:hidden">
-      <div class="res-tabs" id="res-tabs">
+      <div class="res-tabs-wrap"><div class="res-tabs" id="res-tabs">
         <button class="res-tab on" data-rt="rt-overview">人生總覽</button>
         <button class="res-tab" data-rt="rt-mingpan">命盤</button>
         <button class="res-tab" data-rt="rt-wuxing">五行</button>
@@ -912,7 +946,7 @@ footer .stamp{
         <button class="res-tab" data-rt="rt-xingchong">刑沖</button>
         <button class="res-tab" data-rt="rt-dayun">大運</button>
         <button class="res-tab" data-rt="rt-liunian">流年流月</button>
-      </div>
+      </div></div>
       <!-- ⓪ 人生總覽 -->
       <div id="rt-overview" class="rt-panel">
         <div style="padding:18px 20px 20px"><h3 class="rt-title">命盤 × 八字 人生總覽</h3><div id="res-overview"></div></div>
@@ -1282,14 +1316,14 @@ const LDAY=['初一','初二','初三','初四','初五','初六','初七','初�
 const LMON=['正','二','三','四','五','六','七','八','九','十','十一','十二'];
 
 /* ---------- 八字 ---------- */
-function dayGZindex(y,m,d,hour){ // 23時起換日
+function dayGZindex(y,m,d,hour,keepDay){ // 23時起換日(keepDay=true 則晚子時不換日/子正換日)
   let jdn=dateDN(y,m,d);
-  if(hour>=23) jdn+=1;
+  if(hour>=23 && !keepDay) jdn+=1;
   return ((jdn-2433191)%60+60)%60; // 1949-10-01 甲子日
 }
 function gz(i){ return GAN[i%10]+ZHI[i%12]; }
-function bazi(y,m,d,hour,min){
-  min=min||0;
+function bazi(y,m,d,hour,min,opts){
+  min=min||0; opts=opts||{};
   const jdUT=toJD(y,m,d,hour+min/60-8);
   const jde=jdUT+deltaTdays(y);
   const lam=sunLon(jde);
@@ -1301,14 +1335,16 @@ function bazi(y,m,d,hour,min){
   const mi=Math.floor((((lam-315)%360)+360)%360/30); // 0=寅月
   const mZ=(mi+2)%12;
   const mG=(((yG%5)*2+2)+mi)%10;
-  // 日柱
-  const dIdx=dayGZindex(y,m,d,hour);
+  // 日柱(子時換日依設定:opts.lateZi==='keep' 為子正換日/晚子時不換日)
+  const dIdx=dayGZindex(y,m,d,hour,opts.lateZi==='keep');
   const dG=dIdx%10, dZ=dIdx%12;
   // 時柱
   const hZ=Math.floor((hour+1)/2)%12;
   const hG=(((dG%5)*2)+hZ)%10;
-  // 大運
-  const yangYear=(yG%2===0), male=null; // 方向由呼叫端依性別決定
+  // 胎元(月干進一、月支進三)
+  const tyG=(mG+1)%10, tyZ=(mZ+3)%12;
+  // 大運起運(數到節)
+  const yangYear=(yG%2===0);
   const monthStartLon=(315+mi*30)%360;
   const nextLon=(monthStartLon+30)%360, prevLon=monthStartLon;
   const tNext=solveTerm(nextLon, jde+(((nextLon-lam)%360+360)%360)/360*365.2422);
@@ -1316,6 +1352,7 @@ function bazi(y,m,d,hour,min){
   return {
     y:y,m:m,d:d,hour:hour,min:min, jde:jde, lam:lam,
     pillars:{ year:[yG,yZ], month:[mG,mZ], day:[dG,dZ], hour:[hG,hZ] },
+    taiYuan:[tyG,tyZ],
     yangYear:yangYear, byear:by,
     daYunInfo:{ tNext:tNext, tPrev:tPrev }
   };
@@ -1325,7 +1362,6 @@ function daYun(bz, gender){ // gender: 'm'/'f'
   const days=forward?(bz.daYunInfo.tNext-bz.jde):(bz.jde-bz.daYunInfo.tPrev);
   const startYears=days/3;
   const sy=Math.floor(startYears), smo=Math.round((startYears-sy)*12);
-  const mIdx=bz.pillars.month[0]%10*6===0?0:0; // 佔位
   let mi60=-1;
   for(let i=0;i<60;i++){ if(i%10===bz.pillars.month[0] && i%12===bz.pillars.month[1]){ mi60=i; break; } }
   const list=[];
@@ -1642,6 +1678,28 @@ function cs12Bazi(dayG, otherZ){
 }
 SM.cs12=cs12Bazi;
 
+// 均時差(分鐘,近似式)— 供真太陽時校正
+function equationOfTime(y,m,d){
+  const N=Math.floor(dateDN(y,m,d)-dateDN(y,1,1))+1;
+  const B=2*Math.PI*(N-81)/364;
+  return 9.87*Math.sin(2*B)-7.53*Math.cos(B)-1.5*Math.sin(B);
+}
+// 流曜(流年干支安星)
+function liuYao(lnG,lnZ){
+  const LU={0:2,1:3,2:5,3:6,4:5,5:6,6:8,7:9,8:11,9:0};
+  const KUI={0:1,1:0,2:11,3:11,4:1,5:0,6:1,7:6,8:3,9:3}, YUE={0:7,1:8,2:9,3:9,4:7,5:8,6:7,7:2,8:5,9:5};
+  const CHANG={0:10,1:9,2:7,3:6,4:7,5:6,6:4,7:3,8:1,9:0}; // 流昌
+  const QU={0:4,1:5,2:7,3:8,4:7,5:8,6:10,7:11,8:1,9:2};    // 流曲
+  const grp=[8,5,2,11].findIndex(z=>[z,(z+4)%12,(z+8)%12].includes(lnZ));
+  return { 流祿:LU[lnG], 流羊:(LU[lnG]+1)%12, 流陀:(LU[lnG]+11)%12,
+           流魁:KUI[lnG], 流鉞:YUE[lnG], 流昌:CHANG[lnG], 流曲:QU[lnG], 流馬:[2,11,8,5][grp] };
+}
+// 斗君(流月命宮起點):流年支宮起正月逆數至生月,再起子時順數至生時
+function douJun(lnZ,birthLunarMonth,birthHourZhi){
+  let p=((lnZ-(birthLunarMonth-1))%12+12)%12;
+  return ((p+birthHourZhi)%12+12)%12;
+}
+
 SM.GAN=GAN; SM.ZHI=ZHI; SM.SX=SX; SM.GAN_ELEM=GAN_ELEM; SM.ZHI_ELEM=ZHI_ELEM; SM.ELEMS=ELEMS;
 SM.HIDDEN=HIDDEN; SM.TEN_GOD=TEN_GOD; SM.LDAY=LDAY; SM.LMON=LMON; SM.NAYIN=NAYIN;
 SM.toJD=toJD; SM.fromJD=fromJD; SM.sunLon=sunLon; SM.solveTerm=solveTerm; SM.newMoonJDE=newMoonJDE;
@@ -1649,6 +1707,7 @@ SM.lunarFromDate=lunarFromDate; SM.bazi=bazi; SM.daYun=daYun; SM.tenGod=tenGod; 
 SM.ziwei=ziwei; SM.gz=gz; SM.dayGZindex=dayGZindex; SM.SIHUA=SIHUA;
 SM.rel={isChong:isChong,isLiuhe:isLiuhe,isSanhe:isSanhe,isHai:isHai,isXing:isXing,ganHe:ganHe};
 SM.jdeToLocal=jdeToLocal; SM.dateDN=dateDN; SM.deltaTdays=deltaTdays;
+SM.equationOfTime=equationOfTime; SM.liuYao=liuYao; SM.douJun=douJun;
 })();
 if(typeof module!=='undefined') module.exports=SM;
 
@@ -1876,6 +1935,22 @@ SM.ziweiExt=function(zw,o){
   if(zw.aux['文昌']!==undefined) put('恩光',zw.aux['文昌']+d-2);
   if(zw.aux['文曲']!==undefined) put('天貴',zw.aux['文曲']+d-2);
   put('天才',zw.mingZhi+y); put('天壽',zw.shenZhi+y);
+  // ---- 歲建十二神(年支起歲建順行) ----
+  const YGODS=['歲建','晦氣','喪門','貫索','官符','小耗','歲破','龍德','白虎','天德','弔客','病符'];
+  for(let i=0;i<12;i++){ P[((y+i)%12)].ys=YGODS[i]; }
+  // ---- 自化 + 飛星四化(宮干引動四化) ----
+  const HUA=['祿','權','科','忌'];
+  const findStar=(s)=>{ for(let q=0;q<12;q++){ if(P[q].stars.indexOf(s)>=0||P[q].aux.indexOf(s)>=0) return q; } return -1; };
+  zw.feihua=[];
+  for(let z=0;z<12;z++){
+    const sh=SM.SIHUA[P[z].gan]; if(!sh) continue;
+    P[z].zihua=[];
+    sh.forEach((s,i)=>{
+      const q=findStar(s); if(q<0) return;
+      if(q===z) P[z].zihua.push(s+'自化'+HUA[i]);
+      zw.feihua.push({from:z,fromName:P[z].name,star:s,hua:HUA[i],to:q,toName:P[q].name,self:q===z});
+    });
+  }
   // ---- 格局判定 ----
   zw.patterns=detectPatterns(zw);
   return zw;
@@ -4561,7 +4636,7 @@ C.ZODIAC_EMOJI = {
 // ── 分享卡片生成(命盤總結圖,適合下載/分享) ─────────────────────
 C.drawShareCard = function(canvas, data){
   // data: {name, gz(四柱), geju, strengthLevel, yong, zodiac, dxName, dxScore, lnGz, lnHua, scores(五行)}
-  const W=720, H=1000, ctx=setup(canvas,W,H);
+  const W=720, H=1280, ctx=setup(canvas,W,H);
   const cx=W/2;
 
   // 背景：深色漸層 + 星點
@@ -4670,6 +4745,28 @@ C.drawShareCard = function(canvas, data){
     ctx.fillText(item.sub,x+16,bottomY+72);
   });
 
+  // 命格標籤(大字,適合分享)
+  if(data.archetype){
+    const tagY=bottomY+86+128;
+    const grad=ctx.createLinearGradient(60,tagY,W-60,tagY);
+    grad.addColorStop(0,'rgba(168,146,255,.16)'); grad.addColorStop(1,'rgba(255,134,191,.16)');
+    ctx.fillStyle=grad;
+    ctx.beginPath(); ctx.roundRect(60,tagY-2,W-120,150,20); ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.16)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.roundRect(60,tagY-2,W-120,150,20); ctx.stroke();
+    ctx.textAlign='center';
+    ctx.font='13px sans-serif'; ctx.fillStyle='rgba(214,200,255,.85)';
+    ctx.fillText('你 的 命 格',cx,tagY+30);
+    ctx.font='bold 46px sans-serif';
+    const tg2=ctx.createLinearGradient(cx-180,0,cx+180,0);
+    tg2.addColorStop(0,'#c9b8ff'); tg2.addColorStop(1,'#ff9ecf');
+    ctx.fillStyle=tg2;
+    ctx.fillText(data.archetype,cx,tagY+82);
+    ctx.font='15px sans-serif'; ctx.fillStyle='rgba(214,200,255,.92)';
+    ctx.fillText(data.archeSub||'',cx,tagY+120);
+    ctx.textAlign='left';
+  }
+
   // 底部footer
   ctx.strokeStyle='rgba(168,146,255,.3)'; ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(60,H-70); ctx.lineTo(W-60,H-70); ctx.stroke();
@@ -4726,9 +4823,13 @@ function rebuildDate(prefix,init){
 }
 function getInput(prefix){
   const cal=$(prefix+'-cal')?$(prefix+'-cal').value:'solar';
+  const ts=$(prefix+'-truesolar')?$(prefix+'-truesolar').checked:false;
+  const lng=$(prefix+'-lng')?parseFloat($(prefix+'-lng').value):null;
+  const ziR=document.querySelector('[name="'+prefix+'zi"]:checked');
   return {y:+$(prefix+'-y').value, m:+$(prefix+'-m').value, d:+$(prefix+'-d').value,
           h:+$(prefix+'-h').value, min:+($(prefix+'-min').value||0), g:$(prefix+'-g').value,
-          cal:cal, leap:cal==='lunar'&&$(prefix+'-leap')?$(prefix+'-leap').checked:false};
+          cal:cal, leap:cal==='lunar'&&$(prefix+'-leap')?$(prefix+'-leap').checked:false,
+          trueSolar:ts, lng:lng, lateZi:ziR?ziR.value:'switch'};
 }
 function computeAll(inp){
   let y=inp.y,m=inp.m,d=inp.d;
@@ -4737,12 +4838,21 @@ function computeAll(inp){
     if(!sol) throw new Error('查無此農曆日期(可能該年無此閏月,或該月無此日)');
     y=sol.y; m=sol.m; d=sol.d;
   }
-  const bz=SM.bazi(y,m,d,inp.h,inp.min);
+  let h=inp.h, mn=inp.min||0, tsNote='';
+  if(inp.trueSolar && inp.lng!=null && !isNaN(+inp.lng)){
+    const eot=SM.equationOfTime(y,m,d);
+    const lngCorr=(+inp.lng-120)*4;
+    const corr=lngCorr+eot;
+    const dt=new Date(Date.UTC(y,m-1,d,h,mn)); dt.setUTCMinutes(dt.getUTCMinutes()+Math.round(corr));
+    y=dt.getUTCFullYear(); m=dt.getUTCMonth()+1; d=dt.getUTCDate(); h=dt.getUTCHours(); mn=dt.getUTCMinutes();
+    tsNote='真太陽時校正 '+(corr>=0?'+':'')+Math.round(corr)+' 分(經度時差 '+(lngCorr>=0?'+':'')+Math.round(lngCorr)+' 分 + 均時差 '+(eot>=0?'+':'')+Math.round(eot)+' 分)';
+  }
+  const bz=SM.bazi(y,m,d,h,mn,{lateZi:inp.lateZi});
   const lunar=SM.lunarFromDate(y,m,d);
-  const hZ=Math.floor((inp.h+1)/2)%12;
+  const hZ=Math.floor((h+1)/2)%12;
   const zw=SM.ziwei(lunar,hZ,bz.pillars.year[0],bz.pillars.year[1],inp.g);
   SM.ziweiExt(zw,{yG:bz.pillars.year[0],yZ:bz.pillars.year[1],hZ:hZ,day:lunar.day});
-  return {bz:bz, lunar:lunar, zw:zw, hZ:hZ, inp:inp, solar:{y:y,m:m,d:d}};
+  return {bz:bz, lunar:lunar, zw:zw, hZ:hZ, inp:inp, solar:{y:y,m:m,d:d}, tsNote:tsNote, corrTime:{h:h,min:mn}};
 }
 function pillarHTML(bz){
   const P=bz.pillars, dG=P.day[0];
@@ -4785,20 +4895,21 @@ function chartHTML(zw,R){
   let h='<div class="chart">';
   for(let z=0;z<12;z++){
     const p=zw.palaces[z], pos=GRID_POS[z];
+    const zh={}; (p.zihua||[]).forEach(e=>{ const mm=e.match(/^(.+?)自化(.)$/); if(mm) zh[mm[1]]=mm[2]; });
     const stars=p.stars.map(s=>{
       const hua=zw.sihua[s], br=SM.bright(s,z);
-      return '<span class="star">'+s+(br?'<sup class="br br'+br+'">'+br+'</sup>':'')+(hua?'<i class="seal seal'+hua+'">'+hua+'</i>':'')+'</span>';
+      return '<span class="star">'+s+(br?'<sup class="br br'+br+'">'+br+'</sup>':'')+(hua?'<i class="seal seal'+hua+'">'+hua+'</i>':'')+(zh[s]?'<i class="seal selfhua">自'+zh[s]+'</i>':'')+'</span>';
     }).join('');
     const aux=p.aux.map(a=>{
       const hua=zw.sihua[a];
-      return '<span class="aux">'+a+(hua?'<i class="seal seal'+hua+'">'+hua+'</i>':'')+'</span>';
+      return '<span class="aux">'+a+(hua?'<i class="seal seal'+hua+'">'+hua+'</i>':'')+(zh[a]?'<i class="seal selfhua">自'+zh[a]+'</i>':'')+'</span>';
     }).join('');
     const xxLine=R?'<div class="cxx">小限 '+ageOf[z].slice(0,7).map(a=>a===cAge?'<b class="cxx-now">'+a+'</b>':a).join('・')+'</div>':'';
     const nowBadge=(z===cxxZ)?'<div class="cxx-badge">本年</div>':'';
     h+='<div class="cell'+(p.name==='命宮'?' ming':'')+(z===cxxZ?' has-xxnow':'')+'" style="grid-row:'+pos[0]+';grid-column:'+pos[1]+'">'
       +nowBadge
       +'<div class="cstars">'+stars+aux+'</div>'
-      +'<div class="csbs">'+(p.cs||'')+(p.bs?'・'+p.bs:'')+'</div>'
+      +'<div class="csbs">'+(p.cs||'')+(p.bs?'・'+p.bs:'')+(p.ys?'・'+p.ys:'')+'</div>'
       +xxLine
       +'<div class="cfoot"><span class="dx">'+(p.daxian?p.daxian[0]+'–'+p.daxian[1]:'')+'</span>'
       +'<span class="pname">'+p.name+(p.isShen?'<em>身</em>':'')+'</span>'
@@ -4877,7 +4988,15 @@ function renderResult(R){
       dxScore:dxRaw2?dxRaw2.score:'',
       lnGz:SM.gz(((yr-4)%60+60)%60)+'年',
       lnHua:SM.SIHUA[lnG2].map((s,i)=>s+['祿','權','科','忌'][i]).join('、'),
-      scores:st2.score
+      scores:st2.score,
+      archetype:(function(){
+        const ming=zw.palaces.find(p=>p.name==='命宮');
+        let s=ming&&ming.stars&&ming.stars[0];
+        if(!s&&ming){const opp=zw.palaces.find(p=>p.zhi===((ming.zhi+6)%12));s=opp&&opp.stars&&opp.stars[0];}
+        const NICK={'紫微':'帝王星','天機':'智多星','太陽':'太陽星','武曲':'將星','天同':'福星','廉貞':'次桃花','天府':'財庫星','太陰':'月亮星','貪狼':'桃花星','巨門':'口才星','天相':'貴人星','天梁':'蔭星','七殺':'七殺星','破軍':'破軍星'};
+        return (s?(NICK[s]||s):'空宮')+'型';
+      })(),
+      archeSub:SM.GAN[P.day[0]]+SM.GAN_ELEM[P.day[0]]+'日主 · '+ay2.geju
     };
   })();
 
@@ -4889,7 +5008,10 @@ function renderResult(R){
     +'<div class="kv"><span>四柱</span><b>'+gzs.join('・')+'</b></div>'
     +'<div class="kv"><span>命/身宮</span><b>'+ZHI[zw.mingZhi]+'宮/'+ZHI[zw.shenZhi]+'宮</b></div>'
     +'<div class="kv"><span>五行局</span><b>'+zw.nayin+'・'+zw.ju+'</b></div>'
-    +'<div class="kv"><span>命主/身主</span><b>'+zw.mingzhu+'/'+zw.shenzhu+'</b></div>';
+    +'<div class="kv"><span>命主/身主</span><b>'+zw.mingzhu+'/'+zw.shenzhu+'</b></div>'
+    +'<div class="kv"><span>胎元</span><b>'+SM.GAN[bz.taiYuan[0]]+SM.ZHI[bz.taiYuan[1]]+'</b></div>'
+    +(R.tsNote?'<div class="kv"><span>真太陽時</span><b style="font-size:13px;color:var(--navy)">'+R.tsNote+'</b></div>':'')
+    +(inp.lateZi==='keep'?'<div class="kv"><span>子時</span><b style="font-size:13px">子正換日(晚子時不換日)</b></div>':'');
   $('res-pillars').innerHTML=pillarHTML(bz);
   const kw=SM.kongwang(bz), ss=SM.shensha(bz);
   $('res-pillars').innerHTML+='<div class="ssrow"><span class="sschip kwchip">空亡:'+kw.dayKong.join('、')+(kw.hits.length?'('+kw.hits.map(h=>h.pos+'逢空').join('、')+')':'')+'</span>'+ss.map(s=>'<span class="sschip">'+s.name+'<small>'+s.at+'</small></span>').join('')+'</div>';
@@ -4900,6 +5022,13 @@ function renderResult(R){
   const pats=zw.patterns||[];
   let ph='<div class="patrow">'+pats.map(p=>'<span class="patchip"><span class="patname">'+p+'</span></span>').join('')+'</div>';
   ph+='<div class="kv"><span>身宮</span><b>'+ZHI[zw.shenZhi]+'宮('+zw.palaces.find(p=>p.zhi===zw.shenZhi)?.name+')'+(TX.SHENGONG_T[zw.palaces.find(p=>p.zhi===zw.shenZhi)?.name]||'')+'</b></div>';
+  // 自化 + 飛星四化(宮干引動)
+  const zihuaList=[]; zw.palaces.forEach(p=>{ if(p.zihua&&p.zihua.length) zihuaList.push(p.name+':'+p.zihua.join('、')); });
+  if(zihuaList.length) ph+='<div class="fh-block"><div class="fh-title">自化(宮干引動本宮星)</div><p class="mini">'+esc(zihuaList.join(' ; '))+'</p></div>';
+  if(zw.feihua&&zw.feihua.length){
+    const fly=zw.feihua.filter(x=>!x.self).map(x=>x.fromName+'宮 '+x.star+'化'+x.hua+' 入 '+x.toName+'宮');
+    ph+='<div class="fh-block"><div class="fh-title">飛星四化(各宮宮干飛化,共'+fly.length+'條)</div><details><summary>展開飛化盤(飛星派參考)</summary><div class="pbody"><p class="mini">'+esc(fly.join(' ; '))+'</p></div></details></div>';
+  }
   $('res-patterns').innerHTML=ph;
   // 十二宮詳解
   let palHtml='';
@@ -5032,6 +5161,7 @@ function switchResTab(id){
   document.querySelectorAll('.res-tab').forEach(b=>b.classList.toggle('on',b.dataset.rt===id));
   document.querySelectorAll('.rt-panel').forEach(p=>p.classList.toggle('hide',p.id!==id));
   document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'nearest'});
+  if(window.__updateTabOverflow) setTimeout(window.__updateTabOverflow,60);
 }
 window.switchResTab=switchResTab;
 
@@ -5086,6 +5216,76 @@ function downloadShareCard(){
   link.click();
 }
 window.openShareCard=openShareCard;
+
+// ── 我的命盤(本地儲存)+ 首頁今日運勢 ────────────────────────────
+const LS_KEY='zwbz_mycharts_v1';
+const FORTUNE_TBL={
+  '比肩':{t:'人和日',d:'適合與夥伴交流合作',l:72,c:'#90d3f1'},'劫財':{t:'守財日',d:'財務宜保守、忌衝動消費',l:48,c:'#6ab0e0'},
+  '食神':{t:'享受日',d:'放鬆與創作的好日子',l:80,c:'#84e3b4'},'傷官':{t:'敏銳日',d:'思路快、但說話留三分',l:62,c:'#5fc59a'},
+  '正財':{t:'務實日',d:'按部就班最有效',l:75,c:'#a892ff'},'偏財':{t:'機緣日',d:'留意意外機會、投機三思',l:78,c:'#a892ff'},
+  '正官':{t:'進取日',d:'正式事務表現容易被看見',l:82,c:'#ff8aa6'},'七殺':{t:'衝刺日',d:'行動力旺、留意情緒',l:65,c:'#ff8aa6'},
+  '正印':{t:'學習日',d:'進修請益、心境安定',l:85,c:'#cba8ff'},'偏印':{t:'內省日',d:'適合獨處鑽研',l:58,c:'#cba8ff'}
+};
+function loadMyCharts(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch(e){ return []; } }
+function saveMyChart(inp,R){
+  try{
+    const list=loadMyCharts();
+    const label=inp.y+'/'+inp.m+'/'+inp.d+' '+String(inp.h).padStart(2,'0')+'時 '+(inp.g==='m'?'♂':'♀');
+    const key=[inp.y,inp.m,inp.d,inp.h,inp.min,inp.g,inp.cal].join(',');
+    const rec={key,inp,label,dayG:R.bz.pillars.day[0],ts:Date.now()};
+    const next=[rec].concat(list.filter(x=>x.key!==key)).slice(0,5);
+    localStorage.setItem(LS_KEY,JSON.stringify(next));
+  }catch(e){}
+}
+function applyInputToForm(inp){
+  ['y','m','d','h','min'].forEach(k=>{ const el=$('p1-'+k); if(el) el.value=inp[k]; });
+  if($('p1-cal')) $('p1-cal').value=inp.cal||'solar';
+  if($('p1-g')) $('p1-g').value=inp.g;
+  document.querySelectorAll('[name="p1g"]').forEach(r=>{ r.checked=(r.value===inp.g); });
+  if($('p1-truesolar')) $('p1-truesolar').checked=!!inp.trueSolar;
+  if($('p1-lng')&&inp.lng!=null) $('p1-lng').value=inp.lng;
+  if(inp.lateZi){ const zr=document.querySelector('[name="p1zi"][value="'+inp.lateZi+'"]'); if(zr) zr.checked=true; }
+}
+function todayFortune(dayG){
+  const now=new Date();
+  const idx=SM.dayGZindex(now.getFullYear(),now.getMonth()+1,now.getDate(),12);
+  const dG=idx%10, dZ=idx%12, tg=SM.tenGod(dayG,dG);
+  const f=FORTUNE_TBL[tg]||{t:'平常日',d:'運勢平穩,照計畫行事',l:60,c:'#b7ace6'};
+  const n=Math.round(f.l/20), stars='★★★★★'.slice(0,n)+'☆☆☆☆☆'.slice(0,5-n);
+  return {f,stars,dG,dZ,date:(now.getMonth()+1)+'月'+now.getDate()+'日'};
+}
+function renderMyCharts(){
+  const box=$('my-charts'); if(!box) return;
+  const list=loadMyCharts();
+  if(!list.length){ box.innerHTML=''; return; }
+  const top=list[0], tf=todayFortune(top.dayG);
+  let h='<div class="today-card" style="border-color:'+tf.f.c+'55;margin-bottom:14px">'
+    +'<div class="today-head"><span class="today-date">今日 '+tf.date+'</span><span class="today-gz">'+SM.GAN[tf.dG]+SM.ZHI[tf.dZ]+'日</span></div>'
+    +'<div class="today-body"><div class="today-title" style="color:'+tf.f.c+'">'+tf.f.t+'</div>'
+    +'<div class="today-stars" style="color:'+tf.f.c+'">'+tf.stars+' <span class="today-luck">'+tf.f.l+'分</span></div>'
+    +'<div class="today-desc">'+tf.f.d+'(依最近查詢的命盤 '+top.label+')</div></div></div>';
+  h+='<div class="dim" style="margin:0 0 8px;font-size:13px">我的命盤(本機儲存,點擊一鍵載入)</div><div class="mychip-row">';
+  list.forEach((r,i)=>{ h+='<button class="mychip" data-i="'+i+'">'+esc(r.label)+'</button>'; });
+  h+='<button class="mychip mychip-clear">清除</button></div>';
+  box.innerHTML=h;
+  box.querySelectorAll('.mychip[data-i]').forEach(btn=>btn.addEventListener('click',function(){
+    const r=loadMyCharts()[+this.dataset.i]; if(!r) return;
+    applyInputToForm(r.inp);
+    document.querySelector('.tabbtn[data-t="tab-pan"]').click();
+    $('btn-pan').click();
+  }));
+  const clr=box.querySelector('.mychip-clear');
+  if(clr) clr.addEventListener('click',function(){ try{localStorage.removeItem(LS_KEY);}catch(e){} renderMyCharts(); });
+}
+window.__renderMyCharts=renderMyCharts;
+
+// 結果分頁列「右側還有更多」提示
+function updateTabOverflow(){
+  const rt=$('res-tabs'); if(!rt||!rt.parentElement) return;
+  const more=rt.scrollWidth-rt.clientWidth-rt.scrollLeft>6;
+  rt.parentElement.classList.toggle('has-more',more);
+}
+window.__updateTabOverflow=updateTabOverflow;
 window.closeShareCard=closeShareCard;
 window.regenShareCard=regenShareCard;
 window.downloadShareCard=downloadShareCard;
@@ -5144,6 +5344,11 @@ function renderLiunian(R){
     h+='<p>・'+x.star+'化<b class="hua'+x.hua+'">'+x.hua+'</b>入'+x.palace+':今年'+(TX.PALACE_DOMAIN[x.palace]||'')+'方面'+TX.HUA_SHORT[x.hua]
       +(x.hua==='忌'?',此處為今年最須留意的功課,謀事於此宮所主之領域宜守不宜躁':',可順勢著力')+'。</p>';
   });
+  // 流曜 + 斗君(專業參考)
+  const lnZ=((yr-4)%12+12)%12, ly=SM.liuYao(lnG,lnZ), pn=z=>SM.ZHI[z]+'宮('+R.zw.palaces[z].name+')';
+  h+='<p><b>流曜('+SM.GAN[lnG]+SM.ZHI[lnZ]+'年)</b>:流祿存→'+pn(ly.流祿)+'、流羊→'+SM.ZHI[ly.流羊]+'、流陀→'+SM.ZHI[ly.流陀]+'、流昌→'+pn(ly.流昌)+'、流曲→'+pn(ly.流曲)+'、流魁→'+pn(ly.流魁)+'、流鉞→'+pn(ly.流鉞)+'、流馬→'+pn(ly.流馬)+'。</p>';
+  const dj=SM.douJun(lnZ,R.lunar.month,R.hZ);
+  h+='<p><b>斗君(流月命宮起點)</b>:今年正月命宮落在'+pn(dj)+';流月命宮由此順數——二月'+SM.ZHI[(dj+1)%12]+'宮、三月'+SM.ZHI[(dj+2)%12]+'宮、…、十二月'+SM.ZHI[(dj+11)%12]+'宮。</p>';
   // 大限批命
   h+='<h4 class="sec">大限批命</h4>';
   h+=TX.daxianBrief(SM,R.zw,R.bz,age,R.inp).map(l=>'<p>'+esc(l)+'</p>').join('');
@@ -5168,14 +5373,21 @@ window.__pillarHTML=pillarHTML; window.__elemBars=elemBars;
 window.__setCurrent=function(R){ CURRENT=R; };
 window.addEventListener('DOMContentLoaded',function(){
   fillDateSelects('p1'); fillDateSelects('h1'); fillDateSelects('h2'); fillDateSelects('n1');
+  renderMyCharts();
+  (function(){ const rt=$('res-tabs'); if(rt){ rt.addEventListener('scroll',updateTabOverflow); window.addEventListener('resize',updateTabOverflow); } })();
   document.querySelectorAll('.tabbtn').forEach(b=>b.addEventListener('click',function(){
     document.querySelectorAll('.tabbtn').forEach(x=>x.classList.remove('on'));
     document.querySelectorAll('.tab').forEach(x=>x.classList.add('hide'));
     b.classList.add('on'); $(b.dataset.t).classList.remove('hide');
   }));
   $('btn-pan').addEventListener('click',function(){
-    try{ CURRENT=computeAll(getInput('p1')); renderResult(CURRENT); }
-    catch(e){ alert('排盤失敗:請確認日期是否存在。'+e.message); }
+    const btn=this, orig=btn.textContent;
+    btn.disabled=true; btn.textContent='排盤中…';
+    setTimeout(function(){
+      try{ const inp=getInput('p1'); CURRENT=computeAll(inp); renderResult(CURRENT); saveMyChart(inp,CURRENT); renderMyCharts(); setTimeout(updateTabOverflow,60); }
+      catch(e){ alert('排盤失敗:請確認日期是否存在。'+e.message); }
+      finally{ btn.disabled=false; btn.textContent=orig; }
+    },30);
   });
   $('btn-ln').addEventListener('click',function(){ if(CURRENT) renderLiunian(CURRENT); });
   $('btn-hh').addEventListener('click',function(){
