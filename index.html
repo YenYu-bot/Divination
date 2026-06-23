@@ -249,6 +249,8 @@ sup.br{font-size:9px;font-weight:400;margin-left:1px;vertical-align:super}
 .seal.selfhua{background:rgba(132,201,236,.25);color:#bfe6ff;border:1px solid rgba(132,201,236,.5)}
 .fh-block{margin-top:12px}
 .fh-title{font-size:13.5px;font-weight:700;color:var(--gold2);letter-spacing:.05em;margin-bottom:4px}
+.fh-row{font-size:13.5px;line-height:2;color:var(--ink);padding:3px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.fh-row b{color:var(--gold2);margin-right:2px}
 .res-tab:hover{color:var(--gold2);background:rgba(168,146,255,.06)}
 .res-tab.on{color:var(--gold2);border-bottom-color:var(--gold);background:rgba(168,146,255,.08);font-weight:700}
 .rt-panel{display:block}
@@ -5020,12 +5022,16 @@ function renderResult(R){
   const pats=zw.patterns||[];
   let ph='<div class="patrow">'+pats.map(p=>'<span class="patchip"><span class="patname">'+p+'</span></span>').join('')+'</div>';
   ph+='<div class="kv"><span>身宮</span><b>'+ZHI[zw.shenZhi]+'宮('+zw.palaces.find(p=>p.zhi===zw.shenZhi)?.name+')'+(TX.SHENGONG_T[zw.palaces.find(p=>p.zhi===zw.shenZhi)?.name]||'')+'</b></div>';
-  // 自化 + 飛星四化(宮干引動)
-  const zihuaList=[]; zw.palaces.forEach(p=>{ if(p.zihua&&p.zihua.length) zihuaList.push(p.name+':'+p.zihua.join('、')); });
-  if(zihuaList.length) ph+='<div class="fh-block"><div class="fh-title">自化(宮干引動本宮星)</div><p class="mini">'+esc(zihuaList.join(' ; '))+'</p></div>';
+  // 宮干四化(飛星派)— 白話解說 + 自化 + 飛化盤
+  ph+='<div class="fh-block"><div class="fh-title">宮干四化(飛星派)</div>'
+    +'<p class="mini">每個宮位都有自己的天干,這天干也會帶出「祿、權、科、忌」四種能量、飛進別的宮位,代表「這個宮位主管的事,會把某種影響帶給另一個宮位」。先記四個字:<b>祿</b>=緣分順遂、得到;<b>權</b>=掌控、能力放大;<b>科</b>=名聲、貴人、平順;<b>忌</b>=執著、糾結、損耗。舉例「命宮 飛祿 入 財帛」=你本人會為錢財帶來好運與緣分。<span class="dim">(此為飛星派進階參考,看不懂可略過,不影響前面的命盤解讀。)</span></p></div>';
+  const zihuaList=[]; zw.palaces.forEach(p=>{ if(p.zihua&&p.zihua.length) zihuaList.push(p.name+'('+p.zihua.join('、')+')'); });
+  if(zihuaList.length) ph+='<div class="fh-block"><div class="fh-title">自化</div><p class="mini">當某宮的四化剛好落在自己宮內的星,叫「自化」,能量向內打轉(自化祿=隨性給出、不太在意;自化忌=自己暗耗、容易卡住)。你的自化——'+esc(zihuaList.join(' ; '))+'。</p></div>';
   if(zw.feihua&&zw.feihua.length){
-    const fly=zw.feihua.filter(x=>!x.self).map(x=>x.fromName+'宮 '+x.star+'化'+x.hua+' 入 '+x.toName+'宮');
-    ph+='<div class="fh-block"><div class="fh-title">飛星四化(各宮宮干飛化,共'+fly.length+'條)</div><details><summary>展開飛化盤(飛星派參考)</summary><div class="pbody"><p class="mini">'+esc(fly.join(' ; '))+'</p></div></details></div>';
+    const byFrom={}; zw.feihua.filter(x=>!x.self).forEach(x=>{ (byFrom[x.fromName]=byFrom[x.fromName]||[]).push('飛'+x.hua+'入'+x.toName+'<span class="dim">('+x.star+')</span>'); });
+    const rows=Object.keys(byFrom).map(f=>'<div class="fh-row"><b>'+f+'</b>　'+byFrom[f].join('、')+'</div>').join('');
+    const cnt=zw.feihua.filter(x=>!x.self).length;
+    ph+='<div class="fh-block"><div class="fh-title">飛化盤(各宮宮干飛化,共'+cnt+'條)</div><details><summary>展開逐宮飛化</summary><div class="pbody">'+rows+'</div></details></div>';
   }
   $('res-patterns').innerHTML=ph;
   // 十二宮詳解
