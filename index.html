@@ -160,6 +160,8 @@ select:focus,input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(168,
 .dyyr{font-size:11px;color:var(--ink2)}
 /* ===== 紫微命盤:星圖 ===== */
 .chartwrap{overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--gold) transparent}
+.chart-hint{display:none;text-align:center;font-size:11.5px;color:var(--ink2);padding:7px 0 2px;letter-spacing:.04em}
+.chart-hint.on{display:block}
 .chart{
   display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));grid-template-rows:repeat(4,minmax(152px,auto));
   gap:2px;min-width:620px;position:relative;
@@ -957,7 +959,7 @@ footer .stamp{
       <div id="rt-mingpan" class="rt-panel hide">
         <div style="padding:18px 20px 0"><h3 class="rt-title">基本命造</h3><div id="res-basic"></div></div>
         <div style="padding:12px 20px 0"><h3 class="rt-title">八字四柱</h3><div id="res-pillars"></div></div>
-        <div style="padding:12px 20px 0"><h3 class="rt-title">紫微斗數命盤</h3><div class="chartwrap"><div id="res-chart"></div></div></div>
+        <div style="padding:12px 20px 0"><h3 class="rt-title">紫微斗數命盤</h3><div class="chartwrap"><div id="res-chart"></div></div><div class="chart-hint" id="chart-hint">命盤已縮放以符合螢幕,可雙指放大細看</div></div>
         <div style="padding:12px 20px 0"><h3 class="rt-title">格局與身宮</h3><div id="res-patterns"></div></div>
         <div style="padding:12px 20px 18px"><h3 class="rt-title">十二宮詳解</h3><div id="res-palaces"></div></div>
       </div>
@@ -2540,9 +2542,9 @@ TX.lifeOverview=function(SM,R){
   const S=[];
   // 1 你是什麼樣的人
   const sec1=[];
-  if(mainStars.length) sec1.push('紫微這邊,你的命宮坐「'+mainStars.join('、')+'」'+(borrowed?'(命宮本身無主星,借對宮來看)':'')+'——'+mainStars.map(s=>TX.STAR[s].b).join(';')+'。');
-  else sec1.push('紫微這邊,你的命宮沒有主星(空宮),代表你的性格比較像一塊會被環境塑形的料:可塑性高、適應力強,早年看環境長大,中年後自己的樣子才慢慢定下來。');
-  sec1.push('八字這邊,你的日主是'+SM.GAN[dG]+SM.GAN_ELEM[dG]+'——'+(TX.DAYMASTER[SM.GAN[dG]]||''));
+  if(mainStars.length) sec1.push('由紫微斗數來說,你的命宮坐「'+mainStars.join('、')+'」'+(borrowed?'(命宮本身無主星,借對宮來看)':'')+'——'+mainStars.map(s=>TX.STAR[s].b).join(';')+'。');
+  else sec1.push('由紫微斗數來說,你的命宮沒有主星(空宮),代表你的性格比較像一塊會被環境塑形的料:可塑性高、適應力強,早年看環境長大,中年後自己的樣子才慢慢定下來。');
+  sec1.push('八字這邊,你的日主是'+SM.GAN[dG]+SM.GAN_ELEM[dG]+'——'+(TX.DAYMASTER[SM.GAN[dG]]||'').split('——').slice(1).join('——'));
   const zt0=_starTrait(mainStars);
   sec1.push('合起來看:紫微偏「'+zt0.key+'」、八字日主給你'+SM.GAN_ELEM[dG]+'的本性,這就是你給人的第一印象與骨子裡的脾性。底色是天生的,怎麼用、用在哪,才是後天能調整的。');
   S.push({t:'你是什麼樣的人',ps:sec1});
@@ -5166,6 +5168,7 @@ function switchResTab(id){
   document.querySelectorAll('.rt-panel').forEach(p=>p.classList.toggle('hide',p.id!==id));
   document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'nearest'});
   if(window.__updateTabOverflow) setTimeout(window.__updateTabOverflow,60);
+  if(window.__fitChart) setTimeout(window.__fitChart,80);
 }
 window.switchResTab=switchResTab;
 
@@ -5290,6 +5293,29 @@ function updateTabOverflow(){
   rt.parentElement.classList.toggle('has-more',more);
 }
 window.__updateTabOverflow=updateTabOverflow;
+
+// 命盤在窄螢幕自動縮放以完整顯示(可雙指放大細看)
+function fitChart(){
+  const wrap=document.querySelector('.chartwrap'); if(!wrap) return;
+  const chart=wrap.querySelector('.chart'); if(!chart) return;
+  chart.style.transform=''; wrap.style.height='';
+  const ww=wrap.clientWidth; if(!ww) return; // 面板隱藏時不處理
+  const cw=chart.offsetWidth||620;
+  const hint=document.getElementById('chart-hint');
+  if(ww < cw-2){
+    const s=ww/cw;
+    chart.style.transformOrigin='top left';
+    chart.style.transform='scale('+s+')';
+    wrap.style.height=(chart.offsetHeight*s)+'px';
+    wrap.style.overflowX='hidden';
+    wrap.classList.add('scaled');
+    if(hint) hint.classList.add('on');
+  } else {
+    wrap.style.overflowX='auto'; wrap.classList.remove('scaled');
+    if(hint) hint.classList.remove('on');
+  }
+}
+window.__fitChart=fitChart;
 window.closeShareCard=closeShareCard;
 window.regenShareCard=regenShareCard;
 window.downloadShareCard=downloadShareCard;
@@ -5379,7 +5405,7 @@ window.__setCurrent=function(R){ CURRENT=R; };
 window.addEventListener('DOMContentLoaded',function(){
   fillDateSelects('p1'); fillDateSelects('h1'); fillDateSelects('h2'); fillDateSelects('n1');
   renderMyCharts();
-  (function(){ const rt=$('res-tabs'); if(rt){ rt.addEventListener('scroll',updateTabOverflow); window.addEventListener('resize',updateTabOverflow); } })();
+  (function(){ const rt=$('res-tabs'); if(rt){ rt.addEventListener('scroll',updateTabOverflow); window.addEventListener('resize',updateTabOverflow); } window.addEventListener('resize',function(){ if(window.__fitChart) window.__fitChart(); }); })();
   document.querySelectorAll('.tabbtn').forEach(b=>b.addEventListener('click',function(){
     document.querySelectorAll('.tabbtn').forEach(x=>x.classList.remove('on'));
     document.querySelectorAll('.tab').forEach(x=>x.classList.add('hide'));
